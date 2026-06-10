@@ -179,3 +179,11 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Local SQLite database for Tu Vi charts
+tuvi_horoscopes.db
+
+# Local developer test file
+test_tuvi.py
+
+__pycache__/

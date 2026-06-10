@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tuvi-mcp"
+version = "0.1.0"
+description = "A Model Context Protocol (MCP) server for Vietnamese Tu Vi horoscope calculation and management"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.27.2",
+]
+
+[project.scripts]
+tuvi-mcp = "tuvi_mcp.mcp_server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tuvi_mcp*"]
