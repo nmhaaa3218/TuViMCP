@@ -187,3 +187,6 @@ tuvi_horoscopes.db
 /test_tuvi.py
 
 __pycache__/
+.DS_Store
+**/.DS_Store
+
