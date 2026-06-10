@@ -184,6 +184,6 @@ cython_debug/
 tuvi_horoscopes.db
 
 # Local developer test file
-test_tuvi.py
+/test_tuvi.py
 
 __pycache__/

@@ -224,7 +224,7 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 
 # Máy chủ MCP Luận giải Lá số Tử Vi
 
-Đây là máy chủ giao thức bối cảnh mô hình (MCP) được phát triển bằng Python giúp tính toán và quản lý lá số Tử Vi Việt Nam. Đầu ra được tối ưu hóa thành định dạng JSON cấu trúc gọn gàng giúp các mô hình AI dễ dàng đọc, phân tích và luận giải cho người dùng.
+Đây là máy chủ Model Context Protocol (MCP) được phát triển bằng Python, dùng để lập và quản lý lá số Tử Vi theo hệ Việt Nam. Kết quả được chuẩn hóa dưới dạng JSON sạch, có cấu trúc rõ ràng, giúp các LLM agent dễ dàng đọc, phân tích và diễn giải lại cho người dùng.
 
 ---
 
@@ -235,29 +235,35 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 - [Lịch sử Thay đổi](CHANGELOG.md)
 - [Thư mục Output JSON mẫu & Mã nguồn ví dụ](examples/)
 
-### Các Tính Năng
-- **Lập Lá Số Tử Vi:** Đổi ngày giờ sinh Dương lịch hoặc Âm lịch sang bản đồ lá số đầy đủ (Thiên Bàn và Địa Bàn với 12 cung cùng hơn 100 chòm sao).
-- **Xem Vận Hạn:** Tính toán các sao lưu hàng năm (Lưu Thái Tuế, Lưu Lộc Tồn, v.v.) và định vị các cung hạn: Đại Hạn (10 năm), Tiểu Hạn (năm hiện tại), và Nguyệt Hạn (tháng hiện tại) cho năm xem bất kỳ (ví dụ: 2026).
-- **Lưu Trữ Cục Bộ:** Lưu, tải, liệt kê và xóa dữ liệu lá số sinh trực tiếp thông qua cơ sở dữ liệu SQLite cục bộ (`tuvi_horoscopes.db`).
-- **Tự Động Đổi Giờ:** Tự động quy đổi các mốc giờ đồng hồ (ví dụ: "14:30") hoặc tên giờ truyền thống (ví dụ: "Ngọ", "Tý") sang Địa Chi giờ chính xác.
-- **Nhúng Thư Viện Cục Bộ:** Tích hợp trực tiếp thư viện tính toán Tử Vi gốc và đã vá lỗi hiển thị Tuần/Triệt bao phủ cả 2 cung.
+### Tính năng chính
+
+* **Lập lá số Tử Vi:** Hỗ trợ chuyển đổi ngày giờ sinh Dương lịch hoặc Âm lịch thành lá số Tử Vi đầy đủ, bao gồm Thiên Bàn, Địa Bàn, 12 cung và hơn 100 sao.
+
+* **Xem Vận Hạn:** Tính toán các sao lưu động như Lưu Thái Tuế, Lưu Lộc Tồn, v.v., đồng thời xác định các cung hạn đang kích hoạt gồm Đại Hạn 10 năm, Tiểu Hạn theo năm và Nguyệt Hạn theo tháng cho bất kỳ năm/tháng cần xem nào, ví dụ năm 2026.
+
+* **Lưu trữ cục bộ:** Hỗ trợ lưu, truy xuất, liệt kê và xóa thông tin lá số thông qua cơ sở dữ liệu SQLite cục bộ (`tuvi_horoscopes.db`).
+
+* **Tự động quy đổi giờ sinh:** Có thể tự động chuyển đổi giờ theo đồng hồ, ví dụ `"14:30"`, hoặc tên giờ truyền thống, ví dụ `"Ngọ"`, `"Tý"`, sang đúng chỉ số Địa Chi tương ứng.
+
+* **Tích hợp logic tính toán nội bộ:** Bao gồm sẵn phần lõi tính toán từ `ansaotuvi`, đồng thời bổ sung các chỉnh sửa riêng cho trường hợp Tuần/Triệt bao phủ hai cung.
 
 ### Hạn chế hiện tại & Giả định
 - **Giả định múi giờ:** Mặc định tính toán theo múi giờ Việt Nam (GMT+7). Mọi thông tin giờ sinh ở múi giờ khác cần được quy đổi về GMT+7 trước khi truyền vào.
 - **Giới hạn lịch pháp:** Các phép tính toán âm dương lịch ổn định và chính xác cao với các năm sinh thời hiện đại. Thuật toán chuyển đổi lịch âm dựa trên phương pháp của Hoàng Nam Địa (HND), có thể có sai lệch nhỏ ở một số năm nhuận quá khứ xa hoặc tương lai xa.
 - **Hệ phái an sao:** Thuật toán an sao theo quy chuẩn chung phổ biến tại Việt Nam. Dự án hiện chưa hỗ trợ cấu hình tùy biến trọng số sao hoặc các cách an sao khác nhau của các hệ phái khác (như Nam phái vs Bắc phái vs tự chọn).
 
+---
 
-### Cài Đặt & Thiết Lập (Khuyên dùng)
+### Cài đặt & Thiết lập khuyến nghị
 
-Để cài đặt và triển khai máy chủ một cách sạch sẽ trong môi trường độc lập, chúng tôi khuyên bạn nên thiết lập môi trường ảo (`.venv`) và cài đặt gói ở chế độ có thể chỉnh sửa (`-e .`). Cách này giúp đăng ký gói `tuvi_mcp` vào môi trường ảo, cho phép thực thi chương trình từ bất kỳ thư mục làm việc nào (quan trọng đối với các tích hợp như Claude Desktop):
+Để cài đặt và triển khai máy chủ trong một môi trường sạch, độc lập, nên tạo môi trường ảo (`.venv`) và cài đặt package ở chế độ editable (`-e .`). Cách này sẽ đăng ký `tuvi_mcp` trực tiếp trong môi trường ảo, giúp bạn có thể chạy server từ bất kỳ thư mục làm việc nào. Điều này đặc biệt hữu ích khi tích hợp với các client như Claude Desktop.
 
 1. **Tạo môi trường ảo:**
    ```bash
    python3 -m venv .venv
    ```
 
-2. **Cài đặt Gói & Thư viện phụ thuộc:**
+2. **Cài đặt package và các thư viện phụ thuộc:**
    ```bash
    .venv/bin/pip install --upgrade pip
    .venv/bin/pip install -e ".[test]"
@@ -269,62 +275,92 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
    .venv/bin/pytest
    ```
 
+---
 
-### Cách Khởi Chạy
+### Cách khởi chạy
 
-#### 1. Chế độ Stdio (Mặc định cho Claude Desktop & Cursor)
+#### 1. Chế độ Stdio
+
+Đây là chế độ mặc định, phù hợp để tích hợp với Claude Desktop và Cursor.
 ```bash
 .venv/bin/tuvi-mcp
 ```
 
-#### 2. Chế độ HTTP (Dành cho việc triển khai mạng/đám mây)
-Khởi chạy server qua giao thức HTTP (mặc định trên cổng `1850`):
+#### 2. Chế độ Streamable HTTP
+
+Dùng khi muốn triển khai server qua HTTP, phù hợp cho môi trường remote hoặc cloud. Mặc định server chạy trên cổng `1850`.
 ```bash
 .venv/bin/tuvi-mcp --http
 ```
-Thay đổi địa chỉ host và cổng port:
+
+Có thể tùy chỉnh host và port như sau:
 ```bash
 .venv/bin/tuvi-mcp --http --host 127.0.0.1 --port 1850
 ```
 
-### Danh sách Công cụ MCP (API Reference)
+---
+
+### Danh sách công cụ MCP
 
 #### 1. `generate_horoscope`
-Khởi tạo lá số Tử Vi chi tiết.
+
+Tạo lá số Tử Vi đầy đủ từ thông tin ngày giờ sinh.
+
 * **Tham số:**
-  - `name` (string): Tên người xem (mặc định: "Khách").
-  - `day` (integer): Ngày sinh (1-31).
-  - `month` (integer): Tháng sinh (1-12).
-  - `year` (integer): Năm sinh.
-  - `hour_val` (string): Giờ sinh (ví dụ: "14:30", "Ngọ").
-  - `gender_val` (string): Giới tính ("Nam" hoặc "Nữ").
-  - `is_solar` (boolean): True nếu là Dương lịch, False nếu Âm lịch (mặc định: True).
+  * `name` (string): Tên người xem, mặc định là `"Khách"`.
+  * `day` (integer): Ngày sinh, từ 1 đến 31.
+  * `month` (integer): Tháng sinh, từ 1 đến 12.
+  * `year` (integer): Năm sinh.
+  * `hour_val` (string): Giờ sinh, ví dụ `"14:30"`, `"Ngọ"`, `"Tý"`.
+  * `gender_val` (string): Giới tính, nhận giá trị `"Nam"` hoặc `"Nữ"`.
+  * `is_solar` (boolean): `True` nếu dùng Dương lịch, `False` nếu dùng Âm lịch. Mặc định là `True`.
+
+---
 
 #### 2. `get_van_han`
-Phân tích sao lưu và định vị cung hạn Đại Hạn, Tiểu Hạn, Nguyệt Hạn cho tháng/năm cần xem.
+
+Tính toán sao lưu động và xác định các cung hạn đang kích hoạt, bao gồm Đại Hạn, Tiểu Hạn và Nguyệt Hạn cho tháng/năm cần xem.
+
 * **Tham số:**
-  - `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar` (tương tự như trên).
-  - `current_year` (integer): Năm muốn xem hạn (mặc định: năm hiện tại).
-  - `current_month` (integer): Tháng âm lịch muốn xem hạn (1-12, mặc định: 1).
+  * `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`: giống như trong `generate_horoscope`.
+  * `current_year` (integer): Năm cần xem hạn. Mặc định là năm hiện tại.
+  * `current_month` (integer): Tháng âm lịch cần xem hạn, từ 1 đến 12. Mặc định là 1.
+
+---
 
 #### 3. `save_horoscope`
-Lưu thông tin ngày sinh vào cơ sở dữ liệu.
+
+Lưu thông tin ngày giờ sinh vào cơ sở dữ liệu SQLite cục bộ.
+
 * **Tham số:**
-  - `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`, `notes` (string, tùy chọn).
+  * `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`, `notes` (string, tùy chọn).
+
+---
 
 #### 4. `list_saved_horoscopes`
-Liệt kê toàn bộ danh sách lá số đã lưu.
+
+Liệt kê toàn bộ lá số đã được lưu trong cơ sở dữ liệu.
+
+---
 
 #### 5. `get_saved_horoscope`
-Lấy dữ liệu đã lưu và xuất lá số.
+
+Truy xuất một bản ghi đã lưu và tạo lại lá số tương ứng.
+
 * **Tham số:**
-  - `horoscope_id` (integer, tùy chọn)
-  - `name` (string, tùy chọn)
+  * `horoscope_id` (integer, tùy chọn)
+  * `name` (string, tùy chọn)
+
+---
 
 #### 6. `delete_saved_horoscope`
-Xóa dữ liệu lá số đã lưu.
+
+Xóa một bản ghi lá số đã lưu khỏi cơ sở dữ liệu.
+
 * **Tham số:**
-  - `horoscope_id` (integer)
+  * `horoscope_id` (integer): ID của lá số cần xóa.
+
+---
 
 ### Ví dụ gọi Tool & Đầu ra JSON mẫu
 
@@ -416,11 +452,13 @@ Khi gọi `get_van_han(...)` cho một năm/tháng cụ thể, hệ thống tín
 
 *Để xem dữ liệu đầy đủ, vui lòng tham khảo file mẫu tại [examples/sample_van_han_output.json](examples/sample_van_han_output.json).*
 
-### Tích Hợp Client
+---
 
+### Ví dụ tích hợp với client
 
-#### Cấu hình cho Claude Desktop
-Thêm đoạn cấu hình sau vào file `claude_desktop_config.json`:
+#### Cấu hình Claude Desktop
+
+Thêm cấu hình sau vào file `claude_desktop_config.json`:
 
 ```json
 {
@@ -433,8 +471,11 @@ Thêm đoạn cấu hình sau vào file `claude_desktop_config.json`:
 }
 ```
 
-#### Tích hợp cho Cursor
-Truy cập Settings -> Features -> MCP, click "+ Add New MCP Server":
-- **Name:** TuViMCP
-- **Type:** command
-- **Command:** `/path/to/TuViMCP/.venv/bin/tuvi-mcp`
+#### Tích hợp với Cursor
+
+Vào Settings -> Features -> MCP, sau đó chọn "+ Add New MCP Server":
+
+* **Name:** TuViMCP
+* **Type:** command
+* **Command:** `/path/to/TuViMCP/.venv/bin/tuvi-mcp`
+
