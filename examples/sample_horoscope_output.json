@@ -1,0 +1,1166 @@
+{
+  "thien_ban": {
+    "ten": "Nguyễn Văn A",
+    "gioi_tinh": "Nam",
+    "ngay_duong": "10/6/1995",
+    "ngay_am": "13/5/1995",
+    "gio_sinh": "Đinh Mùi",
+    "chi_gio_sinh": "Mùi",
+    "can_gio_sinh": 4,
+    "can_thang": "Nhâm",
+    "chi_thang": "Thìn",
+    "can_nam": "Ất",
+    "chi_nam": "Hợi",
+    "can_ngay": "Nhâm",
+    "chi_ngay": "Thân",
+    "am_duong_nam_sinh": "Âm",
+    "am_duong_menh": "Âm dương thuận lý",
+    "hanh_cuc": 5,
+    "ten_cuc": "Thổ ngũ Cục",
+    "menh_chu": "Cự môn",
+    "than_chu": "Thiên tướng",
+    "menh": "H",
+    "ban_menh": "SƠN ÐẦU HỎA",
+    "sinh_khac": "Mệnh sinh Cục",
+    "lai_nhan_cung": "Phu thê"
+  },
+  "dia_ban": [
+    {
+      "cung_so": 1,
+      "cung_ten": "Mậu Tý",
+      "hanh_cung": "Thủy",
+      "cung_chu": "Phụ mẫu",
+      "dai_han": 115,
+      "tieu_han": "Tuất",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 9,
+          "name": "Tham lang",
+          "element": "T",
+          "type": 1,
+          "direction": "Bắc đẩu tinh",
+          "yin_yang": 1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 30,
+          "name": "Tiểu hao",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 16,
+          "name": "Thiếu dương",
+          "element": "H",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 108,
+          "name": "Thiên không",
+          "element": "H",
+          "type": 11,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 47,
+          "name": "Mộ",
+          "element": "O",
+          "type": 2,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 68,
+          "name": "Thiên quý",
+          "element": "O",
+          "type": 3,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 59,
+          "name": "Thiên khôi",
+          "element": "H",
+          "type": 6,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": null
+        },
+        {
+          "id": 87,
+          "name": "Thiên thọ",
+          "element": "O",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 78,
+          "name": "Đào hoa",
+          "element": "M",
+          "type": 8,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 2,
+      "cung_ten": "Kỷ Sửu",
+      "hanh_cung": "Thổ",
+      "cung_chu": "Phúc đức",
+      "dai_han": 105,
+      "tieu_han": "Hợi",
+      "cung_than": true,
+      "tuan_trung": false,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 3,
+          "name": "Thiên đồng",
+          "element": "T",
+          "type": 1,
+          "direction": "Bắc đẩu tinh",
+          "yin_yang": 1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 10,
+          "name": "Cự môn",
+          "element": "T",
+          "type": 1,
+          "direction": "Bắc đẩu tinh",
+          "yin_yang": -1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 29,
+          "name": "Thanh long",
+          "element": "T",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 17,
+          "name": "Tang môn",
+          "element": "M",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 46,
+          "name": "Tử",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 73,
+          "name": "Thiên hình",
+          "element": "H",
+          "type": 15,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 84,
+          "name": "Thai phụ",
+          "element": "O",
+          "type": 6,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 3,
+      "cung_ten": "Mậu Dần",
+      "hanh_cung": "Mộc",
+      "cung_chu": "Điền trạch",
+      "dai_han": 95,
+      "tieu_han": "Tý",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 4,
+          "name": "Vũ khúc",
+          "element": "K",
+          "type": 1,
+          "direction": "Bắc đẩu tinh",
+          "yin_yang": -1,
+          "attribute": "Vượng địa"
+        },
+        {
+          "id": 11,
+          "name": "Thiên tướng",
+          "element": "T",
+          "type": 1,
+          "direction": "Nam đẩu tinh",
+          "yin_yang": 1,
+          "attribute": "Miếu địa"
+        },
+        {
+          "id": 28,
+          "name": "Lực sĩ",
+          "element": "H",
+          "type": 2,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 18,
+          "name": "Thiếu âm",
+          "element": "T",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 45,
+          "name": "Bệnh",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 51,
+          "name": "Đà la",
+          "element": "K",
+          "type": 11,
+          "direction": "",
+          "yin_yang": -1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 56,
+          "name": "Hỏa tinh",
+          "element": "H",
+          "type": 11,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": "Đắc địa"
+        },
+        {
+          "id": 67,
+          "name": "Ân quang",
+          "element": "M",
+          "type": 3,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 96,
+          "name": "Cô thần",
+          "element": "O",
+          "type": 13,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 107,
+          "name": "Đẩu quân",
+          "element": "H",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 4,
+      "cung_ten": "Kỷ Mão",
+      "hanh_cung": "Mộc",
+      "cung_chu": "Quan lộc",
+      "dai_han": 85,
+      "tieu_han": "Sửu",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 5,
+          "name": "Thái Dương",
+          "element": "H",
+          "type": 1,
+          "direction": "Nam đẩu tinh",
+          "yin_yang": 1,
+          "attribute": "Vượng địa"
+        },
+        {
+          "id": 12,
+          "name": "Thiên lương",
+          "element": "O",
+          "type": 1,
+          "direction": "Nam đẩu tinh",
+          "yin_yang": 1,
+          "attribute": "Vượng địa"
+        },
+        {
+          "id": 27,
+          "name": "Lộc tồn",
+          "element": "O",
+          "type": 3,
+          "direction": "Bắc đẩu tinh",
+          "yin_yang": -1,
+          "attribute": null
+        },
+        {
+          "id": 109,
+          "name": "Bác sỹ",
+          "element": "T",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 19,
+          "name": "Quan phù",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 44,
+          "name": "Suy",
+          "element": "T",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 63,
+          "name": "Long trì",
+          "element": "T",
+          "type": 3,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": null
+        },
+        {
+          "id": 57,
+          "name": "Văn xương",
+          "element": "K",
+          "type": 6,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 93,
+          "name": "Hóa quyền",
+          "element": "H",
+          "type": 4,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Hãm địa"
+        }
+      ]
+    },
+    {
+      "cung_so": 5,
+      "cung_ten": "Canh Thìn",
+      "hanh_cung": "Thổ",
+      "cung_chu": "Nô bộc",
+      "dai_han": 75,
+      "tieu_han": "Dần",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 13,
+          "name": "Thất sát",
+          "element": "K",
+          "type": 1,
+          "direction": "Nam đẩu tinh",
+          "yin_yang": 1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 38,
+          "name": "Quan phù",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 20,
+          "name": "Tử phù",
+          "element": "K",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 72,
+          "name": "Nguyệt đức",
+          "element": "H",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 43,
+          "name": "Đế vượng",
+          "element": "K",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 52,
+          "name": "Kình dương",
+          "element": "K",
+          "type": 11,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": "Đắc địa"
+        },
+        {
+          "id": 53,
+          "name": "Địa không",
+          "element": "H",
+          "type": 11,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 79,
+          "name": "Hồng loan",
+          "element": "T",
+          "type": 8,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 100,
+          "name": "Thiên quan",
+          "element": "H",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 81,
+          "name": "Thiên giải",
+          "element": "H",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 90,
+          "name": "Thiên la",
+          "element": "O",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 88,
+          "name": "Thiên thương",
+          "element": "O",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 6,
+      "cung_ten": "Tân Tỵ",
+      "hanh_cung": "Hỏa",
+      "cung_chu": "Thiên di",
+      "dai_han": 65,
+      "tieu_han": "Mão",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 6,
+          "name": "Thiên cơ",
+          "element": "M",
+          "type": 1,
+          "direction": "Nam đẩu tinh",
+          "yin_yang": -1,
+          "attribute": "Vượng địa"
+        },
+        {
+          "id": 37,
+          "name": "Phục binh",
+          "element": "H",
+          "type": 13,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 21,
+          "name": "Tuế phá",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 42,
+          "name": "Lâm quan",
+          "element": "K",
+          "type": 7,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 55,
+          "name": "Linh tinh",
+          "element": "H",
+          "type": 11,
+          "direction": "",
+          "yin_yang": -1,
+          "attribute": "Đắc địa"
+        },
+        {
+          "id": 70,
+          "name": "Thiên hư",
+          "element": "T",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 74,
+          "name": "Thiên riêu",
+          "element": "T",
+          "type": 13,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 75,
+          "name": "Thiên y",
+          "element": "T",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 98,
+          "name": "Thiên mã",
+          "element": "H",
+          "type": 3,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Đắc địa"
+        },
+        {
+          "id": 99,
+          "name": "Phá toái",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 94,
+          "name": "Hóa lộc",
+          "element": "M",
+          "type": 3,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Hãm địa"
+        }
+      ]
+    },
+    {
+      "cung_so": 7,
+      "cung_ten": "Nhâm Ngọ",
+      "hanh_cung": "Hỏa",
+      "cung_chu": "Tật ách",
+      "dai_han": 55,
+      "tieu_han": "Thìn",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": true,
+      "sao": [
+        {
+          "id": 1,
+          "name": "Tử vi",
+          "element": "O",
+          "type": 1,
+          "direction": "Đế tinh",
+          "yin_yang": -1,
+          "attribute": "Miếu địa"
+        },
+        {
+          "id": 36,
+          "name": "Đại hao",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 22,
+          "name": "Long đức",
+          "element": "T",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 41,
+          "name": "Quan đới",
+          "element": "K",
+          "type": 4,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 54,
+          "name": "Địa kiếp",
+          "element": "H",
+          "type": 11,
+          "direction": "",
+          "yin_yang": -1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 62,
+          "name": "Hữu bật",
+          "element": "T",
+          "type": 2,
+          "direction": "",
+          "yin_yang": -1,
+          "attribute": null
+        },
+        {
+          "id": 66,
+          "name": "Bát tọa",
+          "element": "O",
+          "type": 7,
+          "direction": "",
+          "yin_yang": -1,
+          "attribute": null
+        },
+        {
+          "id": 106,
+          "name": "LN. Văn tinh",
+          "element": "H",
+          "type": 6,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 89,
+          "name": "Thiên sứ",
+          "element": "T",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 92,
+          "name": "Hóa khoa",
+          "element": "K",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Đắc địa"
+        },
+        {
+          "id": 103,
+          "name": "Thiên trù",
+          "element": "O",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 8,
+      "cung_ten": "Quý Mùi",
+      "hanh_cung": "Thổ",
+      "cung_chu": "Tài bạch",
+      "dai_han": 45,
+      "tieu_han": "Tỵ",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": true,
+      "sao": [
+        {
+          "id": 35,
+          "name": "Bệnh phù",
+          "element": "O",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 23,
+          "name": "Bạch hổ",
+          "element": "K",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 40,
+          "name": "Mộc dục",
+          "element": "T",
+          "type": 14,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 69,
+          "name": "Thiên khốc",
+          "element": "T",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 105,
+          "name": "Hoa cái",
+          "element": "K",
+          "type": 14,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 9,
+      "cung_ten": "Giáp Thân",
+      "hanh_cung": "Kim",
+      "cung_chu": "Tử tức",
+      "dai_han": 35,
+      "tieu_han": "Ngọ",
+      "cung_than": false,
+      "tuan_trung": true,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 14,
+          "name": "Phá quân",
+          "element": "T",
+          "type": 1,
+          "direction": "Bắc đẩu tinh",
+          "yin_yang": -1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 34,
+          "name": "Hỷ thần",
+          "element": "H",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 24,
+          "name": "Phúc đức",
+          "element": "O",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 71,
+          "name": "Thiên đức",
+          "element": "H",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 39,
+          "name": "Tràng sinh",
+          "element": "T",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 61,
+          "name": "Tả phù",
+          "element": "O",
+          "type": 2,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": null
+        },
+        {
+          "id": 65,
+          "name": "Tam thai",
+          "element": "O",
+          "type": 7,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": null
+        },
+        {
+          "id": 60,
+          "name": "Thiên việt",
+          "element": "H",
+          "type": 6,
+          "direction": "",
+          "yin_yang": -1,
+          "attribute": null
+        },
+        {
+          "id": 101,
+          "name": "Thiên phúc",
+          "element": "H",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 77,
+          "name": "Đường phù",
+          "element": "M",
+          "type": 4,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 104,
+          "name": "Kiếp sát",
+          "element": "H",
+          "type": 11,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 10,
+      "cung_ten": "Ất Dậu",
+      "hanh_cung": "Kim",
+      "cung_chu": "Phu thê",
+      "dai_han": 25,
+      "tieu_han": "Mùi",
+      "cung_than": false,
+      "tuan_trung": true,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 33,
+          "name": "Phi liêm",
+          "element": "H",
+          "type": 2,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 25,
+          "name": "Điếu khách",
+          "element": "H",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 49,
+          "name": "Thai",
+          "element": "O",
+          "type": 14,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 85,
+          "name": "Phong cáo",
+          "element": "O",
+          "type": 4,
+          "direction": "",
+          "yin_yang": -1,
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 11,
+      "cung_ten": "Bính Tuất",
+      "hanh_cung": "Thổ",
+      "cung_chu": "Huynh đệ",
+      "dai_han": 15,
+      "tieu_han": "Thân",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 2,
+          "name": "Liêm trinh",
+          "element": "H",
+          "type": 1,
+          "direction": "Bắc đẩu tinh",
+          "yin_yang": -1,
+          "attribute": "Miếu địa"
+        },
+        {
+          "id": 7,
+          "name": "Thiên phủ",
+          "element": "O",
+          "type": 1,
+          "direction": "Nam đẩu tinh",
+          "yin_yang": 1,
+          "attribute": "Vượng địa"
+        },
+        {
+          "id": 32,
+          "name": "Tấu thư",
+          "element": "K",
+          "type": 3,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 26,
+          "name": "Trực phù",
+          "element": "K",
+          "type": 16,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 50,
+          "name": "Dưỡng",
+          "element": "M",
+          "type": 2,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 86,
+          "name": "Thiên tài",
+          "element": "O",
+          "type": 2,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 80,
+          "name": "Thiên hỷ",
+          "element": "T",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 97,
+          "name": "Quả tú",
+          "element": "O",
+          "type": 13,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 91,
+          "name": "Địa võng",
+          "element": "O",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 102,
+          "name": "Lưu hà",
+          "element": "T",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        }
+      ]
+    },
+    {
+      "cung_so": 12,
+      "cung_ten": "Đinh Hợi",
+      "hanh_cung": "Thủy",
+      "cung_chu": "Mệnh",
+      "dai_han": 5,
+      "tieu_han": "Dậu",
+      "cung_than": false,
+      "tuan_trung": false,
+      "triet_lo": false,
+      "sao": [
+        {
+          "id": 8,
+          "name": "Thái âm",
+          "element": "T",
+          "type": 1,
+          "direction": "Bắc đẩu tinh",
+          "yin_yang": -1,
+          "attribute": "Miếu địa"
+        },
+        {
+          "id": 31,
+          "name": "Tướng quân",
+          "element": "M",
+          "type": 4,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 15,
+          "name": "Thái tuế",
+          "element": "H",
+          "type": 15,
+          "direction": "",
+          "yin_yang": 0,
+          "attribute": null
+        },
+        {
+          "id": 48,
+          "name": "Tuyệt",
+          "element": "O",
+          "type": 12,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 64,
+          "name": "Phượng các",
+          "element": "O",
+          "type": 3,
+          "direction": "",
+          "yin_yang": 1,
+          "attribute": null
+        },
+        {
+          "id": 83,
+          "name": "Giải thần",
+          "element": "M",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 58,
+          "name": "Văn Khúc",
+          "element": "T",
+          "type": 6,
+          "direction": "",
+          "yin_yang": -1,
+          "attribute": "Hãm địa"
+        },
+        {
+          "id": 76,
+          "name": "Quốc ấn",
+          "element": "O",
+          "type": 6,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 82,
+          "name": "Địa giải",
+          "element": "O",
+          "type": 5,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": null
+        },
+        {
+          "id": 95,
+          "name": "Hóa kỵ",
+          "element": "T",
+          "type": 13,
+          "direction": "",
+          "yin_yang": "",
+          "attribute": "Hãm địa"
+        }
+      ]
+    }
+  ]
+}

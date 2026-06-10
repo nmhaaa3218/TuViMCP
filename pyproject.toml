@@ -12,9 +12,19 @@ dependencies = [
     "mcp>=1.27.2",
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+]
+
 [project.scripts]
 tuvi-mcp = "tuvi_mcp.mcp_server:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["tuvi_mcp*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+

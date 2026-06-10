@@ -1,0 +1,318 @@
+{
+  "person_details": {
+    "name": "Nguyễn Văn A",
+    "gender": "Nam",
+    "birth_solar": "10/6/1995",
+    "birth_lunar": "13/5/1995",
+    "birth_lunar_year_can_chi": "Ất Hợi",
+    "birth_lunar_month_can_chi": "Nhâm Thìn",
+    "birth_lunar_day_can_chi": "Nhâm Thân",
+    "birth_hour": "Đinh Mùi",
+    "element": "H",
+    "destiny_cuc": "Thổ ngũ Cục",
+    "lai_nhan_cung": "Phu thê"
+  },
+  "target_period": {
+    "current_year": 2026,
+    "current_year_can_chi": "Bính Ngọ",
+    "current_month_lunar": 5,
+    "current_age": 32
+  },
+  "transit_stars": [
+    {
+      "name": "Lưu Thái Tuế",
+      "cung_so": 7,
+      "chi": "Ngọ"
+    },
+    {
+      "name": "Lưu Lộc Tồn",
+      "cung_so": 6,
+      "chi": "Tỵ"
+    },
+    {
+      "name": "Lưu Kình Dương",
+      "cung_so": 7,
+      "chi": "Ngọ"
+    },
+    {
+      "name": "Lưu Đà La",
+      "cung_so": 5,
+      "chi": "Thìn"
+    },
+    {
+      "name": "Lưu Thiên Mã",
+      "cung_so": 9,
+      "chi": "Thân"
+    },
+    {
+      "name": "Lưu Thiên Khốc",
+      "cung_so": 1,
+      "chi": "Tý"
+    },
+    {
+      "name": "Lưu Thiên Hư",
+      "cung_so": 1,
+      "chi": "Tý"
+    }
+  ],
+  "dai_han": {
+    "cung_so": 10,
+    "cung_ten": "Ất Dậu",
+    "hanh_cung": "Kim",
+    "cung_chu": "Phu thê",
+    "dai_han": 25,
+    "tieu_han": "Mùi",
+    "cung_than": false,
+    "tuan_trung": true,
+    "triet_lo": false,
+    "sao": [
+      {
+        "id": 33,
+        "name": "Phi liêm",
+        "element": "H",
+        "type": 2,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 25,
+        "name": "Điếu khách",
+        "element": "H",
+        "type": 12,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 49,
+        "name": "Thai",
+        "element": "O",
+        "type": 14,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 85,
+        "name": "Phong cáo",
+        "element": "O",
+        "type": 4,
+        "direction": "",
+        "yin_yang": -1,
+        "attribute": null
+      }
+    ],
+    "transit_stars": []
+  },
+  "tieu_han": {
+    "cung_so": 9,
+    "cung_ten": "Giáp Thân",
+    "hanh_cung": "Kim",
+    "cung_chu": "Tử tức",
+    "dai_han": 35,
+    "tieu_han": "Ngọ",
+    "cung_than": false,
+    "tuan_trung": true,
+    "triet_lo": false,
+    "sao": [
+      {
+        "id": 14,
+        "name": "Phá quân",
+        "element": "T",
+        "type": 1,
+        "direction": "Bắc đẩu tinh",
+        "yin_yang": -1,
+        "attribute": "Hãm địa"
+      },
+      {
+        "id": 34,
+        "name": "Hỷ thần",
+        "element": "H",
+        "type": 5,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 24,
+        "name": "Phúc đức",
+        "element": "O",
+        "type": 5,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 71,
+        "name": "Thiên đức",
+        "element": "H",
+        "type": 5,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 39,
+        "name": "Tràng sinh",
+        "element": "T",
+        "type": 5,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 61,
+        "name": "Tả phù",
+        "element": "O",
+        "type": 2,
+        "direction": "",
+        "yin_yang": 1,
+        "attribute": null
+      },
+      {
+        "id": 65,
+        "name": "Tam thai",
+        "element": "O",
+        "type": 7,
+        "direction": "",
+        "yin_yang": 1,
+        "attribute": null
+      },
+      {
+        "id": 60,
+        "name": "Thiên việt",
+        "element": "H",
+        "type": 6,
+        "direction": "",
+        "yin_yang": -1,
+        "attribute": null
+      },
+      {
+        "id": 101,
+        "name": "Thiên phúc",
+        "element": "H",
+        "type": 5,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 77,
+        "name": "Đường phù",
+        "element": "M",
+        "type": 4,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 104,
+        "name": "Kiếp sát",
+        "element": "H",
+        "type": 11,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      }
+    ],
+    "transit_stars": [
+      "Lưu Thiên Mã"
+    ]
+  },
+  "nguyet_han": {
+    "cung_so": 4,
+    "cung_ten": "Kỷ Mão",
+    "hanh_cung": "Mộc",
+    "cung_chu": "Quan lộc",
+    "dai_han": 85,
+    "tieu_han": "Sửu",
+    "cung_than": false,
+    "tuan_trung": false,
+    "triet_lo": false,
+    "sao": [
+      {
+        "id": 5,
+        "name": "Thái Dương",
+        "element": "H",
+        "type": 1,
+        "direction": "Nam đẩu tinh",
+        "yin_yang": 1,
+        "attribute": "Vượng địa"
+      },
+      {
+        "id": 12,
+        "name": "Thiên lương",
+        "element": "O",
+        "type": 1,
+        "direction": "Nam đẩu tinh",
+        "yin_yang": 1,
+        "attribute": "Vượng địa"
+      },
+      {
+        "id": 27,
+        "name": "Lộc tồn",
+        "element": "O",
+        "type": 3,
+        "direction": "Bắc đẩu tinh",
+        "yin_yang": -1,
+        "attribute": null
+      },
+      {
+        "id": 109,
+        "name": "Bác sỹ",
+        "element": "T",
+        "type": 5,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 19,
+        "name": "Quan phù",
+        "element": "H",
+        "type": 12,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 44,
+        "name": "Suy",
+        "element": "T",
+        "type": 12,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": null
+      },
+      {
+        "id": 63,
+        "name": "Long trì",
+        "element": "T",
+        "type": 3,
+        "direction": "",
+        "yin_yang": 1,
+        "attribute": null
+      },
+      {
+        "id": 57,
+        "name": "Văn xương",
+        "element": "K",
+        "type": 6,
+        "direction": "",
+        "yin_yang": 1,
+        "attribute": "Hãm địa"
+      },
+      {
+        "id": 93,
+        "name": "Hóa quyền",
+        "element": "H",
+        "type": 4,
+        "direction": "",
+        "yin_yang": "",
+        "attribute": "Hãm địa"
+      }
+    ],
+    "transit_stars": []
+  }
+}
