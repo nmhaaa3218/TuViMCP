@@ -4,9 +4,17 @@
 """
 import time
 
-from .AmDuong import (canChiNgay, diaChi, ngayThangNam,
-                      ngayThangNamCanChi, nguHanh, nguHanhNapAm,
-                      sinhKhac, thienCan, timCuc)
+from .AmDuong import (
+    canChiNgay,
+    diaChi,
+    ngayThangNam,
+    ngayThangNamCanChi,
+    nguHanh,
+    nguHanhNapAm,
+    sinhKhac,
+    thienCan,
+    timCuc,
+)
 from .Lich_HND import jdFromDate
 
 

@@ -28,3 +28,19 @@ include = ["tuvi_mcp*"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+exclude = [
+    "tuvi_mcp/ansaotuvi",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+

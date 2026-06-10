@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-import os
-import sys
-import json
 import argparse
+import sys
 from datetime import datetime
 
 from mcp.server.fastmcp import FastMCP
-from . import database
-from . import tuvi_calculator
+
+from . import database, tuvi_calculator
 
 mcp = FastMCP("TuViMCP")
+
 
 @mcp.tool()
 def generate_horoscope(
@@ -19,11 +18,11 @@ def generate_horoscope(
     year: int = 1990,
     hour_val: str = "12:00",
     gender_val: str = "Nam",
-    is_solar: bool = True
-) -> str:
+    is_solar: bool = True,
+) -> dict:
     """
-    Generate a full Tu Vi (Vietnamese horoscope) chart in JSON format.
-    
+    Generate a full Tu Vi (Vietnamese horoscope) chart.
+
     Args:
         name: Name of the person.
         day: Day of birth (1-31).
@@ -34,18 +33,12 @@ def generate_horoscope(
         is_solar: True if birth date is Solar (Dương lịch), False if Lunar (Âm lịch).
     """
     try:
-        chart = tuvi_calculator.get_horoscope_chart(
-            name=name,
-            day=day,
-            month=month,
-            year=year,
-            hour_val=hour_val,
-            gender_val=gender_val,
-            is_solar=is_solar
+        return tuvi_calculator.get_horoscope_chart(
+            name=name, day=day, month=month, year=year, hour_val=hour_val, gender_val=gender_val, is_solar=is_solar
         )
-        return json.dumps(chart, ensure_ascii=False, indent=2)
     except Exception as e:
-        return json.dumps({"error": str(e)}, ensure_ascii=False)
+        return {"error": str(e)}
+
 
 @mcp.tool()
 def get_van_han(
@@ -57,12 +50,12 @@ def get_van_han(
     gender_val: str = "Nam",
     is_solar: bool = True,
     current_year: int = None,
-    current_month: int = 1
-) -> str:
+    current_month: int = 1,
+) -> dict:
     """
-    Calculate transit stars (sao lưu) and active houses (Đại Hạn, Tiểu Hạn, Nguyệt Hạn) 
+    Calculate transit stars (sao lưu) and active houses (Đại Hạn, Tiểu Hạn, Nguyệt Hạn)
     for the current month/year to inspect luck and predictions (vận hạn).
-    
+
     Args:
         name: Name of the person.
         day: Day of birth (1-31).
@@ -77,8 +70,8 @@ def get_van_han(
     try:
         if current_year is None:
             current_year = datetime.now().year
-            
-        analysis = tuvi_calculator.get_van_han_analysis(
+
+        return tuvi_calculator.get_van_han_analysis(
             name=name,
             day=day,
             month=month,
@@ -87,26 +80,19 @@ def get_van_han(
             gender_val=gender_val,
             is_solar=is_solar,
             current_year=current_year,
-            current_month=current_month
+            current_month=current_month,
         )
-        return json.dumps(analysis, ensure_ascii=False, indent=2)
     except Exception as e:
-        return json.dumps({"error": str(e)}, ensure_ascii=False)
+        return {"error": str(e)}
+
 
 @mcp.tool()
 def save_horoscope(
-    name: str,
-    day: int,
-    month: int,
-    year: int,
-    hour_val: str,
-    gender_val: str,
-    is_solar: bool = True,
-    notes: str = None
-) -> str:
+    name: str, day: int, month: int, year: int, hour_val: str, gender_val: str, is_solar: bool = True, notes: str = None
+) -> dict:
     """
     Save birth chart details to the local database for easy retrieval.
-    
+
     Args:
         name: Name of the person.
         day: Day of birth.
@@ -120,40 +106,31 @@ def save_horoscope(
     try:
         hour = tuvi_calculator.parse_hour(hour_val)
         gender_str = "Nam" if tuvi_calculator.parse_gender(gender_val) == 1 else "Nữ"
-        
+
         record_id = database.save_horoscope(
-            name=name,
-            day=day,
-            month=month,
-            year=year,
-            hour=hour,
-            gender=gender_str,
-            is_solar=is_solar,
-            notes=notes
+            name=name, day=day, month=month, year=year, hour=hour, gender=gender_str, is_solar=is_solar, notes=notes
         )
-        return json.dumps({
-            "message": f"Successfully saved horoscope for '{name}' with ID {record_id}.",
-            "id": record_id
-        }, ensure_ascii=False, indent=2)
+        return {"message": f"Successfully saved horoscope for '{name}' with ID {record_id}.", "id": record_id}
     except Exception as e:
-        return json.dumps({"error": str(e)}, ensure_ascii=False)
+        return {"error": str(e)}
+
 
 @mcp.tool()
-def list_saved_horoscopes() -> str:
+def list_saved_horoscopes() -> list:
     """
     Retrieve all saved horoscopes from the local database.
     """
     try:
-        records = database.list_saved_horoscopes()
-        return json.dumps(records, ensure_ascii=False, indent=2)
+        return database.list_saved_horoscopes()
     except Exception as e:
-        return json.dumps({"error": str(e)}, ensure_ascii=False)
+        return [{"error": str(e)}]
+
 
 @mcp.tool()
-def get_saved_horoscope(horoscope_id: int = None, name: str = None) -> str:
+def get_saved_horoscope(horoscope_id: int = None, name: str = None) -> dict:
     """
     Load a saved horoscope and generate its chart. Provide either horoscope_id or name.
-    
+
     Args:
         horoscope_id: The database ID of the horoscope.
         name: Name of the person (retrieves the latest record).
@@ -164,10 +141,10 @@ def get_saved_horoscope(horoscope_id: int = None, name: str = None) -> str:
             record = database.get_saved_horoscope_by_id(horoscope_id)
         elif name is not None:
             record = database.get_saved_horoscope_by_name(name)
-            
+
         if not record:
-            return json.dumps({"error": "Horoscope record not found"}, ensure_ascii=False)
-            
+            return {"error": "Horoscope record not found"}
+
         chart = tuvi_calculator.get_horoscope_chart(
             name=record["name"],
             day=record["day"],
@@ -175,34 +152,32 @@ def get_saved_horoscope(horoscope_id: int = None, name: str = None) -> str:
             year=record["year"],
             hour_val=record["hour"],
             gender_val=record["gender"],
-            is_solar=bool(record["is_solar"])
+            is_solar=bool(record["is_solar"]),
         )
         # Include database metadata
-        chart["metadata"] = {
-            "id": record["id"],
-            "notes": record["notes"],
-            "created_at": record["created_at"]
-        }
-        return json.dumps(chart, ensure_ascii=False, indent=2)
+        chart["metadata"] = {"id": record["id"], "notes": record["notes"], "created_at": record["created_at"]}
+        return chart
     except Exception as e:
-        return json.dumps({"error": str(e)}, ensure_ascii=False)
+        return {"error": str(e)}
+
 
 @mcp.tool()
-def delete_saved_horoscope(horoscope_id: int) -> str:
+def delete_saved_horoscope(horoscope_id: int) -> dict:
     """
     Delete a saved horoscope record from the database.
-    
+
     Args:
         horoscope_id: The database ID of the horoscope to delete.
     """
     try:
         success = database.delete_saved_horoscope_by_id(horoscope_id)
         if success:
-            return json.dumps({"message": f"Successfully deleted horoscope ID {horoscope_id}."}, ensure_ascii=False)
+            return {"message": f"Successfully deleted horoscope ID {horoscope_id}."}
         else:
-            return json.dumps({"error": f"No horoscope record found with ID {horoscope_id}."}, ensure_ascii=False)
+            return {"error": f"No horoscope record found with ID {horoscope_id}."}
     except Exception as e:
-        return json.dumps({"error": str(e)}, ensure_ascii=False)
+        return {"error": str(e)}
+
 
 def main():
     parser = argparse.ArgumentParser(description="Tu Vi horoscope MCP Server.")
@@ -219,6 +194,7 @@ def main():
     else:
         print("Starting Tu Vi MCP server on stdio transport", file=sys.stderr)
         mcp.run(transport="stdio")
+
 
 if __name__ == "__main__":
     main()

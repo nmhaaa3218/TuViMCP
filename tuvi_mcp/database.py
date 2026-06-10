@@ -1,6 +1,5 @@
 import os
 import sqlite3
-from datetime import datetime
 
 # Determine database directory:
 # Priority 1: Environment variable TUVI_DB_PATH
@@ -27,6 +26,7 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 def init_db():
     """Initialize database and create tables if they do not exist."""
     with get_connection() as conn:
@@ -46,19 +46,27 @@ def init_db():
         """)
         conn.commit()
 
+
 # Run initialization automatically when module is loaded
 init_db()
 
-def save_horoscope(name: str, day: int, month: int, year: int, hour: int, gender: str, is_solar: bool, notes: str = None) -> int:
+
+def save_horoscope(
+    name: str, day: int, month: int, year: int, hour: int, gender: str, is_solar: bool, notes: str = None
+) -> int:
     """Save a horoscope details to the database, returning its id."""
     with get_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO horoscopes (name, day, month, year, hour, gender, is_solar, notes)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (name, day, month, year, hour, gender, 1 if is_solar else 0, notes))
+        """,
+            (name, day, month, year, hour, gender, 1 if is_solar else 0, notes),
+        )
         conn.commit()
         return cursor.lastrowid
+
 
 def list_saved_horoscopes() -> list:
     """Retrieve all saved horoscopes."""
@@ -70,27 +78,36 @@ def list_saved_horoscopes() -> list:
         """).fetchall()
         return [dict(row) for row in rows]
 
+
 def get_saved_horoscope_by_id(horoscope_id: int) -> dict:
     """Retrieve a saved horoscope by its unique id."""
     with get_connection() as conn:
-        row = conn.execute("""
+        row = conn.execute(
+            """
             SELECT id, name, day, month, year, hour, gender, is_solar, notes, created_at
             FROM horoscopes
             WHERE id = ?
-        """, (horoscope_id,)).fetchone()
+        """,
+            (horoscope_id,),
+        ).fetchone()
         return dict(row) if row else None
+
 
 def get_saved_horoscope_by_name(name: str) -> dict:
     """Retrieve the latest saved horoscope matching a name."""
     with get_connection() as conn:
-        row = conn.execute("""
+        row = conn.execute(
+            """
             SELECT id, name, day, month, year, hour, gender, is_solar, notes, created_at
             FROM horoscopes
             WHERE name = ?
             ORDER BY created_at DESC
             LIMIT 1
-        """, (name,)).fetchone()
+        """,
+            (name,),
+        ).fetchone()
         return dict(row) if row else None
+
 
 def delete_saved_horoscope_by_id(horoscope_id: int) -> bool:
     """Delete a saved horoscope by id, returns True if deleted."""

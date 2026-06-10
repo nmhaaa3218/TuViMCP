@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-import os
 import json
+import os
 
 # Import tuvi_calculator (Ensure project is installed or in python path)
 try:
-    from tuvi_mcp import tuvi_calculator, database
+    from tuvi_mcp import tuvi_calculator
 except ImportError:
     import sys
+
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-    from tuvi_mcp import tuvi_calculator, database
+    from tuvi_mcp import tuvi_calculator
+
 
 def main():
     print("--------------------------------------------------")
@@ -26,19 +28,13 @@ def main():
 
     print(f"Generating horoscope for {name} ({day}/{month}/{year} {hour_val} {gender_val})...")
     chart = tuvi_calculator.get_horoscope_chart(
-        name=name,
-        day=day,
-        month=month,
-        year=year,
-        hour_val=hour_val,
-        gender_val=gender_val,
-        is_solar=is_solar
+        name=name, day=day, month=month, year=year, hour_val=hour_val, gender_val=gender_val, is_solar=is_solar
     )
 
     # 1. Save horoscope chart example
     examples_dir = os.path.dirname(os.path.abspath(__file__))
     os.makedirs(examples_dir, exist_ok=True)
-    
+
     chart_output_path = os.path.join(examples_dir, "sample_horoscope_output.json")
     with open(chart_output_path, "w", encoding="utf-8") as f:
         json.dump(chart, f, ensure_ascii=False, indent=2)
@@ -57,9 +53,9 @@ def main():
         gender_val=gender_val,
         is_solar=is_solar,
         current_year=current_year,
-        current_month=current_month
+        current_month=current_month,
     )
-    
+
     van_han_output_path = os.path.join(examples_dir, "sample_van_han_output.json")
     with open(van_han_output_path, "w", encoding="utf-8") as f:
         json.dump(van_han, f, ensure_ascii=False, indent=2)
@@ -71,6 +67,7 @@ def main():
         print(f"  - {k}: {v}")
 
     print("\nSuccessfully generated example files.")
+
 
 if __name__ == "__main__":
     main()

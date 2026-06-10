@@ -80,13 +80,13 @@ class diaBan(object):
             self.thapNhiCung = [cungDiaBan(i) for i in range(13)]
         self.nhapCungChu()
         self.nhapCungThan()
-        
+
     def safeGetIndexOfList(self, list, index):
         if list is not None and index < len(list):
             return list[index]
         else:
             return None  # hoặc giá trị mặc định khác tùy thuộc vào yêu cầu của bạn
-    
+
     def canDiaBan(self, thienCanNam):
         tmpThienCan = thienCan[1:]
         if thienCanNam["chuCaiDau"] == "G" or thienCanNam["chuCaiDau"] == "K":
