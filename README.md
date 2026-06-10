@@ -5,6 +5,8 @@
 
 This is a Model Context Protocol (MCP) server developed in Python that calculates and manages Vietnamese "Tử Vi" horoscope charts. It is optimized to output clean, structured JSON data that LLM agents can easily read, interpret, and explain to users.
 
+<video src="assets/demo.mov" width="100%" controls></video>
+
 ---
 
 ## English Documentation
@@ -225,6 +227,8 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 # Máy chủ MCP Luận giải Lá số Tử Vi
 
 Đây là máy chủ Model Context Protocol (MCP) được phát triển bằng Python, dùng để lập và quản lý lá số Tử Vi theo hệ Việt Nam. Kết quả được chuẩn hóa dưới dạng JSON sạch, có cấu trúc rõ ràng, giúp các LLM agent dễ dàng đọc, phân tích và diễn giải lại cho người dùng.
+
+<video src="assets/demo.mov" width="100%" controls></video>
 
 ---
 
