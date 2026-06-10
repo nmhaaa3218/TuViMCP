@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tuvi-mcp"
-version = "0.1.1"
+name = "tuvi-mcp-server"
+version = "0.1.2"
 description = "A Model Context Protocol (MCP) server for Vietnamese Tu Vi horoscope calculation and management"
 readme = "README.md"
 requires-python = ">=3.10"
