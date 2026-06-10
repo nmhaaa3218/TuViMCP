@@ -35,23 +35,30 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 
 
 
-### Installation & Setup (Recommended)
+### Installation
 
-To install and deploy the server cleanly in an isolated environment, we recommend setting up a virtual environment (`.venv`) and installing the package in editable mode (`-e .`). This registers `tuvi_mcp` inside the environment, allowing it to be executed from any working directory (essential for integrations like Claude Desktop):
+You can install `tuvi-mcp-server` directly from PyPI:
+```bash
+pip install tuvi-mcp-server
+```
+
+### Development & Contribution Setup
+
+If you want to contribute to the package or run unit tests, set up a local development environment:
 
 1. **Create Virtual Environment:**
    ```bash
    python3 -m venv .venv
    ```
 
-2. **Install Package & Dependencies:**
+2. **Install Package in Editable Mode:**
    ```bash
    .venv/bin/pip install --upgrade pip
    .venv/bin/pip install -e ".[test]"
    ```
 
 3. **Running Tests:**
-   Ensure your development setup works by running the test suite with `pytest`:
+   Verify your local setup by running the test suite:
    ```bash
    .venv/bin/pytest
    ```
@@ -267,23 +274,30 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 
 ---
 
-### Cài đặt & Thiết lập khuyến nghị
+### Cài đặt
 
-Để cài đặt và triển khai máy chủ trong một môi trường sạch, độc lập, nên tạo môi trường ảo (`.venv`) và cài đặt package ở chế độ editable (`-e .`). Cách này sẽ đăng ký `tuvi_mcp` trực tiếp trong môi trường ảo, giúp bạn có thể chạy server từ bất kỳ thư mục làm việc nào. Điều này đặc biệt hữu ích khi tích hợp với các client như Claude Desktop.
+Bạn có thể cài đặt trực tiếp `tuvi-mcp-server` từ PyPI bằng pip:
+```bash
+pip install tuvi-mcp-server
+```
+
+### Thiết lập môi trường phát triển & Đóng góp (Development Setup)
+
+Nếu muốn đóng góp cho dự án hoặc chạy kiểm thử tự động, bạn có thể thiết lập môi trường phát triển cục bộ:
 
 1. **Tạo môi trường ảo:**
    ```bash
    python3 -m venv .venv
    ```
 
-2. **Cài đặt package và các thư viện phụ thuộc:**
+2. **Cài đặt gói ở chế độ editable cùng các thư viện kiểm thử:**
    ```bash
    .venv/bin/pip install --upgrade pip
    .venv/bin/pip install -e ".[test]"
    ```
 
 3. **Chạy kiểm thử (Unit Tests):**
-   Đảm bảo rằng môi trường phát triển hoạt động chính xác bằng cách chạy bộ kiểm thử tự động với `pytest`:
+   Xác minh cài đặt bằng cách chạy bộ kiểm thử với `pytest`:
    ```bash
    .venv/bin/pytest
    ```
