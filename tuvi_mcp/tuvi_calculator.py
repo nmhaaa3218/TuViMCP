@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""
+(c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
+"""
 import re
 
 from .ansaotuvi.AmDuong import dichCung, thienCan, timThienMa
@@ -99,16 +103,16 @@ def map_hour_of_day_to_branch(h: int) -> int:
 
 
 def parse_gender(gender_val) -> int:
-    """Map gender input to 1 (Male) or 0 (Female)."""
+    """Map gender input to 1 (Male) or -1 (Female)."""
     if isinstance(gender_val, (int, float)):
-        return 1 if int(gender_val) == 1 else 0
+        return 1 if int(gender_val) == 1 else -1
     if isinstance(gender_val, bool):
-        return 1 if gender_val else 0
+        return 1 if gender_val else -1
     if isinstance(gender_val, str):
         val = gender_val.strip().lower()
         if val in ("nam", "male", "m", "1", "true"):
             return 1
-    return 0
+    return -1
 
 
 SAO_ATTRIBUTE_MAP = {"M": "Miếu địa", "V": "Vượng địa", "Đ": "Đắc địa", "B": "Bình hòa", "H": "Hãm địa"}

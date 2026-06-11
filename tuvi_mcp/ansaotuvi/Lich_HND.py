@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 """
-(c) 2006 Ho Ngoc Duc.
-Astronomical algorithms
-from the book "Astronomical Algorithms" by Jean Meeus, 1998
+(c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
+Original astronomical algorithms (c) 2006 Ho Ngoc Duc.
+Based on the book "Astronomical Algorithms" by Jean Meeus, 1998
 """
 
 import math

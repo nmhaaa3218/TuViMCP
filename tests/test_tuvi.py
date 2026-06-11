@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""
+(c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
+"""
 import os
 import tempfile
 
@@ -144,6 +148,57 @@ def test_database_operations():
     # Verify deletion
     deleted_record = database.get_saved_horoscope_by_id(record_id)
     assert deleted_record is None
+
+
+def test_image_generation():
+    from tuvi_mcp.mcp_server import generate_horoscope
+    
+    # 1. Test when generate_image is True (should return list with Image and dict)
+    res = generate_horoscope(
+        name="Manh Ha Nguyen",
+        day=21,
+        month=8,
+        year=2003,
+        hour_val="15:30",
+        gender_val="Nam",
+        is_solar=True,
+        current_year=2026,
+        generate_image=True
+    )
+    
+    assert isinstance(res, list)
+    assert len(res) == 2
+    
+    img_obj = res[0]
+    chart_data = res[1]
+    
+    assert hasattr(img_obj, "path")
+    assert img_obj.path is not None
+    assert os.path.exists(img_obj.path)
+    assert isinstance(chart_data, dict)
+    assert chart_data["thien_ban"]["ten"] == "Manh Ha Nguyen"
+    
+    # Clean up the generated file
+    try:
+        os.remove(img_obj.path)
+    except Exception:
+        pass
+
+    # 2. Test when generate_image is False (should return dict directly)
+    res_no_img = generate_horoscope(
+        name="Manh Ha Nguyen",
+        day=21,
+        month=8,
+        year=2003,
+        hour_val="15:30",
+        gender_val="Nam",
+        is_solar=True,
+        current_year=2026,
+        generate_image=False
+    )
+    assert isinstance(res_no_img, dict)
+    assert "thien_ban" in res_no_img
+    assert res_no_img["thien_ban"]["ten"] == "Manh Ha Nguyen"
 
 
 # Cleanup hook to remove temp file after test session

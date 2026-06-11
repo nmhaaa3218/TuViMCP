@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tuvi-mcp-server"
-version = "0.1.4"
+version = "0.1.5"
 description = "A Model Context Protocol (MCP) server for Vietnamese Tu Vi horoscope calculation and management"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -27,6 +27,7 @@ classifiers = [
 ]
 dependencies = [
     "mcp>=1.27.2",
+    "pillow>=10.0.0",
 ]
 
 [project.urls]

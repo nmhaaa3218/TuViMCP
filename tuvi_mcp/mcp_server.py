@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+(c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
+"""
 import argparse
 import sys
 from datetime import datetime
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP, Image
 
 from . import database, tuvi_calculator
+from .image_generator import generate_laso_image
 
 mcp = FastMCP("TuViMCP")
 
 
-@mcp.tool()
+@mcp.tool(structured_output=False)
 def generate_horoscope(
     name: str = "Khách",
     day: int = 1,
@@ -19,9 +24,11 @@ def generate_horoscope(
     hour_val: str = "12:00",
     gender_val: str = "Nam",
     is_solar: bool = True,
-) -> dict:
+    current_year: int = None,
+    generate_image: bool = True,
+):
     """
-    Generate a full Tu Vi (Vietnamese horoscope) chart.
+    Generate a full Tu Vi (Vietnamese horoscope) chart, with optional high-quality chart image rendering.
 
     Args:
         name: Name of the person.
@@ -31,11 +38,45 @@ def generate_horoscope(
         hour_val: Hour of birth (e.g. "14:30", "Ngọ", "Tý", or index 1-12 where 1=Tý, 12=Hợi).
         gender_val: Gender ("Nam", "Nữ", "male", "female").
         is_solar: True if birth date is Solar (Dương lịch), False if Lunar (Âm lịch).
+        current_year: Year to inspect transit stars for (defaults to current year, e.g. 2026).
+        generate_image: Whether to generate and return the high-quality chart image along with the chart data.
     """
     try:
-        return tuvi_calculator.get_horoscope_chart(
+        # Calculate standard chart
+        chart_data = tuvi_calculator.get_horoscope_chart(
             name=name, day=day, month=month, year=year, hour_val=hour_val, gender_val=gender_val, is_solar=is_solar
         )
+        
+        if "error" in chart_data:
+            return chart_data
+            
+        if not generate_image:
+            return chart_data
+            
+        if current_year is None:
+            current_year = datetime.now().year
+            
+        # Calculate transit details
+        van_han = tuvi_calculator.get_van_han_analysis(
+            name=name,
+            day=day,
+            month=month,
+            year=year,
+            hour_val=hour_val,
+            gender_val=gender_val,
+            is_solar=is_solar,
+            current_year=current_year,
+        )
+        
+        # Merge transit details into chart_data
+        if "error" not in van_han:
+            chart_data["transit_stars"] = van_han.get("transit_stars", [])
+            chart_data["target_period"] = van_han.get("target_period", {})
+            chart_data["dai_han"] = van_han.get("dai_han", {})
+            chart_data["tieu_han"] = van_han.get("tieu_han", {})
+            
+        image_path = generate_laso_image(chart_data, current_year=current_year)
+        return [Image(path=image_path), chart_data]
     except Exception as e:
         return {"error": str(e)}
 

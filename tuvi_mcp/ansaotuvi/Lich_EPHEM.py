@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-(c) 2016 doanguyen <dungnv2410@gmail.com>.
+(c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 """
 
 from datetime import date

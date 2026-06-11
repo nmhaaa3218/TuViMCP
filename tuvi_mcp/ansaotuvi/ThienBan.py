@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-(c) 2016 doanguyen <dungnv2410@gmail.com>.
+(c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 """
 import time
 
@@ -52,7 +52,7 @@ class lapThienBan(object):
         self.chiThang = self.thangAm
         self.canThangTen = thienCan[self.canThang]['tenCan']
         self.canNamTen = thienCan[self.canNam]['tenCan']
-        self.chiThangTen = diaChi[self.thangAm]['tenChi']
+        self.chiThangTen = diaChi[(self.thangAm + 1) % 12 + 1]['tenChi']
         self.chiNamTen = diaChi[self.chiNam]['tenChi']
 
         self.canNgay, self.chiNgay = canChiNgay(
@@ -73,8 +73,8 @@ class lapThienBan(object):
         self.hanhCuc = nguHanh(cuc)['id']
         self.tenCuc = nguHanh(cuc)['tenCuc']
 
-        self.menhChu = diaChi[self.canNam]['menhChu']
-        self.thanChu = diaChi[self.canNam]['thanChu']
+        self.menhChu = diaChi[self.chiNam]['menhChu']
+        self.thanChu = diaChi[self.chiNam]['thanChu']
 
         self.menh = nguHanhNapAm(self.chiNam, self.canNam)
         menhId = nguHanh(self.menh)['id']

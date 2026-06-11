@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+(c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
+"""
 __title__ = 'ansaotuvi'
 __version__ = '0.1.1'
 __author__ = 'hieu.do'
