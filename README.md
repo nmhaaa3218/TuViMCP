@@ -19,6 +19,7 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 
 ### Features
 - **Horoscope Generation:** Converts Solar or Lunar birth dates and times into a full Tử Vi chart (Thiên Bàn and Địa Bàn with 12 houses and over 100 stars).
+- **High-Quality Image Rendering:** Generates beautiful, print-ready chart images with element-based colored text (Green for Wood, Red for Fire, Yellow for Earth, Gray for Metal, Blue for Water), custom badge boxes for Tuần & Triệt, and geometric connecting lines highlighting the Mệnh and Thân relationship.
 - **Vận Hạn (Transit Analysis):** Computes transit stars (Lưu tinh) and maps the active 10-year period (Đại Hạn), yearly period (Tiểu Hạn), and monthly period (Nguyệt Hạn) for any target year and month (e.g., 2026).
 - **Local Persistence:** Save, retrieve, list, and delete horoscope charts from a local SQLite database (`tuvi_horoscopes.db`).
 - **Flexible Hour Mapping:** Automatically maps calendar hours (e.g., "14:30") or string names (e.g., "Ngọ", "Tý") to the correct Earthly Branch hour index.
@@ -84,7 +85,7 @@ Override host and port:
 ### Tool API Reference
 
 #### 1. `generate_horoscope`
-Generates a full Tử Vi chart.
+Generates a full Tử Vi chart, with optional high-quality chart image rendering.
 * **Arguments:**
   - `name` (string): Person's name (default: "Khách").
   - `day` (integer): Day of birth (1-31).
@@ -93,6 +94,11 @@ Generates a full Tử Vi chart.
   - `hour_val` (string): Hour of birth (e.g., "14:30", "Ngọ", "Tý").
   - `gender_val` (string): Gender ("Nam" or "Nữ").
   - `is_solar` (boolean): True for Solar, False for Lunar (default: True).
+  - `current_year` (integer, optional): Year to inspect transit stars for (defaults to current year).
+  - `generate_image` (boolean, optional): Whether to generate and return the high-quality chart image along with the chart data (default: True).
+* **Return Value:** 
+  - If `generate_image` is `True`, returns a list containing `[Image, chart_data]` (where `Image` is a FastMCP Image content block).
+  - If `generate_image` is `False`, returns the raw JSON dictionary `chart_data` directly.
 
 #### 2. `get_van_han`
 Calculates transit stars and active cungs (yearly, monthly, and 10-year periods) for a target year/month.
@@ -255,6 +261,8 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 
 * **Lập lá số Tử Vi:** Hỗ trợ chuyển đổi ngày giờ sinh Dương lịch hoặc Âm lịch thành lá số Tử Vi đầy đủ, bao gồm Thiên Bàn, Địa Bàn, 12 cung và hơn 100 sao.
 
+* **Vẽ lá số chất lượng cao:** Xuất ảnh lá số sắc nét tỷ lệ chuẩn phù hợp in ấn, tự động tô màu chữ theo ngũ hành của sao (Mộc: Xanh lá, Hỏa: Đỏ, Thổ: Vàng cam, Kim: Xám, Thủy: Xanh dương), vẽ nhãn bao nổi bật cho cung bị Tuần/Triệt, vẽ các đường nối hình học làm nổi bật tam hợp chiếu mệnh thân.
+
 * **Xem Vận Hạn:** Tính toán các sao lưu động như Lưu Thái Tuế, Lưu Lộc Tồn, v.v., đồng thời xác định các cung hạn đang kích hoạt gồm Đại Hạn 10 năm, Tiểu Hạn theo năm và Nguyệt Hạn theo tháng cho bất kỳ năm/tháng cần xem nào, ví dụ năm 2026.
 
 * **Lưu trữ cục bộ:** Hỗ trợ lưu, truy xuất, liệt kê và xóa thông tin lá số thông qua cơ sở dữ liệu SQLite cục bộ (`tuvi_horoscopes.db`).
@@ -331,7 +339,7 @@ Có thể tùy chỉnh host và port như sau:
 
 #### 1. `generate_horoscope`
 
-Tạo lá số Tử Vi đầy đủ từ thông tin ngày giờ sinh.
+Tạo lá số Tử Vi đầy đủ từ thông tin ngày giờ sinh, hỗ trợ xuất ảnh lá số chất lượng cao.
 
 * **Tham số:**
   * `name` (string): Tên người xem, mặc định là `"Khách"`.
@@ -341,6 +349,11 @@ Tạo lá số Tử Vi đầy đủ từ thông tin ngày giờ sinh.
   * `hour_val` (string): Giờ sinh, ví dụ `"14:30"`, `"Ngọ"`, `"Tý"`.
   * `gender_val` (string): Giới tính, nhận giá trị `"Nam"` hoặc `"Nữ"`.
   * `is_solar` (boolean): `True` nếu dùng Dương lịch, `False` nếu dùng Âm lịch. Mặc định là `True`.
+  * `current_year` (integer, tùy chọn): Năm cần xem vận hạn để tính sao lưu (mặc định là năm hiện tại).
+  * `generate_image` (boolean, tùy chọn): Có xuất và trả về ảnh lá số chất lượng cao đi kèm hay không (mặc định: `True`).
+* **Đầu ra:**
+  * Nếu `generate_image` là `True`, trả về danh sách `[Image, chart_data]` (trong đó `Image` là block chứa dữ liệu ảnh của FastMCP).
+  * Nếu `generate_image` là `False`, trả về trực tiếp đối tượng JSON `chart_data`.
 
 ---
 
