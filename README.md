@@ -126,6 +126,19 @@ Deletes a record from the database.
 * **Arguments:**
   - `horoscope_id` (integer)
 
+#### 7. `convert_calendar`
+Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calendars.
+* **Arguments:**
+  - `day` (integer): Day of the date to convert.
+  - `month` (integer): Month of the date to convert.
+  - `year` (integer): Year of the date to convert.
+  - `from_solar` (boolean): `True` to convert Solar -> Lunar (default), `False` to convert Lunar -> Solar.
+  - `lunar_leap` (boolean): Only used if `from_solar` is `False`. `True` if the input lunar month is a leap month (tháng nhuận).
+  - `timezone` (integer): Timezone offset (default: 7 for Vietnam/ICT).
+* **Return Value:**
+  - If `from_solar` is `True`, returns a dictionary with `lunar_day`, `lunar_month`, `lunar_year`, `lunar_leap` (boolean), and a `formatted` string.
+  - If `from_solar` is `False`, returns a dictionary with `solar_day`, `solar_month`, `solar_year`, and a `formatted` string.
+
 ### Example Tool Call & JSON Outputs
 
 To illustrate the structured responses, here is an example of what the server outputs when calling the core tools.
@@ -399,6 +412,23 @@ Xóa một bản ghi lá số đã lưu khỏi cơ sở dữ liệu.
 
 * **Tham số:**
   * `horoscope_id` (integer): ID của lá số cần xóa.
+
+---
+
+#### 7. `convert_calendar`
+
+Chuyển đổi ngày qua lại giữa Dương lịch và Âm lịch.
+
+* **Tham số:**
+  * `day` (integer): Ngày cần chuyển đổi.
+  * `month` (integer): Tháng cần chuyển đổi.
+  * `year` (integer): Năm cần chuyển đổi.
+  * `from_solar` (boolean): `True` để chuyển đổi từ Dương lịch sang Âm lịch (mặc định), hoặc `False` để chuyển từ Âm lịch sang Dương lịch.
+  * `lunar_leap` (boolean): Chỉ dùng khi `from_solar` là `False`. `True` nếu tháng âm lịch đầu vào là tháng nhuận.
+  * `timezone` (integer): Múi giờ, mặc định là 7 (Giờ Việt Nam).
+* **Đầu ra:**
+  * Nếu `from_solar` là `True`, trả về dictionary chứa `lunar_day`, `lunar_month`, `lunar_year`, `lunar_leap` (boolean), và chuỗi ngày đã định dạng `formatted`.
+  * Nếu `from_solar` là `False`, trả về dictionary chứa `solar_day`, `solar_month`, `solar_year`, và chuỗi ngày đã định dạng `formatted`.
 
 ---
 

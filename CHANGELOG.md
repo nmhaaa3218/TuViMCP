@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.6] - 2026-06-28
+
+### Added
+- **Calendar Converter Tool (`convert_calendar`)**: Expose date conversion functionality as a dedicated tool to convert between Solar (Dương lịch) and Lunar (Âm lịch) calendars.
+- **Agent Instructions**: Augmented both `convert_calendar` and `get_van_han` docstrings with explicit warnings instructing agents to convert solar dates to lunar dates prior to performing Tu Vi transit analyses.
+- **Robust Leap Month Verification**: Enhanced lunar-to-solar conversions with strict error check parameters verifying whether the requested leap month configuration actually exists within the target year.
+- **Test Suite Enhancements**: Expanded unit tests to validate bidirectional calendar conversions and verify leap month configuration errors.
+
 ## [0.1.0] - 2026-06-10
 
 This is the initial release of the Tu Vi Horoscope MCP Server.

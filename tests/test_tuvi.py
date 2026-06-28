@@ -2,6 +2,7 @@
 """
 (c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 """
+
 import os
 import tempfile
 
@@ -152,7 +153,7 @@ def test_database_operations():
 
 def test_image_generation():
     from tuvi_mcp.mcp_server import generate_horoscope
-    
+
     # 1. Test when generate_image is True (should return list with Image and dict)
     res = generate_horoscope(
         name="Manh Ha Nguyen",
@@ -163,21 +164,21 @@ def test_image_generation():
         gender_val="Nam",
         is_solar=True,
         current_year=2026,
-        generate_image=True
+        generate_image=True,
     )
-    
+
     assert isinstance(res, list)
     assert len(res) == 2
-    
+
     img_obj = res[0]
     chart_data = res[1]
-    
+
     assert hasattr(img_obj, "path")
     assert img_obj.path is not None
     assert os.path.exists(img_obj.path)
     assert isinstance(chart_data, dict)
     assert chart_data["thien_ban"]["ten"] == "Manh Ha Nguyen"
-    
+
     # Clean up the generated file
     try:
         os.remove(img_obj.path)
@@ -194,11 +195,47 @@ def test_image_generation():
         gender_val="Nam",
         is_solar=True,
         current_year=2026,
-        generate_image=False
+        generate_image=False,
     )
     assert isinstance(res_no_img, dict)
     assert "thien_ban" in res_no_img
     assert res_no_img["thien_ban"]["ten"] == "Manh Ha Nguyen"
+
+
+def test_calendar_conversion():
+    # 1. Test Solar to Lunar conversion
+    # Solar: June 28, 2026 -> Lunar: May 14, 2026, not a leap month
+    lunar_res = tuvi_calculator.convert_solar_to_lunar(28, 6, 2026)
+    assert lunar_res["lunar_day"] == 14
+    assert lunar_res["lunar_month"] == 5
+    assert lunar_res["lunar_year"] == 2026
+    assert lunar_res["lunar_leap"] is False
+    assert lunar_res["formatted"] == "14/5/2026"
+
+    # 2. Test Lunar to Solar conversion
+    solar_res = tuvi_calculator.convert_lunar_to_solar(14, 5, 2026, is_leap=False)
+    assert solar_res["solar_day"] == 28
+    assert solar_res["solar_month"] == 6
+    assert solar_res["solar_year"] == 2026
+    assert solar_res["formatted"] == "28/6/2026"
+
+    # 3. Test MCP Tool exposure
+    from tuvi_mcp.mcp_server import convert_calendar
+
+    # Tool call Solar -> Lunar
+    tool_lunar = convert_calendar(day=28, month=6, year=2026, from_solar=True)
+    assert tool_lunar["lunar_day"] == 14
+    assert tool_lunar["lunar_month"] == 5
+
+    # Tool call Lunar -> Solar
+    tool_solar = convert_calendar(day=14, month=5, year=2026, from_solar=False)
+    assert tool_solar["solar_day"] == 28
+
+    # 4. Error case
+    invalid_lunar = convert_calendar(
+        day=14, month=5, year=2026, from_solar=False, lunar_leap=True
+    )  # May 2026 has no leap month
+    assert "error" in invalid_lunar
 
 
 # Cleanup hook to remove temp file after test session

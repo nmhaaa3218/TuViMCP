@@ -3,6 +3,7 @@
 """
 (c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 """
+
 import argparse
 import sys
 from datetime import datetime
@@ -46,16 +47,16 @@ def generate_horoscope(
         chart_data = tuvi_calculator.get_horoscope_chart(
             name=name, day=day, month=month, year=year, hour_val=hour_val, gender_val=gender_val, is_solar=is_solar
         )
-        
+
         if "error" in chart_data:
             return chart_data
-            
+
         if not generate_image:
             return chart_data
-            
+
         if current_year is None:
             current_year = datetime.now().year
-            
+
         # Calculate transit details
         van_han = tuvi_calculator.get_van_han_analysis(
             name=name,
@@ -67,14 +68,14 @@ def generate_horoscope(
             is_solar=is_solar,
             current_year=current_year,
         )
-        
+
         # Merge transit details into chart_data
         if "error" not in van_han:
             chart_data["transit_stars"] = van_han.get("transit_stars", [])
             chart_data["target_period"] = van_han.get("target_period", {})
             chart_data["dai_han"] = van_han.get("dai_han", {})
             chart_data["tieu_han"] = van_han.get("tieu_han", {})
-            
+
         image_path = generate_laso_image(chart_data, current_year=current_year)
         return [Image(path=image_path), chart_data]
     except Exception as e:
@@ -97,6 +98,10 @@ def get_van_han(
     Calculate transit stars (sao lưu) and active houses (Đại Hạn, Tiểu Hạn, Nguyệt Hạn)
     for the current month/year to inspect luck and predictions (vận hạn).
 
+    CRITICAL: The parameters `current_year` and `current_month` represent the Lunar year and Lunar month.
+    If the user asks to inspect a specific Solar period (e.g. 'October 2026'), you MUST first use
+    the `convert_calendar` tool to find the corresponding Lunar month/year before calling this tool.
+
     Args:
         name: Name of the person.
         day: Day of birth (1-31).
@@ -105,7 +110,7 @@ def get_van_han(
         hour_val: Hour of birth (e.g. "14:30", "Ngọ").
         gender_val: Gender ("Nam" or "Nữ").
         is_solar: True if birth date is Solar (Dương lịch), False if Lunar (Âm lịch).
-        current_year: Year to inspect (defaults to current year, e.g. 2026).
+        current_year: Lunar year to inspect (defaults to current lunar year, e.g. 2026).
         current_month: Lunar month to inspect (1-12, default 1).
     """
     try:
@@ -123,6 +128,41 @@ def get_van_han(
             current_year=current_year,
             current_month=current_month,
         )
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@mcp.tool()
+def convert_calendar(
+    day: int,
+    month: int,
+    year: int,
+    from_solar: bool = True,
+    lunar_leap: bool = False,
+    timezone: int = 7,
+) -> dict:
+    """
+    Convert a date between the Solar (Dương lịch) and Lunar (Âm lịch) calendars.
+
+    CRITICAL FOR TRANSIT ASSESSMENTS: Because Tu Vi horoscope transit analyses (sao lưu, Đại Hạn, Tiểu Hạn, Nguyệt Hạn)
+    are calculated strictly against the Lunar calendar, if a user asks to inspect a specific target period using
+    Solar dates/months (e.g. 'October 2026' or 'May 15th, 2026'), you MUST first call this tool with `from_solar=True`
+    to convert that target Solar date/month to its corresponding Lunar date/month/year. Then, pass the resulting
+    Lunar month and year to other tools (such as `get_van_han`'s `current_month` and `current_year` parameters).
+
+    Args:
+        day: Day of the date to convert.
+        month: Month of the date to convert.
+        year: Year of the date to convert.
+        from_solar: True to convert Solar to Lunar (default). False to convert Lunar to Solar.
+        lunar_leap: Only used when from_solar=False. True if the input lunar month is a leap month (tháng nhuận).
+        timezone: Timezone offset (default is 7 for Vietnam/ICT).
+    """
+    try:
+        if from_solar:
+            return tuvi_calculator.convert_solar_to_lunar(day, month, year, timezone=timezone)
+        else:
+            return tuvi_calculator.convert_lunar_to_solar(day, month, year, is_leap=lunar_leap, timezone=timezone)
     except Exception as e:
         return {"error": str(e)}
 
