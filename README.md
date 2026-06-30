@@ -84,50 +84,74 @@ Override host and port:
 
 ### Tool API Reference
 
+All tools run locally inside the MCP environment. They require no external authentication or network rate limiting.
+
 #### 1. `generate_horoscope`
-Generates a full Tử Vi chart, with optional high-quality chart image rendering.
+Generates a full Tử Vi chart from raw birth details, with optional high-quality chart image rendering.
+* **Purpose & Comparison:** Use this for on-the-fly, unsaved calculations. Use `get_saved_horoscope` to load previously saved profiles.
+* **Side Effects:** If `generate_image` is `True`, renders a PNG file to a temporary location on the local filesystem and returns its path.
 * **Arguments:**
   - `name` (string): Person's name (default: "Khách").
   - `day` (integer): Day of birth (1-31).
   - `month` (integer): Month of birth (1-12).
   - `year` (integer): Year of birth.
-  - `hour_val` (string): Hour of birth (e.g., "14:30", "Ngọ", "Tý").
-  - `gender_val` (string): Gender ("Nam" or "Nữ").
+  - `hour_val` (string): Hour of birth (e.g., "14:30", "Ngọ", "Tý", or branch index `1-12`).
+  - `gender_val` (string): Gender ("Nam" or "Nữ", case-insensitive).
   - `is_solar` (boolean): True for Solar, False for Lunar (default: True).
-  - `current_year` (integer, optional): Year to inspect transit stars for (defaults to current year).
+  - `current_year` (integer, optional): Year to inspect transit stars/Vận Hạn for (defaults to current year).
   - `generate_image` (boolean, optional): Whether to generate and return the high-quality chart image along with the chart data (default: True).
 * **Return Value:** 
-  - If `generate_image` is `True`, returns a list containing `[Image, chart_data]` (where `Image` is a FastMCP Image content block).
-  - If `generate_image` is `False`, returns the raw JSON dictionary `chart_data` directly.
+  - If `generate_image` is `True`, returns a list containing `[Image, chart_data]` (where `Image` is a FastMCP Image content block pointing to the generated PNG).
+  - If `generate_image` is `False`, returns the raw JSON dictionary `chart_data` directly. Contains keys: `thien_ban` (demographics, pillars, element, destiny) and `dia_ban` (12 houses with stars).
+  - Returns `{"error": "error_message"}` if calculations fail.
 
 #### 2. `get_van_han`
-Calculates transit stars and active cungs (yearly, monthly, and 10-year periods) for a target year/month.
+Calculates yearly transit stars and active houses (major, yearly, and monthly periods) for a target period.
+* **Purpose & Comparison:** Use this tool to perform predictive transit analysis for a specific target timeframe.
+* **Side Effects:** None (read-only calculation).
+* **Calendar Prerequisites:** **CRITICAL:** `current_year` and `current_month` represent the **Lunar** year and month. If inspecting a Solar timeframe (e.g. 'October 2026'), you **MUST** convert it using `convert_calendar` first.
 * **Arguments:**
-  - `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar` (same as above).
-  - `current_year` (integer): Target year to inspect (default: current year).
-  - `current_month` (integer): Lunar month to inspect (1-12, default: 1).
+  - `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar` (same as birth parameters above).
+  - `current_year` (integer): Target Lunar year to inspect (default: current year).
+  - `current_month` (integer): Target Lunar month to inspect (1-12, default: 1).
+* **Return Value:** A dictionary with keys `person_details` (Can-Chi), `target_period` (resolved age and target), `transit_stars`, `dai_han`, and `tieu_han`. Returns `{"error": "error_message"}` if input details are invalid.
 
 #### 3. `save_horoscope`
 Saves birth details to the SQLite database.
+* **Purpose & Comparison:** Saves birth details so they can be loaded later without manually entering birth details again.
+* **Side Effects:** Write operation. Inserts a new record into the SQLite database (`~/.tuvi_mcp/tuvi_horoscopes.db`).
 * **Arguments:**
   - `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`, `notes` (string, optional).
+* **Return Value:** A dictionary `{"message": "Successfully saved...", "id": <record_id>}`. Returns `{"error": "error_message"}` on validation/database failure.
 
 #### 4. `list_saved_horoscopes`
 Lists all saved records from the database.
+* **Purpose & Comparison:** Discover saved horoscope profiles before loading/deleting them.
+* **Side Effects:** Read-only database query.
+* **Return Value:** A list of profile dictionaries containing `id`, `name`, birth details, `notes`, and `created_at`. Returns a list with an error dictionary `[{"error": "error_message"}]` on query failures.
 
 #### 5. `get_saved_horoscope`
 Retrieves a saved record and generates its chart.
+* **Purpose & Comparison:** Loads a saved profile. Useful to avoid re-entering raw parameters.
+* **Side Effects:** Read-only database query and base chart calculation.
 * **Arguments:**
-  - `horoscope_id` (integer, optional)
-  - `name` (string, optional)
+  - `horoscope_id` (integer, optional): The database ID of the record.
+  - `name` (string, optional): The name of the record.
+  - *Interaction:* At least one must be provided. If both are supplied, `horoscope_id` takes precedence. If only `name` is provided, retrieves the *latest* matching record.
+* **Return Value:** The full horoscope chart dictionary structure (`chart_data`) with database metadata added under a `"metadata"` key (`{"id": <int>, "notes": <str>, "created_at": <timestamp>}`). Returns `{"error": "Horoscope record not found"}` if not found.
 
 #### 6. `delete_saved_horoscope`
 Deletes a record from the database.
+* **Purpose & Comparison:** Permanently removes a profile from the database.
+* **Side Effects:** Destructive write operation. Cannot be automatically undone.
 * **Arguments:**
-  - `horoscope_id` (integer)
+  - `horoscope_id` (integer): The database ID of the record to delete.
+* **Return Value:** A success message dictionary `{"message": "Successfully deleted..."}`. Returns `{"error": "No horoscope record found with ID..."}` if missing.
 
 #### 7. `convert_calendar`
 Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calendars.
+* **Purpose & Comparison:** Translate dates back and forth. Crucial for converting Solar target timeframes to Lunar periods before calling `get_van_han`.
+* **Side Effects:** None (mathematical calculation).
 * **Arguments:**
   - `day` (integer): Day of the date to convert.
   - `month` (integer): Month of the date to convert.
@@ -136,8 +160,8 @@ Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calend
   - `lunar_leap` (boolean): Only used if `from_solar` is `False`. `True` if the input lunar month is a leap month (tháng nhuận).
   - `timezone` (integer): Timezone offset (default: 7 for Vietnam/ICT).
 * **Return Value:**
-  - If `from_solar` is `True`, returns a dictionary with `lunar_day`, `lunar_month`, `lunar_year`, `lunar_leap` (boolean), and a `formatted` string.
-  - If `from_solar` is `False`, returns a dictionary with `solar_day`, `solar_month`, `solar_year`, and a `formatted` string.
+  - Converted date parameters: `day`, `month`, `year` of target calendar, plus a `leap` boolean (specifically indicating if the Lunar month is a leap month).
+  - Returns `{"error": "error_message"}` if date arguments fail validation.
 
 ### Example Tool Call & JSON Outputs
 

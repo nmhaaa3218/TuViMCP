@@ -29,18 +29,55 @@ def generate_horoscope(
     generate_image: bool = True,
 ):
     """
-    Generate a full Tu Vi (Vietnamese horoscope) chart, with optional high-quality chart image rendering.
+    Generate a full Tu Vi (Vietnamese horoscope) chart from raw birth details,
+    with optional high-quality visual chart image rendering.
 
-    Args:
-        name: Name of the person.
-        day: Day of birth (1-31).
-        month: Month of birth (1-12).
-        year: Year of birth (e.g. 1990).
-        hour_val: Hour of birth (e.g. "14:30", "Ngọ", "Tý", or index 1-12 where 1=Tý, 12=Hợi).
-        gender_val: Gender ("Nam", "Nữ", "male", "female").
-        is_solar: True if birth date is Solar (Dương lịch), False if Lunar (Âm lịch).
-        current_year: Year to inspect transit stars for (defaults to current year, e.g. 2026).
-        generate_image: Whether to generate and return the high-quality chart image along with the chart data.
+    ### Purpose and Comparison
+    Use this tool when you want to compute and inspect an astrological birth chart from scratch
+    for arbitrary birth details without retrieving from or saving to the database.
+    - Contrast with `get_saved_horoscope`: Use `generate_horoscope` for new/unsaved calculations.
+      Use `get_saved_horoscope` when you want to load a previously saved profile by ID or Name.
+    - Contrast with `save_horoscope`: This tool does not persist details. Use `save_horoscope`
+      to store details for future quick reference.
+
+    ### Side Effects, Auth, and Rate Limits
+    - **Side Effects**: If `generate_image` is `True`, it renders a high-quality PNG chart layout
+      and saves it to a temporary path on the local filesystem, returning the file path. It is
+      read-only with respect to database/user records.
+    - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
+
+    ### Prerequisites
+    - The date parameters must form a valid date in either the Solar or Lunar calendar.
+
+    ### Parameter Guidelines & Interactions
+    - `name`: Name of the subject (default: "Khách").
+    - `day`: Day of birth (1-31).
+    - `month`: Month of birth (1-12).
+    - `year`: Year of birth (e.g., 1995).
+    - `hour_val`: Hour of birth. Accepts string formats like "14:30", "Ngọ" (Earthly Branch name),
+      or numeric branch index (1-12, where 1=Tý, 12=Hợi) (default: "12:00").
+    - `gender_val`: Gender of the subject. Accepts "Nam", "Nữ", "male", "female"
+      (case-insensitive, default: "Nam").
+    - `is_solar`: Set to `True` (default) if the birth date is Solar (Dương lịch). Set to `False`
+      if it is Lunar (Âm lịch).
+    - `current_year`: Year to calculate transit stars/Vận Hạn for (default: system current year,
+      e.g., 2026).
+    - `generate_image`: Set to `True` (default) to render and return a visual PNG chart along
+      with raw data. Set to `False` to return only raw data.
+
+    ### Output Schema and Error Conditions
+    - **If `generate_image` is `True`**: Returns a list `[Image, chart_data]` where `Image` is a
+      FastMCP Image object pointing to the generated PNG file on disk, and `chart_data` is a
+      dictionary containing structured chart details (demographics, houses, stars).
+    - **If `generate_image` is `False`**: Returns only the `chart_data` dictionary.
+    - **Structure of `chart_data`**:
+      - `thien_ban`: Dict containing calculated demographics, pillars/Can-Chi (year, month, day,
+        hour), element (Hành Cục), destiny (Bản Mệnh), etc.
+      - `dia_ban`: List of 12 dicts, each representing an astrological house (cung), including
+        `cung_so` (1-12), `cung_ten` (name), `cung_chu` (domain), `sao` (list of stars), and
+        optional transit/Hạn keys.
+    - **Errors**: Returns an error dictionary `{"error": "error_message"}` if calculations fail
+      (e.g. invalid date formats, out-of-range birth years).
     """
     try:
         # Calculate standard chart
@@ -96,22 +133,48 @@ def get_van_han(
 ) -> dict:
     """
     Calculate transit stars (sao lưu) and active houses (Đại Hạn, Tiểu Hạn, Nguyệt Hạn)
-    for the current month/year to inspect luck and predictions (vận hạn).
+    for the target Lunar period.
 
-    CRITICAL: The parameters `current_year` and `current_month` represent the Lunar year and Lunar month.
-    If the user asks to inspect a specific Solar period (e.g. 'October 2026'), you MUST first use
-    the `convert_calendar` tool to find the corresponding Lunar month/year before calling this tool.
+    ### Purpose and Comparison
+    Use this tool to perform transit/vận hạn luck analysis (inspecting star shifts, Đại Hạn,
+    Tiểu Hạn, and monthly Nguyệt Hạn transits) for a specific target Lunar year and month.
+    - Contrast with `generate_horoscope`: Use `get_van_han` specifically for inspecting
+      luck/predictions during a specific target timeframe. Use `generate_horoscope` to get
+      the static, base birth chart.
 
-    Args:
-        name: Name of the person.
-        day: Day of birth (1-31).
-        month: Month of birth (1-12).
-        year: Year of birth.
-        hour_val: Hour of birth (e.g. "14:30", "Ngọ").
-        gender_val: Gender ("Nam" or "Nữ").
-        is_solar: True if birth date is Solar (Dương lịch), False if Lunar (Âm lịch).
-        current_year: Lunar year to inspect (defaults to current lunar year, e.g. 2026).
-        current_month: Lunar month to inspect (1-12, default 1).
+    ### Side Effects, Auth, and Rate Limits
+    - **Side Effects**: None. This is a read-only calculation and does not write to the database
+      or render filesystem files.
+    - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
+
+    ### Prerequisites & Calendar Conversions
+    - **CRITICAL**: The parameters `current_year` and `current_month` represent the **Lunar** year
+      and Lunar month. If the user asks to inspect a specific Solar period (e.g., 'October 2026'
+      or 'May 15th, 2026'), you **MUST** first use the `convert_calendar` tool to find the
+      corresponding Lunar month/year before calling this tool.
+
+    ### Parameter Guidelines & Interactions
+    - `name`: Name of the person.
+    - `day`: Day of birth (1-31).
+    - `month`: Month of birth (1-12).
+    - `year`: Year of birth.
+    - `hour_val`: Hour of birth (e.g., "14:30", "Ngọ").
+    - `gender_val`: Gender ("Nam" or "Nữ").
+    - `is_solar`: True if birth date is Solar (Dương lịch), False if Lunar (Âm lịch).
+    - `current_year`: Target Lunar year to inspect (defaults to current system year, e.g., 2026).
+    - `current_month`: Target Lunar month to inspect (1-12, default 1).
+
+    ### Output Schema and Error Conditions
+    - **Returns**: A dictionary containing:
+      - `person_details`: Summary of demographic details (name, lunar birth date, etc.).
+      - `target_period`: Contains `current_year`, `current_year_can_chi`, `current_month_lunar`,
+        and `current_age` representing the target period parameters.
+      - `transit_stars`: List of transit stars (e.g. Lưu Thái Tuế, Lưu Lộc Tồn) and their
+        current coordinates/cung indexes.
+      - `dai_han`: Details of the active 10-year major cycle house.
+      - `tieu_han`: Details of the active 1-year minor cycle house.
+    - **Errors**: Returns an error dictionary `{"error": "error_message"}` if birth details are
+      invalid or calculation fails.
     """
     try:
         if current_year is None:
@@ -144,19 +207,39 @@ def convert_calendar(
     """
     Convert a date between the Solar (Dương lịch) and Lunar (Âm lịch) calendars.
 
-    CRITICAL FOR TRANSIT ASSESSMENTS: Because Tu Vi horoscope transit analyses (sao lưu, Đại Hạn, Tiểu Hạn, Nguyệt Hạn)
-    are calculated strictly against the Lunar calendar, if a user asks to inspect a specific target period using
-    Solar dates/months (e.g. 'October 2026' or 'May 15th, 2026'), you MUST first call this tool with `from_solar=True`
-    to convert that target Solar date/month to its corresponding Lunar date/month/year. Then, pass the resulting
-    Lunar month and year to other tools (such as `get_van_han`'s `current_month` and `current_year` parameters).
+    ### Purpose and Comparison
+    Use this tool to translate dates back and forth between Solar and Lunar systems.
+    - **CRITICAL FOR TRANSIT ASSESSMENTS**: Since Tu Vi transit calculations (sao lưu, Đại Hạn,
+      Tiểu Hạn, Nguyệt Hạn) operate strictly on the Lunar calendar, you **MUST** convert any Solar
+      target periods (e.g. "October 2026") using this tool before calling `get_van_han`.
+    - Do NOT use this tool if you only need base chart calculation, as chart generation tools
+      (`generate_horoscope` and `get_saved_horoscope`) already handle birth date conversions internally.
 
-    Args:
-        day: Day of the date to convert.
-        month: Month of the date to convert.
-        year: Year of the date to convert.
-        from_solar: True to convert Solar to Lunar (default). False to convert Lunar to Solar.
-        lunar_leap: Only used when from_solar=False. True if the input lunar month is a leap month (tháng nhuận).
-        timezone: Timezone offset (default is 7 for Vietnam/ICT).
+    ### Side Effects, Auth, and Rate Limits
+    - **Side Effects**: None. This is a pure mathematical calculation.
+    - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
+
+    ### Prerequisites
+    - The date to convert must represent a valid Gregorian or Chinese Lunar date within
+      calendar ranges (typically 1900-2100).
+
+    ### Parameter Guidelines & Interactions
+    - `day`: Day of the date to convert (1-31).
+    - `month`: Month of the date to convert (1-12).
+    - `year`: Year of the date to convert (four-digit year).
+    - `from_solar`: If `True` (default), converts Solar to Lunar. If `False`, converts Lunar to Solar.
+    - `lunar_leap`: Only applicable when `from_solar=False`. Set to `True` if the source Lunar
+      month is a leap month (tháng nhuận); otherwise `False`.
+    - `timezone`: Timezone offset (default: 7, matching Vietnam/ICT).
+
+    ### Output Schema and Error Conditions
+    - **Returns**: A dictionary containing:
+      - `day`: Converted day (int).
+      - `month`: Converted month (int).
+      - `year`: Converted year (int).
+      - `leap`: Boolean indicating if the Lunar month is a leap month.
+    - **Errors**: Returns `{"error": "error_message"}` if date arguments are out of bounds or
+      fail calendar validation.
     """
     try:
         if from_solar:
@@ -172,17 +255,40 @@ def save_horoscope(
     name: str, day: int, month: int, year: int, hour_val: str, gender_val: str, is_solar: bool = True, notes: str = None
 ) -> dict:
     """
-    Save birth chart details to the local database for easy retrieval.
+    Save birth chart details to the local SQLite database for future retrieval.
 
-    Args:
-        name: Name of the person.
-        day: Day of birth.
-        month: Month of birth.
-        year: Year of birth.
-        hour_val: Hour of birth (e.g. "14:30", "Ngọ").
-        gender_val: Gender ("Nam" or "Nữ").
-        is_solar: True if birth date is Solar, False if Lunar.
-        notes: Optional comments/notes.
+    ### Purpose and Comparison
+    Use this tool to save a horoscope profile so it can be re-accessed later via ID or Name
+    without entering birth details again.
+    - Contrast with `generate_horoscope`: Use `save_horoscope` when you want to save details
+      permanently. Use `generate_horoscope` if you only want to compute/view a chart on-the-fly
+      without database persistence.
+    - After saving, you can retrieve the chart using `get_saved_horoscope`.
+
+    ### Side Effects, Auth, and Rate Limits
+    - **Side Effects**: Modifies persistent state by inserting a new record into the local
+      SQLite database (`~/.tuvi_mcp/tuvi_horoscopes.db`).
+    - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
+
+    ### Prerequisites
+    - Local SQLite database must be writable.
+
+    ### Parameter Guidelines & Interactions
+    - `name`: Name of the person (required, text).
+    - `day`: Day of birth (1-31).
+    - `month`: Month of birth (1-12).
+    - `year`: Year of birth (four-digit year).
+    - `hour_val`: Hour of birth (e.g., "14:30", "Ngọ" or index 1-12).
+    - `gender_val`: Gender ("Nam" or "Nữ").
+    - `is_solar`: Set to `True` (default) if birth date is Solar, `False` if Lunar.
+    - `notes`: Optional textual comments or notes.
+
+    ### Output Schema and Error Conditions
+    - **Returns**: A success dictionary containing:
+      - `message`: Success confirmation string.
+      - `id`: The unique integer ID of the newly created database record.
+    - **Errors**: Returns `{"error": "error_message"}` if birth details are invalid or
+      database write fails.
     """
     try:
         hour = tuvi_calculator.parse_hour(hour_val)
@@ -199,7 +305,35 @@ def save_horoscope(
 @mcp.tool()
 def list_saved_horoscopes() -> list:
     """
-    Retrieve all saved horoscopes from the local database.
+    Retrieve all saved horoscope profiles from the local database.
+
+    ### Purpose and Comparison
+    Use this tool to discover previously saved horoscope records, allowing you to find their
+    database IDs or names before loading them with `get_saved_horoscope` or removing them
+    with `delete_saved_horoscope`.
+
+    ### Side Effects, Auth, and Rate Limits
+    - **Side Effects**: Read-only database query. No state modifications or file writes.
+    - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
+
+    ### Prerequisites
+    - Local SQLite database must exist and be readable.
+
+    ### Output Schema and Error Conditions
+    - **Returns**: A list of dictionaries, where each dictionary represents a saved horoscope
+      profile with the keys:
+      - `id`: The unique integer record ID.
+      - `name`: Name of the person.
+      - `day`: Day of birth.
+      - `month`: Month of birth.
+      - `year`: Year of birth.
+      - `hour`: Saved hour (as a branch index 1-12).
+      - `gender`: Gender ("Nam" or "Nữ").
+      - `is_solar`: Boolean (True if Solar, False if Lunar).
+      - `notes`: Optional comment string.
+      - `created_at`: The database insertion timestamp.
+    - **Errors**: Returns a list containing an error dictionary `[{"error": "error_message"}]`
+      if database query fails.
     """
     try:
         return database.list_saved_horoscopes()
@@ -210,11 +344,45 @@ def list_saved_horoscopes() -> list:
 @mcp.tool()
 def get_saved_horoscope(horoscope_id: int = None, name: str = None) -> dict:
     """
-    Load a saved horoscope and generate its chart. Provide either horoscope_id or name.
+    Load a saved horoscope profile from the database and generate its astrological chart.
 
-    Args:
-        horoscope_id: The database ID of the horoscope.
-        name: Name of the person (retrieves the latest record).
+    ### Purpose and Comparison
+    Use this tool to view or analyze a profile that has been previously saved using `save_horoscope`.
+    - Contrast with `generate_horoscope`: Use `get_saved_horoscope` to avoid re-entering full
+      birth parameters for recurring profiles. Use `generate_horoscope` for raw inputs not saved
+      in the database.
+    - Contrast with `list_saved_horoscopes`: Use `list_saved_horoscopes` to inspect what records
+      exist. Use `get_saved_horoscope` to actually load the record and compute its full chart.
+    - Contrast with `delete_saved_horoscope`: Use `delete_saved_horoscope` to permanently remove records.
+
+    ### Side Effects, Auth, and Rate Limits
+    - **Side Effects**: Read-only database retrieval and in-memory chart calculations.
+      No database writes or file writes.
+    - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
+
+    ### Prerequisites
+    - The target horoscope record **must** exist in the SQLite database.
+    - To check existing records, first run `list_saved_horoscopes`.
+
+    ### Parameter Guidelines & Interactions
+    - **At least one** of `horoscope_id` or `name` must be provided.
+    - `horoscope_id`: The unique integer ID of the saved database record.
+    - `name`: The name of the saved person.
+    - **Interactions & Precedence**: If both parameters are supplied, `horoscope_id` takes
+      precedence. If only `name` is provided and multiple records match, the **latest** saved
+      record for that name is retrieved.
+
+    ### Output Schema and Error Conditions
+    - **Returns**: A dictionary containing the full astrological chart structure (`chart_data`)
+      with an added `"metadata"` section:
+      - `thien_ban`: Demographic, pillars/Can-Chi, and basic zodiac metadata.
+      - `dia_ban`: List of 12 houses (cung), each containing names, elements, stars, and transit info.
+      - `metadata`: A dictionary with keys `{"id": <int>, "notes": <str>,
+        "created_at": <timestamp>}` containing database record details.
+    - **Errors**:
+      - Returns `{"error": "Horoscope record not found"}` if no matching record exists in the
+        database for the given ID or name.
+      - Returns `{"error": "error_message"}` if database access fails.
     """
     try:
         record = None
@@ -245,10 +413,34 @@ def get_saved_horoscope(horoscope_id: int = None, name: str = None) -> dict:
 @mcp.tool()
 def delete_saved_horoscope(horoscope_id: int) -> dict:
     """
-    Delete a saved horoscope record from the database.
+    Delete a saved horoscope record from the local SQLite database by its ID.
 
-    Args:
-        horoscope_id: The database ID of the horoscope to delete.
+    ### Purpose and Comparison
+    Use this tool to clean up the database or delete unwanted/incorrectly saved profiles.
+    - **CAUTION**: This is a destructive write operation.
+    - Contrast with `list_saved_horoscopes`: Use `list_saved_horoscopes` to check available
+      profiles and verify the ID before deletion.
+    - Contrast with `get_saved_horoscope`: Use `get_saved_horoscope` to load and view the record
+      instead of deleting it.
+
+    ### Side Effects, Auth, and Rate Limits
+    - **Side Effects**: Permanently deletes the record from the local SQLite database.
+      This action is destructive and irreversible.
+    - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
+
+    ### Prerequisites
+    - The record with the specified ID must exist in the database.
+
+    ### Parameter Guidelines & Interactions
+    - `horoscope_id`: The unique integer ID of the saved database record to delete (required).
+
+    ### Output Schema and Error Conditions
+    - **Returns**: A dictionary containing:
+      - `message`: Success confirmation string if deletion was successful.
+    - **Errors**:
+      - Returns `{"error": "No horoscope record found with ID <horoscope_id>."}` if the record
+        does not exist.
+      - Returns `{"error": "error_message"}` if database deletion fails.
     """
     try:
         success = database.delete_saved_horoscope_by_id(horoscope_id)

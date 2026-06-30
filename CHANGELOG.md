@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.7] - 2026-06-30
+
+### Changed
+- **Comprehensive Tool Documentation**: Rewrote docstrings for all exposed MCP server tools to address system judgment checklist guidelines. Added explicit details for:
+  - Local side effects (database writes, image file generation).
+  - Prerequisites and error handling pathways.
+  - Parameter relationships, precedence, and validation rules.
+  - Sibling comparisons to help LLM agents select the correct tool.
+  - Code compliance with line length boundaries (<120 characters) and updated linters.
+
 ## [0.1.6] - 2026-06-28
 
 ### Added
