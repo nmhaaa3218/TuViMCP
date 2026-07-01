@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TuViMCP MCP server](https://glama.ai/mcp/servers/nmhaaa3218/TuViMCP/badges/card.svg)](https://glama.ai/mcp/servers/nmhaaa3218/TuViMCP)
 
 This is a Model Context Protocol (MCP) server developed in Python that calculates and manages Vietnamese "Tử Vi" horoscope charts. It is optimized to output clean, structured JSON data that LLM agents can easily read, interpret, and explain to users.
 
