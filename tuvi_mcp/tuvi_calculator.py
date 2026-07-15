@@ -4,6 +4,7 @@
 """
 
 import re
+from datetime import datetime, timedelta
 
 from .ansaotuvi.AmDuong import dichCung, thienCan, timThienMa
 from .ansaotuvi.App import lapDiaBan
@@ -29,6 +30,45 @@ HOUR_BRANCH_MAP = {
     "tuất": 11,
     "hợi": 12,
 }
+
+
+def parse_solar_hour(hour_val) -> int:
+    """
+    Extract the solar hour (0-23) if the input represents a time of day,
+    or None if it is a direct branch index or branch name.
+    """
+    if isinstance(hour_val, (int, float)):
+        # If it is direct branch index (1-12)
+        if 1 <= hour_val <= 12 and int(hour_val) == hour_val:
+            return None
+        return int(hour_val) % 24
+
+    if isinstance(hour_val, str):
+        val = hour_val.strip().lower()
+        # If it contains an earthly branch name, it is a branch-based input rather than a solar hour
+        for k in HOUR_BRANCH_MAP.keys():
+            if k in val:
+                return None
+
+        # Check if PM/AM is present
+        is_pm = False
+        if "pm" in val:
+            is_pm = True
+            val = val.replace("pm", "").strip()
+        elif "am" in val:
+            val = val.replace("am", "").strip()
+
+        # Match HH:MM or HHhMM or HH
+        match = re.search(r"(\d+)(?::|h| |$)", val)
+        if match:
+            h = int(match.group(1))
+            if is_pm and h < 12:
+                h += 12
+            elif not is_pm and h == 12:
+                h = 0
+            return h % 24
+
+    return None
 
 
 def parse_hour(hour_val) -> int:
@@ -140,6 +180,46 @@ def build_raw_chart(day: int, month: int, year: int, hour: int, gender: int, is_
     return db, tb
 
 
+def adjust_date_for_late_ty(day: int, month: int, year: int, hour_val, is_solar: bool):
+    """
+    If birth hour is 23 (late Tý hour), roll calculation date forward by +1 day.
+    Returns: (calc_day, calc_month, calc_year, orig_solar_str, is_late_ty)
+    """
+    is_late_ty = (parse_solar_hour(hour_val) == 23)
+    calc_day, calc_month, calc_year = day, month, year
+
+    # Pre-calculate original solar date string
+    if is_solar:
+        orig_solar_str = f"{day}/{month}/{year}"
+    else:
+        # Convert lunar to solar to find the original solar date
+        solar_res = convert_lunar_to_solar(day, month, year, False, 7)
+        if "error" not in solar_res:
+            orig_solar_str = f"{solar_res['solar_day']}/{solar_res['solar_month']}/{solar_res['solar_year']}"
+        else:
+            orig_solar_str = ""
+
+    if is_late_ty:
+        if is_solar:
+            try:
+                dt = datetime(year, month, day) + timedelta(days=1)
+                calc_day, calc_month, calc_year = dt.day, dt.month, dt.year
+            except Exception:
+                pass
+        else:
+            try:
+                solar_res = convert_lunar_to_solar(day, month, year, False, 7)
+                if "error" not in solar_res:
+                    dt = datetime(solar_res["solar_year"], solar_res["solar_month"], solar_res["solar_day"]) + timedelta(days=1)
+                    lunar_res = convert_solar_to_lunar(dt.day, dt.month, dt.year, 7)
+                    if "error" not in lunar_res:
+                        calc_day, calc_month, calc_year = lunar_res["lunar_day"], lunar_res["lunar_month"], lunar_res["lunar_year"]
+            except Exception:
+                pass
+
+    return calc_day, calc_month, calc_year, orig_solar_str, is_late_ty
+
+
 def get_horoscope_chart(
     name: str, day: int, month: int, year: int, hour_val, gender_val, is_solar: bool = True
 ) -> dict:
@@ -147,7 +227,11 @@ def get_horoscope_chart(
     hour = parse_hour(hour_val)
     gender = parse_gender(gender_val)
 
-    db, tb = build_raw_chart(day, month, year, hour, gender, is_solar, name)
+    calc_day, calc_month, calc_year, orig_solar_str, is_late_ty = adjust_date_for_late_ty(
+        day, month, year, hour_val, is_solar
+    )
+
+    db, tb = build_raw_chart(calc_day, calc_month, calc_year, hour, gender, is_solar, name)
 
     cungs = []
     for i in range(1, 13):
@@ -179,7 +263,7 @@ def get_horoscope_chart(
     thien_ban_data = {
         "ten": tb.ten,
         "gioi_tinh": tb.namNu,
-        "ngay_duong": f"{tb.ngayDuong}/{tb.thangDuong}/{tb.namDuong}",
+        "ngay_duong": orig_solar_str if (is_late_ty and orig_solar_str) else f"{tb.ngayDuong}/{tb.thangDuong}/{tb.namDuong}",
         "ngay_am": f"{tb.ngayAm}/{tb.thangAm}/{tb.namAm}",
         "gio_sinh": tb.gioSinh,
         "chi_gio_sinh": tb.chiGioSinh.get("tenChi") if isinstance(tb.chiGioSinh, dict) else tb.chiGioSinh,
@@ -255,8 +339,12 @@ def get_van_han_analysis(
     hour = parse_hour(hour_val)
     gender = parse_gender(gender_val)
 
+    calc_day, calc_month, calc_year, _, _ = adjust_date_for_late_ty(
+        day, month, year, hour_val, is_solar
+    )
+
     # Calculate birth details first
-    db, tb = build_raw_chart(day, month, year, hour, gender, is_solar, name)
+    db, tb = build_raw_chart(calc_day, calc_month, calc_year, hour, gender, is_solar, name)
     chart = get_horoscope_chart(name, day, month, year, hour_val, gender_val, is_solar)
 
     # Current lunar year and branch

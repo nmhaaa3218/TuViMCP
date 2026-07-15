@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.8] - 2026-07-15
+
+### Added
+- **Late Tý Hour Alignment (Dạ Tý)**: Rolled calculation date forward by +1 day for births occurring between 23:00 and 23:59, ensuring correct Lunar day and hourly pillars, while keeping the original solar birth date in metadata display.
+- **Hourly Pillar Resolution Fix**: Corrected a bug in `ThienBan.py` where the hourly pillar (`can_gio_sinh`) was resolved using Lunar day numbers directly as Solar parameters.
+- **Robust Test Coverage**: Added comprehensive test cases for late Tý hour alignments, including verification that branch-based inputs do not trigger shifting.
+
 ## [0.1.7] - 2026-06-30
 
 ### Changed

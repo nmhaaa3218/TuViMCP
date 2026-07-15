@@ -26,7 +26,13 @@ class lapThienBan(object):
         self.namNu = "Nam" if gioiTinh == 1 else "Nữ"
 
         chiGioSinh = diaChi[gioSinh]
-        canGioSinh = ((jdFromDate(nn, tt, nnnn) - 1) * 2 % 10 + gioSinh) % 10
+        if duongLich is False:
+            from .Lich_HND import L2S
+            s_date = L2S(nn, tt, nnnn, 0, timeZone)
+            jd = jdFromDate(s_date[0], s_date[1], s_date[2])
+        else:
+            jd = jdFromDate(nn, tt, nnnn)
+        canGioSinh = ((jd - 1) * 2 % 10 + gioSinh) % 10
         if canGioSinh == 0:
             canGioSinh = 10
         self.chiGioSinh = chiGioSinh

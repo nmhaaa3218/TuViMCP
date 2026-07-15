@@ -238,6 +238,43 @@ def test_calendar_conversion():
     assert "error" in invalid_lunar
 
 
+def test_late_ty_hour_shift():
+    # 1. Test Solar birth in late Tý hour (15/5/2024 at 23:15 Solar)
+    # This should shift Lunar day to 9/4/2024 but keep displayed Solar date as 15/5/2024
+    chart_solar = tuvi_calculator.get_horoscope_chart(
+        name="Test Solar", day=15, month=5, year=2024, hour_val="23:15", gender_val="Nam", is_solar=True
+    )
+    assert chart_solar["thien_ban"]["ngay_duong"] == "15/5/2024"
+    assert chart_solar["thien_ban"]["ngay_am"] == "9/4/2024"
+    assert chart_solar["thien_ban"]["gio_sinh"] == "Bính Tý"
+    assert chart_solar["thien_ban"]["can_ngay"] == "Canh"
+    assert chart_solar["thien_ban"]["chi_ngay"] == "Thìn"
+
+    # 2. Test Lunar birth in late Tý hour (8/4/2024 at 23:15 Lunar)
+    # This should shift Lunar day to 9/4/2024 and correctly calculate Bính Tý hour
+    chart_lunar = tuvi_calculator.get_horoscope_chart(
+        name="Test Lunar", day=8, month=4, year=2024, hour_val="23:15", gender_val="Nam", is_solar=False
+    )
+    assert chart_lunar["thien_ban"]["ngay_duong"] == "15/5/2024"
+    assert chart_lunar["thien_ban"]["ngay_am"] == "9/4/2024"
+    assert chart_lunar["thien_ban"]["gio_sinh"] == "Bính Tý"
+    assert chart_lunar["thien_ban"]["can_ngay"] == "Canh"
+    assert chart_lunar["thien_ban"]["chi_ngay"] == "Thìn"
+
+    # 3. Test branch-based inputs (should NOT shift day even if it has labels containing hours)
+    for branch_input in ("Tý", "giờ Tý", "Tý (23h - 1h)", 1):
+        chart_branch = tuvi_calculator.get_horoscope_chart(
+            name="Test Branch", day=15, month=5, year=2024, hour_val=branch_input, gender_val="Nam", is_solar=True
+        )
+        # Should stay on Solar 15/5/2024 -> Lunar 8/4/2024
+        assert chart_branch["thien_ban"]["ngay_duong"] == "15/5/2024"
+        assert chart_branch["thien_ban"]["ngay_am"] == "8/4/2024"
+        assert chart_branch["thien_ban"]["gio_sinh"] == "Giáp Tý"
+        assert chart_branch["thien_ban"]["can_ngay"] == "Kỷ"
+        assert chart_branch["thien_ban"]["chi_ngay"] == "Mão"
+
+
+
 # Cleanup hook to remove temp file after test session
 def pytest_sessionfinish(session, exitstatus):
     try:
