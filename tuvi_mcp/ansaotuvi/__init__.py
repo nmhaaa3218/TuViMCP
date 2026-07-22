@@ -5,6 +5,6 @@
 """
 __title__ = 'ansaotuvi'
 __version__ = '0.1.9'
-__author__ = 'hieu.do'
-__author_email__ = 'hieu.do@ursa.vn'
+__author__ = 'Manh Ha Nguyen'
+__author_email__ = 'manh.ha.3218@gmail.com'
 __license__ = 'MIT License'

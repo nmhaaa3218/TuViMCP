@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "Manh Ha Nguyen", email = "manhha.nguyen@student.adelaide.edu.au"}
+    {name = "Manh Ha Nguyen", email = "manh.ha.3218@gmail.com"}
 ]
 keywords = ["mcp", "tuvi", "horoscope", "astrology", "vietnamese", "lunar-calendar"]
 classifiers = [
