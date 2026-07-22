@@ -3,6 +3,7 @@
 (c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 """
 
+import calendar
 import re
 from datetime import datetime, timedelta
 
@@ -146,14 +147,184 @@ def map_hour_of_day_to_branch(h: int) -> int:
 def parse_gender(gender_val) -> int:
     """Map gender input to 1 (Male) or -1 (Female)."""
     if isinstance(gender_val, (int, float)):
-        return 1 if int(gender_val) == 1 else -1
+        return 1 if int(gender_val) >= 1 else -1
     if isinstance(gender_val, bool):
         return 1 if gender_val else -1
     if isinstance(gender_val, str):
         val = gender_val.strip().lower()
         if val in ("nam", "male", "m", "1", "true"):
             return 1
+        if val in ("nữ", "nu", "female", "f", "-1", "false"):
+            return -1
     return -1
+
+
+# Month names for error formatting
+MONTH_NAMES = [
+    "", "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+]
+
+
+def get_max_days_in_solar_month(month: int, year: int) -> int:
+    """Return maximum days in a given solar month and year (e.g. 29 for Feb 2024, 28 for Feb 2025)."""
+    try:
+        return calendar.monthrange(year, month)[1]
+    except Exception:
+        return 31
+
+
+def validate_birth_parameters(
+    day: int, month: int, year: int, hour_val, gender_val, is_solar: bool = True
+) -> dict:
+    """
+    Validate birth parameters passed by AI agents or API callers.
+    Returns None if all parameters are valid, or a structured dict with
+    error details and actionable suggestions if invalid.
+    """
+    errors = []
+    suggestions = {}
+
+    # 1. Validate year
+    if not isinstance(year, int) or isinstance(year, bool) or year < 1800 or year > 2100:
+        errors.append(f"Invalid year '{year}'. Year must be an integer between 1800 and 2100.")
+        suggestions["year"] = "Provide a 4-digit integer year between 1800 and 2100 (e.g., 1995, 2004)."
+
+    # 2. Validate month
+    if not isinstance(month, int) or isinstance(month, bool) or month < 1 or month > 12:
+        errors.append(f"Invalid month '{month}'. Month must be an integer from 1 to 12.")
+        suggestions["month"] = "Provide an integer month between 1 and 12."
+
+    # 3. Validate day and calendar existence
+    if not isinstance(day, int) or isinstance(day, bool) or day < 1 or day > 31:
+        errors.append(f"Invalid day '{day}'. Day must be an integer from 1 to 31.")
+        suggestions["day"] = "Provide a valid day of the month (1-31)."
+    elif isinstance(month, int) and 1 <= month <= 12 and isinstance(year, int) and 1800 <= year <= 2100:
+        if is_solar:
+            try:
+                datetime(year, month, day)
+            except ValueError:
+                max_d = get_max_days_in_solar_month(month, year)
+                m_name = MONTH_NAMES[month]
+                errors.append(f"Unreal date '{day}/{month}/{year}' ({m_name} {day}, {year} does not exist).")
+                suggestions["day"] = f"Provide a real calendar date. {m_name} {year} has a maximum of {max_d} days (1-{max_d})."
+        else:
+            solar_res = convert_lunar_to_solar(day, month, year, False)
+            if "error" in solar_res:
+                errors.append(f"Unreal Lunar date '{day}/{month}/{year}' ({solar_res['error']}).")
+                suggestions["day"] = f"Verify the specified Lunar day exists in Lunar month {month}/{year}."
+
+    # 4. Validate gender_val
+    if isinstance(gender_val, str):
+        val = gender_val.strip().lower()
+        valid_genders = {"nam", "nữ", "nu", "male", "female", "m", "f", "1", "-1", "true", "false"}
+        if val not in valid_genders:
+            errors.append(f"Invalid gender_val '{gender_val}'.")
+            suggestions["gender_val"] = "Must be one of: 'Nam', 'Nữ', 'male', 'female'."
+    elif not isinstance(gender_val, (int, float, bool)):
+        errors.append(f"Invalid gender_val type '{type(gender_val).__name__}'.")
+        suggestions["gender_val"] = "Must be a string ('Nam' or 'Nữ'), integer (1 or -1), or boolean."
+
+    # 5. Validate hour_val
+    if isinstance(hour_val, (int, float)) and not isinstance(hour_val, bool):
+        if not (1 <= hour_val <= 12 and int(hour_val) == hour_val) and not (0 <= hour_val <= 23):
+            errors.append(f"Invalid numeric hour_val '{hour_val}'.")
+            suggestions["hour_val"] = "Must be an integer branch index (1-12) or hour of day (0-23)."
+    elif isinstance(hour_val, str):
+        val = hour_val.strip().lower()
+        matched_branch = any(k in val for k in HOUR_BRANCH_MAP.keys())
+        matched_time = re.search(r"(\d+)(?::|h| |$)", val) is not None
+        if not matched_branch and not matched_time:
+            try:
+                v_int = int(val)
+                if not (1 <= v_int <= 12 or 0 <= v_int <= 23):
+                    errors.append(f"Invalid hour_val '{hour_val}'.")
+                    suggestions["hour_val"] = "Must be a time string ('14:30'), Earthly Branch name ('Ngọ'), or branch index (1-12)."
+            except ValueError:
+                errors.append(f"Invalid hour_val '{hour_val}'.")
+                suggestions["hour_val"] = "Must be a time string ('14:30'), Earthly Branch name ('Ngọ'), or branch index (1-12)."
+    elif hour_val is not None:
+        errors.append(f"Invalid hour_val type '{type(hour_val).__name__}'.")
+        suggestions["hour_val"] = "Must be a time string ('14:30'), Earthly Branch name ('Ngọ'), or branch index (1-12)."
+
+    if errors:
+        return {
+            "error": "Input validation failed",
+            "error_code": "INVALID_INPUT_PARAMETER",
+            "details": errors,
+            "suggestions": suggestions,
+        }
+    return None
+
+
+def validate_transit_period(current_year: int = None, current_month: int = 1) -> dict:
+    """Validate target transit period parameters."""
+    errors = []
+    suggestions = {}
+
+    if current_year is not None:
+        if not isinstance(current_year, int) or isinstance(current_year, bool) or current_year < 1800 or current_year > 2100:
+            errors.append(f"Invalid current_year '{current_year}'. Year must be an integer between 1800 and 2100.")
+            suggestions["current_year"] = "Provide a 4-digit integer year between 1800 and 2100 (e.g., 2026)."
+
+    if current_month is not None:
+        if not isinstance(current_month, int) or isinstance(current_month, bool) or current_month < 1 or current_month > 12:
+            errors.append(f"Invalid current_month '{current_month}'. Month must be an integer from 1 to 12.")
+            suggestions["current_month"] = "Provide an integer Lunar month between 1 and 12."
+
+    if errors:
+        return {
+            "error": "Input validation failed",
+            "error_code": "INVALID_INPUT_PARAMETER",
+            "details": errors,
+            "suggestions": suggestions,
+        }
+    return None
+
+
+def validate_calendar_convert(day: int, month: int, year: int, from_solar: bool = True, lunar_leap: bool = False, timezone: int = 7) -> dict:
+    """Validate calendar conversion input parameters."""
+    errors = []
+    suggestions = {}
+
+    if not isinstance(year, int) or isinstance(year, bool) or year < 1800 or year > 2100:
+        errors.append(f"Invalid year '{year}'. Year must be an integer between 1800 and 2100.")
+        suggestions["year"] = "Provide a 4-digit integer year between 1800 and 2100."
+
+    if not isinstance(month, int) or isinstance(month, bool) or month < 1 or month > 12:
+        errors.append(f"Invalid month '{month}'. Month must be an integer from 1 to 12.")
+        suggestions["month"] = "Provide an integer month between 1 and 12."
+
+    if not isinstance(day, int) or isinstance(day, bool) or day < 1 or day > 31:
+        errors.append(f"Invalid day '{day}'. Day must be an integer from 1 to 31.")
+        suggestions["day"] = "Provide an integer day between 1 and 31."
+    elif isinstance(month, int) and 1 <= month <= 12 and isinstance(year, int) and 1800 <= year <= 2100:
+        if from_solar:
+            try:
+                datetime(year, month, day)
+            except ValueError:
+                max_d = get_max_days_in_solar_month(month, year)
+                m_name = MONTH_NAMES[month]
+                errors.append(f"Unreal date '{day}/{month}/{year}' ({m_name} {day}, {year} does not exist).")
+                suggestions["day"] = f"Provide a real calendar date. {m_name} {year} has a maximum of {max_d} days (1-{max_d})."
+        else:
+            solar_res = convert_lunar_to_solar(day, month, year, lunar_leap, timezone)
+            if "error" in solar_res:
+                errors.append(f"Unreal Lunar date '{day}/{month}/{year}' ({solar_res['error']}).")
+                suggestions["day"] = "Verify the maximum days for the specified Lunar month and year."
+
+    if not isinstance(timezone, (int, float)) or timezone < -12 or timezone > 14:
+        errors.append(f"Invalid timezone '{timezone}'. Timezone offset must be between -12 and 14.")
+        suggestions["timezone"] = "Provide a numeric UTC offset (default 7 for ICT)."
+
+    if errors:
+        return {
+            "error": "Input validation failed",
+            "error_code": "INVALID_INPUT_PARAMETER",
+            "details": errors,
+            "suggestions": suggestions,
+        }
+    return None
 
 
 SAO_ATTRIBUTE_MAP = {"M": "Miếu địa", "V": "Vượng địa", "Đ": "Đắc địa", "B": "Bình hòa", "H": "Hãm địa"}
@@ -224,6 +395,9 @@ def get_horoscope_chart(
     name: str, day: int, month: int, year: int, hour_val, gender_val, is_solar: bool = True
 ) -> dict:
     """Standardized entry point to calculate and return full horoscope JSON."""
+    validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar)
+    if validation_err:
+        return validation_err
     hour = parse_hour(hour_val)
     gender = parse_gender(gender_val)
 
@@ -336,6 +510,12 @@ def get_van_han_analysis(
     current_month: int = 1,
 ) -> dict:
     """Analyze yearly transit stars and active cungs (Đại Hạn, Tiểu Hạn, Nguyệt Hạn) for current year/month."""
+    validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar)
+    if validation_err:
+        return validation_err
+    transit_err = validate_transit_period(current_year, current_month)
+    if transit_err:
+        return transit_err
     hour = parse_hour(hour_val)
     gender = parse_gender(gender_val)
 

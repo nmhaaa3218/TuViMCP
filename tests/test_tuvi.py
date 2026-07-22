@@ -274,6 +274,57 @@ def test_late_ty_hour_shift():
         assert chart_branch["thien_ban"]["chi_ngay"] == "Mão"
 
 
+def test_input_validation():
+    # 1. Test invalid date (Feb 31)
+    res_date = tuvi_calculator.get_horoscope_chart(
+        name="Test Bad Date", day=31, month=2, year=2024, hour_val="12:00", gender_val="Nam", is_solar=True
+    )
+    assert "error" in res_date
+    assert res_date["error_code"] == "INVALID_INPUT_PARAMETER"
+    assert "suggestions" in res_date
+    assert "day" in res_date["suggestions"]
+
+    # 2. Test invalid gender
+    res_gender = tuvi_calculator.get_horoscope_chart(
+        name="Test Bad Gender", day=15, month=5, year=2024, hour_val="12:00", gender_val="unknown_gender", is_solar=True
+    )
+    assert "error" in res_gender
+    assert res_gender["error_code"] == "INVALID_INPUT_PARAMETER"
+    assert "gender_val" in res_gender["suggestions"]
+
+    # 3. Test invalid hour string
+    res_hour = tuvi_calculator.get_horoscope_chart(
+        name="Test Bad Hour", day=15, month=5, year=2024, hour_val="xyz_abc", gender_val="Nam", is_solar=True
+    )
+    assert "error" in res_hour
+    assert res_hour["error_code"] == "INVALID_INPUT_PARAMETER"
+    assert "hour_val" in res_hour["suggestions"]
+
+    # 4. Test invalid transit period
+    res_transit = tuvi_calculator.get_van_han_analysis(
+        name="Test Transit", day=15, month=5, year=2024, hour_val="12:00", gender_val="Nam", is_solar=True, current_year=2500, current_month=15
+    )
+    assert "error" in res_transit
+    assert res_transit["error_code"] == "INVALID_INPUT_PARAMETER"
+
+    # 5. Test MCP tool validations
+    from tuvi_mcp.mcp_server import convert_calendar, get_saved_horoscope, delete_saved_horoscope
+
+    # convert_calendar with bad year/month
+    conv_err = convert_calendar(day=35, month=13, year=1700)
+    assert "error" in conv_err
+    assert conv_err["error_code"] == "INVALID_INPUT_PARAMETER"
+
+    # get_saved_horoscope missing params
+    get_err = get_saved_horoscope(horoscope_id=None, name=None)
+    assert "error" in get_err
+    assert get_err["error_code"] == "MISSING_REQUIRED_PARAMETER"
+
+    # delete_saved_horoscope invalid ID
+    del_err = delete_saved_horoscope(horoscope_id=-1)
+    assert "error" in del_err
+    assert del_err["error_code"] == "INVALID_INPUT_PARAMETER"
+
 
 # Cleanup hook to remove temp file after test session
 def pytest_sessionfinish(session, exitstatus):
@@ -281,3 +332,4 @@ def pytest_sessionfinish(session, exitstatus):
         os.remove(db_path)
     except Exception:
         pass
+

@@ -242,6 +242,10 @@ def convert_calendar(
       fail calendar validation.
     """
     try:
+        val_err = tuvi_calculator.validate_calendar_convert(day, month, year, timezone=timezone)
+        if val_err:
+            return val_err
+
         if from_solar:
             return tuvi_calculator.convert_solar_to_lunar(day, month, year, timezone=timezone)
         else:
@@ -291,6 +295,18 @@ def save_horoscope(
       database write fails.
     """
     try:
+        if not name or not isinstance(name, str) or not name.strip():
+            return {
+                "error": "Input validation failed",
+                "error_code": "INVALID_INPUT_PARAMETER",
+                "details": ["Parameter 'name' cannot be empty when saving a horoscope."],
+                "suggestions": {"name": "Provide a non-empty string for the person's name."},
+            }
+
+        val_err = tuvi_calculator.validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar)
+        if val_err:
+            return val_err
+
         hour = tuvi_calculator.parse_hour(hour_val)
         gender_str = "Nam" if tuvi_calculator.parse_gender(gender_val) == 1 else "Nữ"
 
@@ -385,6 +401,25 @@ def get_saved_horoscope(horoscope_id: int = None, name: str = None) -> dict:
       - Returns `{"error": "error_message"}` if database access fails.
     """
     try:
+        if horoscope_id is None and (name is None or not str(name).strip()):
+            return {
+                "error": "Input validation failed",
+                "error_code": "MISSING_REQUIRED_PARAMETER",
+                "details": ["At least one of 'horoscope_id' or 'name' must be provided."],
+                "suggestions": {
+                    "horoscope_id": "Provide a valid integer record ID.",
+                    "name": "Or provide a non-empty name string of a saved profile.",
+                },
+            }
+
+        if horoscope_id is not None and (not isinstance(horoscope_id, int) or isinstance(horoscope_id, bool) or horoscope_id <= 0):
+            return {
+                "error": "Input validation failed",
+                "error_code": "INVALID_INPUT_PARAMETER",
+                "details": [f"Invalid horoscope_id '{horoscope_id}'. Must be a positive integer."],
+                "suggestions": {"horoscope_id": "Use list_saved_horoscopes to find valid record IDs."},
+            }
+
         record = None
         if horoscope_id is not None:
             record = database.get_saved_horoscope_by_id(horoscope_id)
@@ -443,6 +478,14 @@ def delete_saved_horoscope(horoscope_id: int) -> dict:
       - Returns `{"error": "error_message"}` if database deletion fails.
     """
     try:
+        if not isinstance(horoscope_id, int) or isinstance(horoscope_id, bool) or horoscope_id <= 0:
+            return {
+                "error": "Input validation failed",
+                "error_code": "INVALID_INPUT_PARAMETER",
+                "details": [f"Invalid horoscope_id '{horoscope_id}'. Must be a positive integer."],
+                "suggestions": {"horoscope_id": "Use list_saved_horoscopes to find valid record IDs."},
+            }
+
         success = database.delete_saved_horoscope_by_id(horoscope_id)
         if success:
             return {"message": f"Successfully deleted horoscope ID {horoscope_id}."}

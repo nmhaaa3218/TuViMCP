@@ -4,7 +4,7 @@
 (c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 """
 __title__ = 'ansaotuvi'
-__version__ = '0.1.1'
+__version__ = '0.1.9'
 __author__ = 'hieu.do'
 __author_email__ = 'hieu.do@ursa.vn'
 __license__ = 'MIT License'

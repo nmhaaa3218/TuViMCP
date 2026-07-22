@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.9] - 2026-07-22
+
+### Added
+- **Comprehensive Input Validation Layer**: Added entry-point validation (`validate_birth_parameters`, `validate_transit_period`, `validate_calendar_convert`) across all MCP tools to validate birth parameters, transit periods, calendar conversion parameters, and database keys.
+- **Actionable Error Feedback**: Returns structured error responses (`INVALID_INPUT_PARAMETER`, `MISSING_REQUIRED_PARAMETER`) containing explicit error details and actionable field suggestions.
+- **Unreal Date & Leap Year Validation**: Dynamically detects non-existent dates (such as February 31 or 31 April) and returns exact maximum days per month (`calendar.monthrange`), handling leap vs non-leap years.
+
 ## [0.1.8] - 2026-07-15
 
 ### Added
