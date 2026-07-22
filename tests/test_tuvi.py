@@ -300,6 +300,30 @@ def test_input_validation():
     assert res_hour["error_code"] == "INVALID_INPUT_PARAMETER"
     assert "hour_val" in res_hour["suggestions"]
 
+
+def test_cach_cuc_evaluation():
+    # 1. Test chart known to match specific cách cục (e.g. 10/10/2000 12:00)
+    chart = tuvi_calculator.get_horoscope_chart("Test Cach Cuc", 10, 10, 2000, "12:00", "Nam", True)
+    assert "cach_cuc" in chart
+    assert isinstance(chart["cach_cuc"], list)
+    assert len(chart["cach_cuc"]) > 0
+    first_match = chart["cach_cuc"][0]
+    required_keys = ["id", "name", "category", "description", "reason", "co_ca", "binh_chu", "uu_khuyet_diem"]
+    for key in required_keys:
+        assert key in first_match
+
+    # 2. Test Thạch Trung Ẩn Ngọc Cách chart (21/8/2003 Nam giờ Thân)
+    chart_thach_trung = tuvi_calculator.get_horoscope_chart("Test Thach Trung", 21, 8, 2003, "Thân", "Nam", True)
+    matched_ids = [c["id"] for c in chart_thach_trung.get("cach_cuc", [])]
+    assert 24 in matched_ids  # ID 24 is Thạch Trung Ẩn Ngọc Cách
+
+    # 3. Test empty chart input safety
+    from tuvi_mcp.cach_cuc_evaluator import evaluate_cach_cuc
+    assert evaluate_cach_cuc({}) == []
+    assert evaluate_cach_cuc({"dia_ban": []}) == []
+
+
+
     # 4. Test invalid transit period
     res_transit = tuvi_calculator.get_van_han_analysis(
         name="Test Transit", day=15, month=5, year=2024, hour_val="12:00", gender_val="Nam", is_solar=True, current_year=2500, current_month=15

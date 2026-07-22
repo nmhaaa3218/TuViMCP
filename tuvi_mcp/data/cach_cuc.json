@@ -1,0 +1,1264 @@
+[
+  {
+    "id": 1,
+    "name": "Tam Kỳ Gia Hội Cách",
+    "category": "Cát Cục",
+    "description": "Hóa Lộc, Hóa Quyền, Hóa Khoa cùng hội chiếu tại Tam Phương Tứ Chính của Cung Mệnh.",
+    "reason": "Bộ Tam Hóa (Lộc, Quyền, Khoa) hội tụ tại Cung Mệnh, Tài Bạch, Quan Lộc hoặc Thiên Di.",
+    "co_ca": "Ba kỳ vây hướng Tử vi cung (Tam kỳ củng hướng Tử vi cung)\nMệnh lý đời người rất ưa gặp (Tối hỷ nhân sinh mệnh lý phùng)\nĐiều hòa âm dương chân tể tướng (Tiếp lý âm dương chân tể tướng)\nCông danh phú quý ai sánh bằng (Công danh phú quý bất lôi đồng)\nHóa Lộc thông thường chủ về lộc quan, Hóa Quyền thông thường chủ về quyền\nbính, Hóa Khoa thông thường chủ về danh vọng, vì vậy cung mệnh đương\nnhiên thích 3",
+    "binh_chu": "\"Tam kỳ gia hội cách\" tức là Hóa Lộc, Hóa Quyền, Hóa Khoa hội hợp cung mệnh. Cổ ca nói: Ba kỳ vây hướng Tử vi cung (Tam kỳ củng hướng Tử vi cung) Mệnh lý đời người rất ưa gặp (Tối hỷ nhân sinh mệnh lý phùng) Điều hòa âm dương chân tể tướng (Tiếp lý âm dương chân tể tướng) Công danh phú quý ai sánh bằng (Công danh phú quý bất lôi đồng) Hóa Lộc thông thường chủ về lộc quan, Hóa Quyền thông thường chủ về quyền bính, Hóa Khoa thông thường chủ về danh vọng, vì vậy cung mệnh đương nhiên thích 3 sao này hội hợp. Nhưng phải không gặp tứ sát Hỏa tinh, Linh tinh, Kình dương, Đà la; hoặc không gặp Địa kh...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Hóa Lộc",
+          "Hóa Quyền",
+          "Hóa Khoa"
+        ],
+        "min_count": 3
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "Văn Quế Văn Hoa Cách",
+    "category": "Cát Cục",
+    "description": "Văn Xương, Văn Khúc đồng cung hoặc hội chiếu tại Cung Mệnh.",
+    "reason": "Văn Xương và Văn Khúc đắc địa hội tụ tại Cung Mệnh, chủ về tài hoa khoa bảng.",
+    "co_ca": "16\nKinh sách là đạo từ trời ban (Sách thư nhất đạo tự nhiên lai)\nGọi dậy tài an bang tế thế (Hoán khởi nhân gian kinh tế tài)\nMệnh lý vinh hoa đúng đáng khen (Mệnh lý vinh hoa chân khả tiển)\nThong dong thả bước trên cõi bồng (Đẳng nhàn bình bộ thướng bồng lai)",
+    "binh_chu": "Tức là mệnh an tại cung Sửu, hoặc cung Mùi, mà trong cung mệnh có hai sao Văn khúc và Văn xương cùng tọa thủ. Cổ ca nói: 16 Kinh sách là đạo từ trời ban (Sách thư nhất đạo tự nhiên lai) Gọi dậy tài an bang tế thế (Hoán khởi nhân gian kinh tế tài) Mệnh lý vinh hoa đúng đáng khen (Mệnh lý vinh hoa chân khả tiển) Thong dong thả bước trên cõi bồng (Đẳng nhàn bình bộ thướng bồng lai) Thời đại khoa cử ngày xưa, học hành để có công danh là con đường tốt nhất, nên cổ nhân dùng Đẩu Số để luận mệnh cũng rất ưa Văn Xương và Văn Khúc. Ngoại trừ \"Văn tinh củng mệnh cách\", sau đó sẽ thảo luận đến \"Văn Lương...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "any_of": [
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Văn Xương",
+              "Văn Khúc"
+            ]
+          }
+        },
+        {
+          "cung_menh": {
+            "branches_in": [
+              "Sửu",
+              "Mùi",
+              "Mão",
+              "Dậu"
+            ]
+          },
+          "tam_phuong_tu_chinh": {
+            "stars_required": [
+              "Văn Xương",
+              "Văn Khúc"
+            ],
+            "min_count": 2
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "name": "Mệnh Lý Phùng Không Cách",
+    "category": "Hung Cục",
+    "description": "Cung Mệnh gặp Địa Không hoặc Địa Kiếp mà không có đại cát tinh giải cứu.",
+    "reason": "Cung Mệnh bị sát tinh Không Kiếp xâm phạm, chủ về bế tắc hoặc thành bại thất thường.",
+    "co_ca": "Không diệu lai lâm cát diệu vô,\nCầu danh cầu lợi tổng thành hư,\nThanh nhàn cô độc phương diên thọ,\nPhú quý vinh hoa quá khích câu.\nDịch nghĩa:",
+    "binh_chu": "\"Mệnh lý phùng không cách\" tức là Địa kiếp và Địa không thủ mệnh, cung mệnh lại không có sao cát. Cổ ca nói: Không diệu lai lâm cát diệu vô, Cầu danh cầu lợi tổng thành hư, Thanh nhàn cô độc phương diên thọ, Phú quý vinh hoa quá khích câu. Dịch nghĩa: Sao không đến mà cát diệu không Cầu danh cầu lợi mọi việc hư Thanh nhàn cô độc sống mới thọ Vinh hoa phú quý sẽ chóng qua Theo Vương Đình Chi, trong cổ ca nói \"sao không\", có người cho là Thiên Không, Tuần Không, Tiệt Không, nhưng trên thực tế không phải vậy, mà là Địa không Địa kiếp. 23 Cổ nhân cho rằng: \"Địa không là thần Không Vong, thủ thân m...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_any": [
+          "Địa Không",
+          "Địa Kiếp"
+        ],
+        "stars_none": [
+          "Tử Vi",
+          "Thiên Phủ",
+          "Hóa Lộc"
+        ]
+      }
+    }
+  },
+  {
+    "id": 4,
+    "name": "Cự Phùng Tứ Sát Cách",
+    "category": "Hung Cục",
+    "description": "Sao Cự Môn trấn Mệnh gặp Kình Dương, Đà La, Hỏa Tinh hoặc Linh Tinh.",
+    "reason": "Cự Môn tại Mệnh gặp hung sát tinh, chủ về thị phi, vất vả hoặc tranh chấp.",
+    "co_ca": "Cự môn lạc hãm tại thân cung,\n27\nTứ sát thiên vu mệnh lý phùng,\nNhược thị cát tinh vô cứu giải,\nTất tao lưu phối viễn phương trung.\nDịch nghĩa:\nCự Môn lạc hãm ở cung Thân,\nLại gặp hung sát cư Mệnh cung,",
+    "binh_chu": "\"Cự phùng tứ sát cách\" tức là Cư Môn lạc hãm thủ cung Thân; tứ sát Hỏa tinh, Linh tinh, Kình dương, Đà la thủ cung Mệnh. Cổ ca nói: Cự môn lạc hãm tại thân cung, 27 Tứ sát thiên vu mệnh lý phùng, Nhược thị cát tinh vô cứu giải, Tất tao lưu phối viễn phương trung. Dịch nghĩa: Cự Môn lạc hãm ở cung Thân, Lại gặp hung sát cư Mệnh cung, Nếu không cát tinh thời giải cứu, Tất sẽ lưu lạc bốn phương trời. Cách này, Vương Đình Chi cho rằng có chút nghi vấn. Căn cứ sách \"Tử Vi Đẩu Số toàn thư\" nói: \"Cự Môn ở thân mệnh mà gặp chúng là kị, đối cung có Hỏa tinh, Linh tinh Bạch Hổ, mà không có Đế tinh, sao...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Cự Môn"
+        ],
+        "stars_any": [
+          "Kình Dương",
+          "Đà La",
+          "Hỏa Tinh",
+          "Linh Tinh"
+        ]
+      }
+    }
+  },
+  {
+    "id": 5,
+    "name": "Đan Trì Quế Trì Cách",
+    "category": "Cát Cục",
+    "description": "Thái Dương cư Thìn Tỵ Ngọ (Đan Trì) hoặc Thái Âm cư Dậu Tuất Hợi (Quế Trì).",
+    "reason": "Thái Dương/Thái Âm miếu vượng rực rỡ tại Cung Mệnh.",
+    "co_ca": "Nhị diệu thường minh chính đắc trung\nTài hoa thanh thế định anh hùng\nThiếu niên tế đắc phong vân hội\nNhất dược thiên trì tiện hóa long.\nDịch nghĩa:\nHai",
+    "binh_chu": "Tuất, an mệnh tại cung Thìn hoặc cung Tuất. Thái dương cư Tị, Thái âm cư Dậu, an mệnh ở cung Tị hoặc cung Dậu. Cổ ca nói: Nhị diệu thường minh chính đắc trung Tài hoa thanh thế định anh hùng Thiếu niên tế đắc phong vân hội Nhất dược thiên trì tiện hóa long. Dịch nghĩa: Hai sao thường sáng chính đắc trung Tài hoa thanh thế định anh hùng Tuổi trẻ đỗ đạt ra làm quan Một bước lên mây hóa thành rồng. Thái dương thủ mệnh mà nhập miếu, cổ nhân gọi là \"đan trì\", Thái âm thủ mệnh mà nhập miếu, cổ nhân gọi là \"quế trì\". 47 Thời cổ đại xem trọng công danh khoa cử, mà không trọng sự giầu có của giới thươn...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "any_of": [
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Thái Dương"
+            ],
+            "branches_in": [
+              "Thìn",
+              "Tỵ",
+              "Ngọ"
+            ]
+          }
+        },
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Thái Âm"
+            ],
+            "branches_in": [
+              "Dậu",
+              "Tuất",
+              "Hợi"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "name": "Tả Hữu Đồng Cung Cách",
+    "category": "Cát Cục",
+    "description": "Tả Phù và Hữu Bật đồng cung hoặc hội chiếu tại Cung Mệnh (Sửu/Mùi).",
+    "reason": "Bộ đôi trợ tinh Tả Phù - Hữu Bật hội tụ, chủ về có nhiều quý nhân nâng đỡ.",
+    "co_ca": "Mệnh cung Phụ Bật hữu căn nguyên\nThiên địa thanh minh vạn tượng tiên\nĐức nghiệp nguy nhiên nhân ngưỡng kính\nDanh tuyên kim điện ngọc giai tiền.\nDịch nghĩa:\n67\nCung mệnh Phụ Bật là gốc rễ\nTrời đất sáng sủa vạn vật tươi\nĐức nghiệp lớn lao người kính ngưỡng\nTên được tuyên truyền trước điện ngọc.\nCách này là dựa vào thuyết của người đời Nguyên, như sau: \"Tử phụ Hữu bật\nsuốt đời nhiều phúc\" (Tử phụ Hữu bật, chung thân phúc hậu) ; \"Tả Hữu đồng\ncung, khoác áo lụa tía\" (Tả Hữu đồng cung, phi la y tử). Bởi vì cổ nhân cho\nrằng, Tử Phụ và Hữu Bật là phụ tá của Hoàng đế, do đó đương nhiên tuyên\ndanh ở điện vàng, thân đứng trước thêm ngọc.\nNhưng, phàm người sinh tháng 4, thì Tả Phụ và Hữu Bật nhất định đồng độ ở\ncung Mùi ; người sinh tháng 10 thì Tả Phụ và Hữu Bật nhất định đồng độ ở\ncung Sửu, như vậy người sinh tháng 4 và tháng 10 nhất định làm quan hết",
+    "binh_chu": "\"Tả hữu đồng cung cách\" tức là hai Phụ diệu Tử Phụ và Hữu Bật cùng tọa thủ ở cung Mệnh. Cổ ca nói: Mệnh cung Phụ Bật hữu căn nguyên Thiên địa thanh minh vạn tượng tiên Đức nghiệp nguy nhiên nhân ngưỡng kính Danh tuyên kim điện ngọc giai tiền. Dịch nghĩa: 67 Cung mệnh Phụ Bật là gốc rễ Trời đất sáng sủa vạn vật tươi Đức nghiệp lớn lao người kính ngưỡng Tên được tuyên truyền trước điện ngọc. Cách này là dựa vào thuyết của người đời Nguyên, như sau: \"Tử phụ Hữu bật suốt đời nhiều phúc\" (Tử phụ Hữu bật, chung thân phúc hậu) ; \"Tả Hữu đồng cung, khoác áo lụa tía\" (Tả Hữu đồng cung, phi la y tử). Bở...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "any_of": [
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Tả Phù",
+              "Hữu Bật"
+            ]
+          }
+        },
+        {
+          "cung_menh": {
+            "branches_in": [
+              "Sửu",
+              "Mùi"
+            ]
+          },
+          "tam_phuong_tu_chinh": {
+            "stars_required": [
+              "Tả Phù",
+              "Hữu Bật"
+            ],
+            "min_count": 2
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "name": "Tử Phủ Đồng Cung Cách",
+    "category": "Cát Cục",
+    "description": "Tử Vi và Thiên Phủ cùng tọa thủ tại Cung Mệnh (Sửu hoặc Mùi).",
+    "reason": "Đế tinh Tử Vi kết hợp với Kho tinh Thiên Phủ tại Mệnh, chủ về phú quý song toàn.",
+    "co_ca": "Đồng cung Tử Phủ quý sinh nhân\nThiên địa thanh minh vạn tượng tân\nHỷ ngộ Dần Thân đồng đắc địa\nThanh danh lỗi lạc động kiền khôn.\nDịch nghĩa:\nTử Phủ đồng cung sinh quý nhân\nTrời đất tươi sáng vạn vật tân\nƯa gặp Dần Thân cùng đắc địa\nTiếng tăm lỗi lạc động khôn kiền.\nĐây là cách rất đáng thảo luận. Tử vi là chủ tinh Bắc Đẩu, hơn nữa Tử vi còn\nchủ về \"quý\", Thiên phủ chủ về \"phú\", xem ra đây là một kết cấu hoàn mỹ,\nkhông tỳ vết, hai chủ tinh tự thành Cách tốt.\n74\nCó biết vấn đề lại ở chỗ \"hai chủ tinh đồng cung\" ! Dùng câu \"một núi không\nthể có hai cọp\" để hình dung thì dường như hơi quá đáng, nhưng tính chất mâu\nthuẫn giữa Tử vi và Thiên phủ lại có thể ảnh hưởng đến cảnh ngộ của cả một\nđời người.\nTử vi sở trường về sáng tạo, nhưng Thiên phủ lại có khuynh hướng bảo thủ. Tử\nvi có thể phát triển sự nghiệp mới, nhưng Thiên phủ chỉ giỏi về thủ thành, đây\nlà những tính cách mâu thuẫn của hai",
+    "binh_chu": "\"Tử Phủ đồng cung cách\" tức an mệnh ở cung Dần hoặc Thân, trong cung có Tử Vi cà Thiên Phủ đồng tọa. Cổ ca nói: Đồng cung Tử Phủ quý sinh nhân Thiên địa thanh minh vạn tượng tân Hỷ ngộ Dần Thân đồng đắc địa Thanh danh lỗi lạc động kiền khôn. Dịch nghĩa: Tử Phủ đồng cung sinh quý nhân Trời đất tươi sáng vạn vật tân Ưa gặp Dần Thân cùng đắc địa Tiếng tăm lỗi lạc động khôn kiền. Đây là cách rất đáng thảo luận. Tử vi là chủ tinh Bắc Đẩu, hơn nữa Tử vi còn chủ về \"quý\", Thiên phủ chủ về \"phú\", xem ra đây là một kết cấu hoàn mỹ, không tỳ vết, hai chủ tinh tự thành Cách tốt. 74 Có biết vấn đề lại ở c...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Tử Vi",
+          "Thiên Phủ"
+        ]
+      }
+    }
+  },
+  {
+    "id": 8,
+    "name": "Phủ Tướng Triều Viên Cách",
+    "category": "Cát Cục",
+    "description": "Thiên Phủ và Thiên Tướng hội chiếu Cung Mệnh từ Tam Phương Tứ Chính.",
+    "reason": "Hai sao Thiên Phủ và Thiên Tướng cùng chiếu về Mệnh, chủ về tài lộc ôn hòa vững chắc.",
+    "co_ca": "Mệnh viên phủ tướng đắc câu phùng\nVô sát thân đương thị thánh quân\nPhú quý song toàn nhân cảnh ngưỡng\nNguy nguy hiển nghiệp mãn kiền khôn.\nDịch nghĩa:\nCung mệnh gặp đủ",
+    "binh_chu": "\"Phủ Tướng triều viên cách\" tức là hai sao Thiên Phủ và Thiên Tướng hội chiếu cung mệnh. Thêm vào đó, cung mệnh cư Ngọ, Thiên phủ cư Tuất, Thiên tướng cư Dần, là lấy kết cấu \"Phủ Tướng triều viên cách\". Cổ ca nói: Mệnh viên phủ tướng đắc câu phùng Vô sát thân đương thị thánh quân Phú quý song toàn nhân cảnh ngưỡng Nguy nguy hiển nghiệp mãn kiền khôn. Dịch nghĩa: Cung mệnh gặp đủ sao Phủ Tướng Không có sát tinh Thân hầu vua Phú quý song toàn người ngưỡng mộ Đức nghiệp lớn lao khắp đất trời. Thiên phủ là chủ tinh Nam Đẩu, cổ nhân gọi là \"Ti mệnh thượng tướng\" (Thượng tướng cai quản mệnh lệnh), \"...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Thiên Phủ",
+          "Thiên Tướng"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 9,
+    "name": "Thiên Phủ Triều Viên Cách",
+    "category": "Cát Cục",
+    "description": "Sao Thiên Phủ trấn Cung Mệnh tại Tý, Ngọ, Dần, Thân.",
+    "reason": "Thiên Phủ nhập miếu tại Cung Mệnh, chủ về tích lũy tài sản và nhân hậu.",
+    "co_ca": "Càn vi quân tượng, Phủ vi thần\nĐắc địa lai triều phúc tự tân\nPhụ Bật trung thần thân báo quốc\nYêu kim y tử bái trùng huy\nNghĩa là:\nCàn là tượng vua phủ bầy tôi\nĐắc địa đến chầu phúc tự đầy\nPhụ Bật tôi trung vì đất nước\nĐai vàng áo tía tại cung mây\n85\nTrong kinh có viết: \" Thiên phủ tại Tuất có",
+    "binh_chu": "Sao Thiên Phủ nhập miếu trấn mệnh tại cung Thìn hoặc Tuất, đồng cung với 84 Liêm Trinh, không bị sát tinh xung phá. Ưu điểm: Quan cao, chức trọng, phúc, quý song toàn. Mệnh nữ trung trinh hiền thục. Nếu sao Tả Phụ cùng trấn mệnh, tại cung tam phương tứ chính có sao hóa cát chầu về là cực quý. Khuyết điểm: Bất lợi cho hôn nhân, tình duyên, nên kết hôn muộn. Hai sao Thiên Phủ, Liêm Trinh trấn mệnh tại cung Tuất, lại gặp các cát tinh Lộc Tồn, Hóa Khoa, Hóa Lộc, Hóa Quyền, Tả Phụ, Hữu Bật, Văn Xương, Văn Khúc, Thiên Khôi, Thiên Việt gia hội, không có sát tinh mới được coi là phù hợp với cách cục n...",
+    "uu_khuyet_diem": "Ưu điểm: Quan cao, chức trọng, phúc, quý song toàn. Mệnh nữ trung trinh hiền | Khuyết điểm: Bất lợi cho hôn nhân, tình duyên, nên kết hôn muộn.",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Thiên Phủ"
+        ],
+        "branches_in": [
+          "Tý",
+          "Ngọ",
+          "Dần",
+          "Thân"
+        ]
+      }
+    }
+  },
+  {
+    "id": 10,
+    "name": "Quân Thần Khánh Hội Cách",
+    "category": "Cát Cục",
+    "description": "Sao Tử Vi hội họp với đông đảo cát tinh (Tả, Hữu, Khôi, Việt, Xương, Khúc, Lộc Tồn).",
+    "reason": "Đế tinh Tử Vi được quần thần phụ tá đắc lực, chủ về uy quyền và lãnh đạo.",
+    "co_ca": "N/A",
+    "binh_chu": "Sao Tử vi cùng Tả Phụ, Hữu Bật đóng tại cung mệnh. Ưu điểm: Có được nhiều sự trợ giúp, gặp nhiều quý nhân phò trợ, được quần chúng hưởng ứng, phú quý trọn đời. Nếu sao tử vi đóng tại cung Mệnh, Tả Phụ, Hữu bật nằm tại cung tam phương, tứ chính chiếu cung mệnh, hoặc nằm ở hai cung bên cạnh kèm lấy cung mệnh (giáp), là cách cục Phụ, Bật củng chủ (Phụ, Bật chầu vua), ưu điểm cũng tương tự như cách cục Quân thần khánh hội....",
+    "uu_khuyet_diem": "Ưu điểm: Có được nhiều sự trợ giúp, gặp nhiều quý nhân phò trợ, được quần",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Tử Vi"
+        ],
+        "min_count": 1
+      },
+      "tam_phuong_tu_chinh_aux": {
+        "stars_required": [
+          "Tả Phù",
+          "Hữu Bật",
+          "Thiên Khôi",
+          "Thiên Việt",
+          "Văn Xương",
+          "Văn Khúc",
+          "Lộc Tồn"
+        ],
+        "min_count": 3
+      }
+    }
+  },
+  {
+    "id": 11,
+    "name": "Cơ Nguyệt Đồng Lương Cách",
+    "category": "Cát Cục",
+    "description": "Bốn sao Thiên Cơ, Thái Âm, Thiên Đồng, Thiên Lương hội tụ tại Tam Phương Tứ Chính.",
+    "reason": "Bộ sao Cơ Nguyệt Đồng Lương hội hợp, phù hợp công chức, quản lý, tư vấn.",
+    "co_ca": "Dần Thân tứ diệu mệnh gia lâm\nTổ tông căn nguyên định hữu thành\nĐao bút chỉ trung nghi tác lực\nVinh hoa phát vượng tại công môn\nDịch nghĩa:\n87\nDần Thân cung mệnh bốn",
+    "binh_chu": "Bốn sao Thiên Cơ, Thái Âm, Thiên Đồng, Thiên Lương tập trung tại các cung mệnh, tài, quan (Cần phải xuất hiện đồng thời cả 4 sao). Ưu điểm: Có tài hoạch định, có năng lực làm việc và trợ giúp, nếu làm việc tại các cơ quan nhà nước, sự nghiệp hành chính sẽ có triển vọng tốt, đảm nhiệm chức vụ cao, phù hợp với các lĩnh vực giáo dục, truyền thông, văn hóa hoặc các công việc đòi hỏi chất xám, kỹ thuật, hoặc các nghề môi giới, tư vấn, đại lý, kinh doanh cửa hàng. 86 Khuyết điểm: Nếu bốn sao trên trấn mệnh tại cung Dần Thân sẽ bất lợi về mặt tình cảm, tính cách trầm lặng hoặc dễ kích động. Với cách...",
+    "uu_khuyet_diem": "Ưu điểm: Có tài hoạch định, có năng lực làm việc và trợ giúp, nếu làm việc tại | Khuyết điểm: Nếu bốn sao trên trấn mệnh tại cung Dần Thân sẽ bất lợi về mặt",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Thiên Cơ",
+          "Thái Âm",
+          "Thiên Đồng",
+          "Thiên Lương"
+        ],
+        "min_count": 3
+      }
+    }
+  },
+  {
+    "id": 12,
+    "name": "Cơ Lương Gia Hội Cách",
+    "category": "Cát Cục",
+    "description": "Thiên Cơ và Thiên Lương đồng cung hoặc hội chiếu tại Cung Mệnh.",
+    "reason": "Thiên Cơ thông tuệ kết hợp Thiên Lương phúc thọ, chủ về mưu trí và mẫn cán.",
+    "co_ca": "Cơ Lương nhập miếu tối kham ngôn\nĐắc địa giao quân phúc thọ toàn\nDiệu toán thần sách ưng cái thế\nUy phong lẫm lẫm chưởng binh quyền\nNghĩa là:\nCơ Lương nhập miếu chẳng phải bàn\nĐắc địa được phúc thọ song toàn\nDự đoán, tiên tri tài nức tiếng\nUy phong lẫm liệt nắm binh quyền\nTrong kinh văn có viết: \"Thiên Cơ lại gặp Thiên Lương ắt có tài nghệ cao\ncường\". \"Thiên Lương đi cùng Thiên Đồng làm đến hàn lâm, có tài binh lược\"\n\" Thiên cơ, Thiên Lương gặp Tả Phụ, Hữu Bật, Văn Xương, Văn Khúc",
+    "binh_chu": "Hai sao Thiên Cơ và Thiên Lương Trấn mệnh tại cung Thìn Tuất lại có Lộc Tồn, Hóa Lộc, Hóa Khoa, Hóa Quyền, Văn Xương, Văn Khúc, Tả Phụ, Hữu Bật, Thiên Khôi, Thiên Việt gia hội là hợp cách cục này, phần nhiều chủ về học hành giỏi giang, kiến thức uyên bác, quan tâm đến chính trị, có khả năng dự đoán, tính toán, nắm giữ binh quyền. Gặp được nhiều cát tinh, chủ đại phú, đại quý. Cát tinh ít thì phần nhiều theo những công việc liên quan đến quân đội, cánh sát, tư pháp. Nếu gặp sát tinh, phần nhiều trở thành giáo chủ về tôn giáo, hoặc người sáng lập nên tà giáo, nhà nghiên cứu thần học, triết gia,...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "any_of": [
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Thiên Cơ",
+              "Thiên Lương"
+            ]
+          }
+        },
+        {
+          "cung_menh": {
+            "branches_in": [
+              "Dần",
+              "Thân",
+              "Thìn",
+              "Tuất"
+            ]
+          },
+          "tam_phuong_tu_chinh": {
+            "stars_required": [
+              "Thiên Cơ",
+              "Thiên Lương"
+            ],
+            "min_count": 2
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "name": "Văn Lương Chấn Kỷ Cách",
+    "category": "Cát Cục",
+    "description": "Sao Văn Xương và Thiên Lương hội chiếu Cung Mệnh.",
+    "reason": "Văn Xương tài hoa kết hợp Thiên Lương cương trực, giữ gìn kỷ cương pháp luật.",
+    "co_ca": "Văn tinh cảnh trực ngộ Thiên Lương\nVị liệt hoàng môn điểu phủ hành\nCương kỷ triều trung công nghiệp kiến\nBức nhân thanh khí mãn càn khôn\nNghĩa là:",
+    "binh_chu": "Thiên Cơ, Văn Khúc cùng trấn mệnh tại cung Dần hoặc Ngọ, hoặc sao Thiên Lương trấn mệnh tại cung Ngọ, có sao Văn Khúc tại cung Tý củng chiếu. Ưu điểm: Quyền cao chức trọng, phúc thọ song toàn, giỏi tính toán, dự đoán, 89 theo nghiệp võ sẽ hiển đạt. Văn Khúc hoặc Văn Xương và Thiên Lương trấn mệnh tại Vượng địa, tại cung tam phương có các sao Lộc tồn, Hóa Khoa, Hóa quyền, Hóa Lộc, Tả Phụ, Hữu Bật, Thiên Khôi, Thiên Việt gia hội là thuộc cách cục này. Nên theo nghiệp chính trị, nếu gặp nhiều cát tinh, chủ về cực hiển quý. Ca quyết như sau: Văn tinh cảnh trực ngộ Thiên Lương Vị liệt hoàng môn điể...",
+    "uu_khuyet_diem": "Ưu điểm: Quyền cao chức trọng, phúc thọ song toàn, giỏi tính toán, dự đoán,",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Văn Xương",
+          "Thiên Lương"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 14,
+    "name": "Cự Nhật Đồng Cung Cách",
+    "category": "Cát Cục",
+    "description": "Cự Môn và Thái Dương đồng cung tại Dần hoặc Thân.",
+    "reason": "Thái Dương quang minh xua tan danh ám của Cự Môn, chủ về phát đạt danh tiếng.",
+    "co_ca": "N/A",
+    "binh_chu": "cung) 90 Thái Dương, Cự Môn cùng trấn mệnh tại cung Dần, Thân (Cung Dần tốt hơn cung Thân, vì Cự Môn và Thái Dương đều miếu vượng). Ưu điểm: Tài vận vượng thịnh, có chí tiến thủ, có tài hùng biện, hết lòng với sự nghiệp công ích, cần phải gắng gỏi cần cù, có công mài sắt có ngày nên kim. Khuyết điểm: Cần phải cạnh tranh với địch thủ mới giành được thành công, nên dễ vướng vào điều tiếng, thị phi, gặp sao Hóa Kỵ thị phi càng nhiều. Cự Môn, Thái Dương tại cung Dần, cung tam phương tứ chính có các cát tinh như Lộc Tồn, Hóa Lộc, Hóa Khoa, Hóa Quyền, Tả Phụ, Hữu Bật, Văn Xương, Văn Khúc, Thiên Khôi...",
+    "uu_khuyet_diem": "Ưu điểm: Tài vận vượng thịnh, có chí tiến thủ, có tài hùng biện, hết lòng với sự | Khuyết điểm: Cần phải cạnh tranh với địch thủ mới giành được thành công,",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Cự Môn",
+          "Thái Dương"
+        ]
+      }
+    }
+  },
+  {
+    "id": 15,
+    "name": "Kim Sán Quang Huy Cách",
+    "category": "Cát Cục",
+    "description": "Thái Dương miếu địa trấn thủ Cung Mệnh tại Ngọ (Nhật Lệ Trung Thiên).",
+    "reason": "Thái Dương đỉnh cao tại cung Ngọ, chiếu sáng rực rỡ, danh tiếng hiển đạt.",
+    "co_ca": "N/A",
+    "binh_chu": "Sao Thái Dương trấn mệnh tại cung Ngọ, lại gặp các sao Lộc Tồn, Hóa Khoa, Hóa Quyền, Hóa Lộc, Tả Phụ, Hữu Bật, Văn Xương, Văn gia hội là hợp cách cục này. Lá số gặp cách cục này, chủ một đời cực hiển quý, giàu sang. Nếu không gặp Xương, Khúc, Phụ, Bật hoặc gặp Không, Kiếp sẽ bị giảm tốt. Người sinh năm Canh, Tân sẽ được phú quý song toàn, tiếp đến là người sinh năm Giáp, Quý, Đinh, Kỷ. Kinh văn có đoạn: \" Thái dương tại cung Ngọ là \" Nhật lệ trung thiên\" (Mặt trời giữa trời), hiển quý có quyền lực, giàu có nhất nước, \" Cự Môn, Thái Dương củng chiếu là cách cục rất tốt\"....",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Thái Dương"
+        ],
+        "branches_in": [
+          "Ngọ"
+        ]
+      }
+    }
+  },
+  {
+    "id": 16,
+    "name": "Nhật Chiếu Lôi Môn Cách",
+    "category": "Cát Cục",
+    "description": "Thái Dương tọa thủ Cung Mệnh tại Mão (Mặt trời mọc cửa sấm).",
+    "reason": "Thái Dương bình minh tại Mão, chủ về tiền đồ rộng mở, lập nghiệp sớm.",
+    "co_ca": "Thái Dương Mão vị quý kham khoa\nTất chủ bình sinh phú quý gia\nThuần túy thiếu niên đăng giáp đệ\nChinh chiến thanh thế động di Hoa\nNghĩa Là:\nThái dương tại Mão thật hiển quý\n93\nẮt chủ bình sinh được giàu sang\nTuổi trẻ khoa danh sớm đỗ đạt\nChiến công lừng lẫy khắp biên cương\nTrong kinh văn có viết: \" Mặt trời (Thái Dương\" chiếu cổng sấm, phú quý vinh\nhoa\".",
+    "binh_chu": "92 Hay còn được gọi là cách cục Nhật xuất phù tang (mặt trời mới mọc), tức sinh vào ban ngày, sao Thái Dương và Thiên Lương trấn mệnh tại cung Mão được Lộc Tồn, Hóa Khoa, Hóa Lộc, Hóa Quyền, Tả Phụ, Hữu Bật, Văn Xương, Văn Khúc hội chiếu là phù hợp với cách cục này. Nhưgn chỉ có người sinh năm Ất, Tân, Nhâm mới hợp cách, trong đó tốt nhất là sinh năm Ất. Nếu Sinh vào những năm khác cũng chủ về cát lợi, nhưng tại cung tam phương, tứ chính không được có sát tinh xung phá. Nếu gặp sát tinh là phá cách, chủ về bị tiểu nhân ám hại. Ưu điểm: Tính tình thẳng thắn, có tài năng lãnh đạo nổi trội, có ti...",
+    "uu_khuyet_diem": "Ưu điểm: Tính tình thẳng thắn, có tài năng lãnh đạo nổi trội, có tinh thần trách | Khuyết điểm: Không hợp với mệnh nữ, vì có chí khí của nam giới, lấn át",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Thái Dương"
+        ],
+        "branches_in": [
+          "Mão"
+        ]
+      }
+    }
+  },
+  {
+    "id": 17,
+    "name": "Dương Lương Xương Lộc Cách",
+    "category": "Cát Cục",
+    "description": "Thái Dương, Thiên Lương, Văn Xương và Lộc Tồn/Hóa Lộc hội chiếu Cung Mệnh.",
+    "reason": "Bộ sao thi cử danh tiếng bậc nhất, vô cùng lợi cho thi cử, khoa bảng, vị trí cao.",
+    "co_ca": "N/A",
+    "binh_chu": "Cũng chính là cách cục Nhật chiếu lôi môn, sao Thái Dương và sao Thiên Lương trấn mệnh tại cung Mão, ngoài ra còn phải là người sinh năm Ất, cung mệnh đồng thời xuất hiện Lộc Tồn và Văn Xương mới hợp cách. Nếu lá số được cách cục này, sự nghiệp học hành cực kỳ xuất sắc, thi cử đỗ đạt cao, đảm nhiệm các vị trí, chức vụ trọng yếu của nhà nước, trở thành nhân vật nổi tiếng trong chính giới, cực hiển quý. Ưu điểm: Dự thi công chức hoặc các kỳ thi quốc gia sẽ có thành tích cao, tiền tài chức vị song toàn, hợp với nghề kinh doanh. Trong kinh văn có viết: \" Lương, Dương, Xương, Lộc tề tựu, thi cử đỗ...",
+    "uu_khuyet_diem": "Ưu điểm: Dự thi công chức hoặc các kỳ thi quốc gia sẽ có thành tích cao, tiền",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Thái Dương",
+          "Thiên Lương",
+          "Văn Xương"
+        ],
+        "min_count": 3
+      },
+      "tam_phuong_tu_chinh_loc": {
+        "stars_required": [
+          "Lộc Tồn",
+          "Hóa Lộc"
+        ],
+        "min_count": 1
+      }
+    }
+  },
+  {
+    "id": 18,
+    "name": "Minh Châu Xuất Hải Cách",
+    "category": "Cát Cục",
+    "description": "Cung Mệnh tại Mùi được Thái Dương (Mão) và Thái Âm (Hợi) miếu địa hội chiếu.",
+    "reason": "Nhật Nguyệt song chiếu rực rỡ về Cung Mệnh ở Mùi như ngọc quý nhô khỏi mặt biển.",
+    "co_ca": "N/A",
+    "binh_chu": "94 Mệnh an tại cung Mùi không có chủ tinh, cung Mão có Thái Dương, Thiên Lương, cung Hợi có Thái Âm nhập miếu vượng hợp chiếu cung mệnh, cung tam phương tứ chính lại có các cát tinh như Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Xương, Khúc, Khôi, Việt gia hội là hợp cách cục này. Tại cung mệnh cung thân có các cát tinh trấn giữ, hội chiếu mà không bị bốn sát tinh, Không, Kiếp xung phá, chủ về thi cử đỗ đạt, cực hiển quý, giữ chức vụ trọng yếu trong chính giới, tiền tài chức vị đều viên mãn, phúc thọ song toàn. Người sinh năm Ất, Bính, Tân, Nhâm là thượng cách. Kinh văn có viết: \" Tam hợp minh châu s...",
+    "uu_khuyet_diem": "Ưu điểm: Nhiều sở thích, sôi nổi, giàu nhiệt huyết, có tài hoa, xử thế quang | Khuyết điểm: Cung mệnh không có các sao Tả, Hữu, Xương, Khúc lại gặp",
+    "conditions": {
+      "cung_menh": {
+        "branches_in": [
+          "Mùi"
+        ]
+      },
+      "cung_quan": {
+        "stars_all": [
+          "Thái Dương"
+        ]
+      },
+      "cung_tai": {
+        "stars_all": [
+          "Thái Âm"
+        ]
+      }
+    }
+  },
+  {
+    "id": 19,
+    "name": "Nguyệt Lãng Thiên Môn Cách",
+    "category": "Cát Cục",
+    "description": "Thái Âm miếu địa rạng rỡ tại Hợi trấn Cung Mệnh.",
+    "reason": "Thái Âm đêm rằm chiếu sáng cửa trời tại Hợi, chủ về thanh cao, đại phú đại quý.",
+    "co_ca": "Chính ngộ phong vân tế hội kỳ\nHải môn cao xứ nhất long phi\nVăn chương gian xuất anh hùng hán\nVạn lý công danh đắc giả hy\nThái Âm nhập miếu hữu quang huy\nTài nhập tài hương phân ngoại kỳ\nPhá hao hung tinh giai bất phạm\nĐôi kim tích ngọc phú hào nhi\nNghĩa là:\nGặp hội phong vân nhiều cơ hội\nNon cao bể rộng gặp rồng bay\nTừ văn chương phất người hào kiệt\nGiành được công danh thực hiếm thay\nThái Âm nhập miếu hào quang rọi\nTài nhập cung tài ắt được may\n96\nHung tinh phá bại đều không phạm\nNên nhà giàu có vàng ngọc đầy\nKinh văn có câu: \" Trăng sáng cổng trời, thăng quan tiến bước\".",
+    "binh_chu": "Hay còn gọi là Nguyệt lạc Hợi cung (Trăng rơi cung Hợi), tức người sinh vào ban đêm, gặp sao Thái Âm trấn mệnh tại cung Hợi, lại được Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Xương, Khúc, Khôi, Việt gia hội là hợp cách cục này. Lá 95 số hợp cách cục này không đại quý cũng là đại phú. Sao Thái Âm cùng cung với Xương, Khúc là tốt nhất, người sinh năm Ất, Bính, Mậu là đẹp nhất, tiếp theo là các năm Đinh, Tân, Canh. Tại cung mệnh có sát tinh là phá cách. Ưu điểm: Sao Thái Âm nhập miếu Hợi cung, người Nam dung mạo thanh tú cử chỉ lịch thiệp, người nữ xinh đẹp yêu kiều. Thông minh tài trí, học vấn, tài n...",
+    "uu_khuyet_diem": "Ưu điểm: Sao Thái Âm nhập miếu Hợi cung, người Nam dung mạo thanh tú cử",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Thái Âm"
+        ],
+        "branches_in": [
+          "Hợi"
+        ]
+      }
+    }
+  },
+  {
+    "id": 20,
+    "name": "Nhật Nguyệt Tịnh Minh Cách",
+    "category": "Cát Cục",
+    "description": "Thái Dương cư Tỵ và Thái Âm cư Dậu đồng thời chiếu về Cung Mệnh.",
+    "reason": "Cả Nhật lẫn Nguyệt đều ở vị trí đắc địa nhất chiếu Mệnh, cuộc đời sáng lạn.",
+    "co_ca": "Nhị diệu thường minh khí tượng tân\nThiếu niên học vấn bá thanh danh\nKỷ phan thăng chuyển công danh thịnh\nĐịnh tác triều trung xí lý nhân.\nNghĩa là:\nNhật nguyệt thường sáng khí tượng mới\nTuổi trẻ học cao nổi thanh danh\nNhiều lần thăng tiến, công danh vượng\nQuan cao chức trọng chốn triều đình\nTrong kinh văn có viết: \" Mặt trăng, mặt trời cùng sáng phò tá thiên tử tại cung\nson\".",
+    "binh_chu": "sáng). Cách cục này gồm hai trường hợp sau: 1. Sao Thiên Lương chấn mệnh tại cung Sửu, Thái Dương tại Tỵ, Thái Âm tại Dậu, hai sao đều miếu vượng hợp chiếu cung mệnh, lại gặp người sinh năm Ất, Bính Đinh, Canh, Tân là hợp cách. 2. Cung mệnh an tại Ngọ không có chủ tinh, cung Dần có Thái Dương, Cung Tý có Thiên Đồng, Thái Âm. Thái Dương, Thái Âm nhập miếu vượng chầu về cung mệnh. Lại có Lộc Tồn, Hóa Khoa, Hóa Quyền, Hóa Lộc, Tả, Hữu, Xương, Khúc, Khôi, Việt gia hội là hợp cách. Ưu điểm: Tính cách quang mĩnh lỗi lạc, thuở nhỏ nổi tiếng về tài học, ngày càng phát triển vững vàng, công danh thịnh...",
+    "uu_khuyet_diem": "Ưu điểm: Tính cách quang mĩnh lỗi lạc, thuở nhỏ nổi tiếng về tài học, ngày | Khuyết điểm: Thái Dương gặp Hóa Kỵ (Sinh năm Giáp), sự nghiệp gặp nhiều",
+    "conditions": {
+      "cung_ty": {
+        "stars_all": [
+          "Thái Dương"
+        ]
+      },
+      "cung_dau": {
+        "stars_all": [
+          "Thái Âm"
+        ]
+      }
+    }
+  },
+  {
+    "id": 21,
+    "name": "Nguyệt Sinh Thương Hải Cách",
+    "category": "Cát Cục",
+    "description": "Thái Âm và Thiên Đồng cùng đóng tại Tý (Cung Mệnh hoặc hội chiếu).",
+    "reason": "Trăng mọc trên biển xanh tại Tý, chủ về văn thơ, thanh tú, tài lộc dồi dào.",
+    "co_ca": "N/A",
+    "binh_chu": "1. Sao Thiên Đồng, Thái Âm trấn mệnh tại cung Tý, có các sao Lộc Tồn, Hóa Lộc, Hóa Quyền, Hóa Khoa, Tả, Hữu, Xương , Khúc , Khôi, Việt gia hội là hợp cách. 2. Sao Thái Âm, Thiên Đồng đều trấn cung Điền Trạch tại cung Tý, gặp cát tinh, cát hóa hội hợp, nhưng cung mệnh và cung tam phương phải cần có cát 98 tinh. Sao Thiên Đồng, Thái Âm tại cung Tý gặp cát tinh chủ về tướng mạo thanh tú, lịch thiệp, học vấn cao, có được tiền tài và danh vọng. Nếu cách cục tốt chủ về đại phú, đại quý. Ưu điểm: Thông minh, thanh tú, cử chỉ thanh lịch, nhã nhặn, khiêm nhường, có được trợ giúp lớn từ người khác giới,...",
+    "uu_khuyet_diem": "Ưu điểm: Thông minh, thanh tú, cử chỉ thanh lịch, nhã nhặn, khiêm nhường, có",
+    "conditions": {
+      "cung_menh": {
+        "branches_in": [
+          "Tý"
+        ]
+      },
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Thái Âm",
+          "Thiên Đồng"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 22,
+    "name": "Thọ Tinh Nhập Miếu Cách",
+    "category": "Cát Cục",
+    "description": "Sao Thiên Lương (Thọ Tinh) nhập miếu trấn thủ Cung Mệnh tại Ngọ.",
+    "reason": "Thiên Lương miếu địa tại Ngọ, chủ về trường thọ, uy tín, chính trực.",
+    "co_ca": "Mệnh ngộ Ly minh củng thọ tinh\nNhất sinh vinh hoa mộc thâm ân\nPhi đằng hồng hộc thanh tiêu cận\nPhi tượng đường đường thị để diên\nNghĩa là:\nMệnh gặp mặt trời chiếu thọ tinh\nMột kiếp vinh hoa đội ơn sâu\nChim hồng sải cánh bầu trời rộng\nNgôi vị đường đường tại cung cao\nKinh văn viết rằng: \" Thiên lương cư ngọ, làm quan thanh hiển\".",
+    "binh_chu": "Sao Thiên Lương trấn mệnh, nhập cung ngọ có Lộc Tồn, Hóa Lộc, Hóa Quyền, Hóa Khoa, Tả, Hữu, Xương, Khúc, Khôi, Việt gia hội là hợp cách. Sao Thiên Lương thuộc thổ, chưởng quản tuổi thọ, nhập miếu tại cung Ngọ. Nếu sở hữu cách cục này, chủ về chính trực vô tư, học vấn ưu việt, tính cách chín chắn, ổn trọng, có tài lãnh đạo quần chúng, xử lý tình huống, sức khỏe tốt, tuổi thọ cao, có được danh vọng và lợi lộc lớn. Nếu gặp nhiều cát tinh, chủ về cực hiển quý. Người sinh năm Đinh là thượng cách, tiếp đến là năm Kỷ, sinh năm Qúy chủ về 99 phú. Còn sinh những năm khác không được tốt như vậy, nếu khô...",
+    "uu_khuyet_diem": "Ưu điểm: Tính cách thẳng thắn, công bằng, học vấn ưu việt, phúc thọ song | Khuyết điểm: Nếu không gặp Hóa Lộc, Hóa Quyền, Hóa Khoa ăn nói khoác",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Thiên Lương"
+        ],
+        "branches_in": [
+          "Ngọ"
+        ]
+      }
+    }
+  },
+  {
+    "id": 23,
+    "name": "Anh Tinh Nhập Miếu Cách",
+    "category": "Cát Cục",
+    "description": "Sao Phá Quân miếu địa trấn Cung Mệnh tại Tý hoặc Ngọ.",
+    "reason": "Phá Quân ở Tý Ngọ biến thành lực lượng khai phá dũng mãnh, quân quyền hiển đạt.",
+    "co_ca": "Bắc đẩu anh tinh tối hữu quyền\nKhảm ly chi thượng phúc miên miên\nHoàng kim kiến tiết xu lang miếu\nThống nhiếp anh hùng trấn tứ phương\nNghĩa là:",
+    "binh_chu": "100 Sao Phá Quân trấn mệnh tại cung Tý, Ngọ, lại được Lộc Tồn, Hóa Lộc, Hóa Khoa, Hóa Quyền, Tả, Hữu, Khôi, Việt gia hội là thuộc cách cục này. Nếu xa rời quê quán có thể gặp vận tốt hợp với nghiệp võ hoặc kinh doanh, phú quý song toàn, đắc tài chóng vánh. Người sinh năm Giáp, Quý là thượng cách, chủ về đại phú hoặc đại quý. Tiếp đó là người sinh năm Đinh, Kỷ. Nếu sinh năm Bính, Mậu chủ về khốn khó nên không hợp với cách cục này. Ưu điểm: Có chủ kiến, tính cách quả quyết, nóng nẩy, có tinh thần lập nghiệp, nhiều phúc, Thăng quan tiến chức, có năng lực lãnh đạo, có danh vọng, tài nghệ, dũng cảm...",
+    "uu_khuyet_diem": "Ưu điểm: Có chủ kiến, tính cách quả quyết, nóng nẩy, có tinh thần lập nghiệp, | Khuyết điểm: Là cách cục biến hóa từ Sát Phá Tham, một đời nhiều thăng trầm,",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Phá Quân"
+        ],
+        "branches_in": [
+          "Tý",
+          "Ngọ"
+        ]
+      }
+    }
+  },
+  {
+    "id": 24,
+    "name": "Thạch Trung Ẩn Ngọc Cách",
+    "category": "Cát Cục",
+    "description": "Sao Cự Môn trấn Cung Mệnh tại Tý hoặc Ngọ (Ngọc ẩn trong đá).",
+    "reason": "Cự Môn ở Tý Ngọ được Lộc Khoa Quyền khai phá như ngọc ẩn trong đá phát sáng.",
+    "co_ca": "102\nCự môn tý ngọ hỷ tương phùng\nCánh trị sinh nhân Tân Quý trung\nTảo tuế định vi phan quế khách\nLão lai tư nhuận phú gia ông\nNghĩa là:\nCự môn ưa gặp Tý cùng Ngọ\nLại gặp năm sinh là Quý Tân\nSớm được thành danh nhập cung quế\nĐến già thong thả hưởng giàu sang\nTrong kinh viết rằng: \" Cự môn tại Tý, Ngọ là ngọc ẩn trong đá\", \" Cự Môn tại\nTý Ngọ gặp Khoa, Lộc, Quyền, ngọc ẩn trong đá phúc vô cùng\".",
+    "binh_chu": "Sao Cự Môn trấn mệnh tại cng Tý, Ngọ, lại có Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Xương, Khúc, Khôi, Việt gia hội là hợp cách. Nhưng chỉ có người sinh năm Tân, Quý mới được coi là hợp cách cục này. Lá số sở hữu cách cục này chủ về lý tưởng cao xa, tài hoa xuất chúng, trí tuệ hơn người, theo nghề kinh doanh sẽ trở thành bậc đại phú, theo nghiệp chính trị sẽ có được chức vị, vị trí cao, nhiều lộc, nắm giữ binh quyền nếu không cũng trở thành nhân vật có quyền uy trong giới khoa học, học thuật. Nhưng phải trải qua một quá trình phấn đấu vất vả, gian khổ mới có được thành tựu, nên cách cục này mới c...",
+    "uu_khuyet_diem": "Ưu điểm: Có thị hiếu tốt, có hoài bão và nghị lực phấn đấu, ham thích nghiên | Khuyết điểm: Tuổi trẻ nhiều vất vả, gặp chuyện phiền phức, oan uổng.",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Cự Môn"
+        ],
+        "branches_in": [
+          "Tý",
+          "Ngọ"
+        ]
+      }
+    }
+  },
+  {
+    "id": 25,
+    "name": "Thất Sát Triều Đẩu Cách",
+    "category": "Cát Cục",
+    "description": "Sao Thất Sát miếu vượng trấn Mệnh tại Tý, Ngọ, Dần, Thân.",
+    "reason": "Tướng tinh Thất Sát triều đẩu, chủ về uy phong, quyết đoán, sự nghiệp lớn.",
+    "co_ca": "Cách danh triều đẩu quý vô nghi\nNhập miếu tu giao phúc lộc tề\nLiệt liệt trùng trùng danh hiển diệu\nBình sinh an ổn hảo căn cơ\nThất sát Dần Thân Tý Ngọ cung\nTứ di củng thủ phục anh hùng\nKhôi Việt, Tả Hữu, Văn Xương hội\nKhoa lộc danh cao thực vạn chung\n104\nNghĩa là:\nCách cục triều đẩu là đáng quý\nNhập miếu phúc lộc được vẹn hay\nRực rỡ uy danh thân hiển hách\nMột đời yên ổn vững vàng thay\nThất sát tại Dần, Thân, Tý Ngọ\nKhắp nơi quy phục kẻ anh hùng\nGặp Khôi, Việt, Tả, Hữu, Xương Khúc\nCông dah hiển đạt lộc muôn trùng\nKinh văn có viết: \" Thất Sát triều đẩu tước lộc vinh hoa\". \" Thất Sát tại Dần\nThân, Tý Ngọ một đời ăn lộc cực vinh hoa\", \"Triều đẩu, Ngưỡng đẩu, tước lộc\nvinh hoa\", \" Thất Sát trấn mệnh, miếu vượng có mưu lược, gặp Tử Vi lại gặp\ncác cát tinh ắt thành đại tướng\", \" Thất Sát trấn mệnh được Tả , Hữu, Xương,\nKhúc hội chiếu có được quyền sinh sát, phú quý siêu phàm\", \" Thất Sát nhập\ncung thân mệnh, gặp cát tinh cũng phải nếm trải gian nan\".",
+    "binh_chu": "Sao Thất sát trấn mệnh, nhập cung Tý, Ngọ, Dần, Thân lại gặp Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Xương, Khúc, Khôi Việt gia hội là hợp cách cục này. Sao Thất Sát nhập miếu tại cung Thân, Vượng tại cung Tý, Ngọ. Nên Thất Sát trấn mệnh tại cung Thân, Ngọ là \" Triều đẩu\" (Chầu về Bắc Đẩu), Trấn mệnh tại cung Dần, Tý là \" Ngưỡng đẩu\" ( Ngửa trông Bắc Đẩu), cách cục này có mang sát khí, nên bản thân phát đạt ắt sẽ khiến một số người khác gặp tai họa, hoặc cũng có thể khiến nhiều người phải chết vì mình. Nếu lá số gặp cách cục này, chủ về theo nghiệp võ sẽ hiển quý, thống lĩnh đông đảo quân đội, nếu...",
+    "uu_khuyet_diem": "Ưu điểm: Cuộc đời nhiều biến động, tuổi trẻ gian nan, nhưng có mưu lược, có | Khuyết điểm: Là cách cục biến hóa từ Sát Phá Tham, dê mắc phải thị phi, khó",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Thất Sát"
+        ],
+        "branches_in": [
+          "Tý",
+          "Ngọ",
+          "Dần",
+          "Thân"
+        ]
+      }
+    }
+  },
+  {
+    "id": 26,
+    "name": "Mã Đầu Đới Tiễn Cách",
+    "category": "Hung / Biến Cục",
+    "description": "Kình Dương cư Cung Mệnh tại Ngọ (Đầu ngựa mang tên).",
+    "reason": "Kình Dương độc thủ tại Ngọ; nếu hội cát tinh thì hiểm nguy mà phát lớn, gặp sát tinh thì bế tắc.",
+    "co_ca": "N/A",
+    "binh_chu": "1. Sao Thiên Đồng, Thái Âm trấn mệnh tại cung Ngọ, người sinh năm Bính, Mậu có Kình dương tại cung mệnh, được cát tinh hội chiếu, là cách cục Mã đầu đới tiễn. Nếu không sinh vào năm Bính, Mậu sẽ không hợp cách cục này. 2. Sao Tham Lang trấn mệnh tại cung Ngọ, người sinh năm Bính, Mậu có Kình dương tại cung mệnh, cũng là cách cục Mã đầu đới tiễn có các sao Hỏa, Linh, 105 Phụ, Bật nằm cùng cung hoặc gia hội lại càng cát lợi. Cung ngọ là ngựa (mã), Kình dương là tên (tiễn), nên mới có tên gọi là Mã đầu đới tiễn. Nếu sở hữu cách cục này, chủ về hiển phát nghiệp võ, thống lĩnh quân đội, trấn giữ nơ...",
+    "uu_khuyet_diem": "Ưu điểm: Chủ hiển đạt về nghiệp võ, thống lĩnh quân đội, trấn giữ nơi trọng | Khuyết điểm: Bôn ba bên ngoài, tuổi trẻ vất vả lao lực mà không có thành tựu,",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Kình Dương"
+        ],
+        "branches_in": [
+          "Ngọ"
+        ]
+      }
+    }
+  },
+  {
+    "id": 27,
+    "name": "Cự Cơ Đồng Lâm Cách",
+    "category": "Cát Cục",
+    "description": "Thiên Cơ và Cự Môn đồng cung trấn Mệnh tại Mão hoặc Dậu.",
+    "reason": "Cự Môn thông tuệ kết hợp Thiên Cơ mưu trí tại Mão Dậu, chủ về sự nghiệp kinh doanh hoặc tư vấn.",
+    "co_ca": "Cự Môn miếu vượng ngộ Thiên Cơ\nCao tiết thanh phong thế hãn hy\nHọc tựu nhất triều đằng đạt khứ\nNguy nguy đức nghiệp chấn Hoa di\nNghĩa là:\nCự Môn miệu vượng gặp Thien Cơ\nKhí tiết thanh cao thực hiếm thay\nHọc vấn lẫy lừng danh hiển hách\nĐức cao vòi vọi khắp trong ngoài\nKinh văn có câu: \" Cự, Cơ đồng cung quan đến công khanh\", \" Cự, Cơ tại Mão\nsinh năm Ất, Tân, Bính làm đến công khanh\", \" Mệnh nữ gặp Cự Môn, Thiên\n107\nCơ chủ về phá gia bại sản\".",
+    "binh_chu": "Hay còn gọi là cách cục Cự Cơ đồng cung, tức hai sao Thiên Cơ, Cự Môn cùng trấn mệnh tại cung Mão, Dậu, có Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Xương, Khúc đồng cung hoặc gia hội là thuộc về cách cục này. Sở hữu cách cục này sẽ có học vấn cực cao, nên theo nghiệp chính trị, chủ về đại phú, đại 106 quý, danh tiếng lẫy lừng. Nếu cách cục có phần kém tốt, theo nghiệp kinh doanh sẽ trở thành cự phú. Cự Môn, Thiên cơ nếu trấn mệnh tại cung Dậu không thuộc cách cục này. Ưu điểm: Ham mê nghiên cứu, có thành tựu trong các lĩnh vực khoa học kỹ thuật cao, lao động trí óc, và nghệ thuật, có tài hùng biện,...",
+    "uu_khuyet_diem": "Ưu điểm: Ham mê nghiên cứu, có thành tựu trong các lĩnh vực khoa học kỹ | Khuyết điểm: Tuổi trẻ vất vả, gian nan, từ trung niên trở đi mới bình ổn, cậy tài",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Cự Môn",
+          "Thiên Cơ"
+        ],
+        "branches_in": [
+          "Mão",
+          "Dậu"
+        ]
+      }
+    }
+  },
+  {
+    "id": 28,
+    "name": "Thiên Ất Củng Mệnh Cách",
+    "category": "Cát Cục",
+    "description": "Thiên Khôi và Thiên Việt tọa thủ hoặc hội chiếu Cung Mệnh (Tọa Quý Hướng Quý).",
+    "reason": "Quý nhân Thiên Khôi Thiên Việt củng chiếu Cung Mệnh, ra đời luôn gặp quý nhân giúp đỡ.",
+    "co_ca": "Thiên Quý tương tùy mệnh lý lai\nĐịnh ưng danh chiếm thiếu niên khôi\nVăn chương cái thế truy ban mã\nDị thời đương vi tể tướng tài.\nNghĩa là:\nThiên quý cùng nằm tại cung mệnh\nThiếu niên đỗ đạt chiếm bảng vàng\n108\nVăn chương cái thế tài xuất chúng\nNgày sau tể tướng hẳn nên danh\nKinh văn có câu: \" Thiên Khôi, Thiên Việt văn chương cái thế\". \" Khôi, Việt\nđồng cung làm nên tể tướng\", \" Thiên Khôi trấn mệnh quan đến tam đài\", Khôi,\nViệt tại mệnh thân, hẳn làm quan lớn\", \"Quý nhân quý hương, gặp được phú\nquý\".",
+    "binh_chu": "1. Thiên Khôi, Thiên Việt một sao tại cung mệnh, một sao tại cung thân. 2. Hoặc Thiên Khôi, Thiên Việt, một sao tại cung mệnh, một sao tại cung thiên di, nếu cung thân đóng tại cung thiên di càng tốt. Chủ tinh tại cung mệnh cần phải miếu vượng, cung tam phương, tứ chính có cát tinh gia hội, mới được coi là hợp cách. Chủ về có học thức, học vấn cao, là người đoan chính, hay giúp đỡ người khác, đồng thời cũng được nhiều người giúp đỡ, gặp dữ hóa lành, biến họa thành phúc, giàu sang. Nếu mệnh không gặp cát tinh, cho dù có Khôi, Việt, tuy được người trợ giúp, nhưng cũng chỉ là mệnh bình thường Ưu...",
+    "uu_khuyet_diem": "Ưu điểm: Văn chương xuất chúng, được quý nhân phò trợ",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Thiên Khôi",
+          "Thiên Việt"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 29,
+    "name": "Quyền Lộc Tuần Phùng Cách",
+    "category": "Cát Cục",
+    "description": "Hóa Quyền và Hóa Lộc đồng cung hoặc hội chiếu tại Cung Mệnh.",
+    "reason": "Quyền hành đi đôi với Tài lộc, chủ về vừa có uy quyền vừa có tài chính dồi dào.",
+    "co_ca": "Mệnh phùng Quyền Lộc thực kham khoa\nThiên tải công danh phú quý gia\nĐơn kiến dã ưng thân phúc hậu\nBình sinh ổn bộ hảo sinh nhai\nNghĩa là:\nMệnh gặp Quyền Lộc thực đáng mừng\nCông danh bền vững được giàu sang\nChỉ gặp một",
+    "binh_chu": "1. Sao Hóa Lộc và Hóa Quyền cùng tại cung mệnh là thuộc cách cục này. Cụ thể như sau: - Người sinh năm Ất, sao Thiên Cơ, Thiên Lương trấn mệnh tại Thìn, Tuất, Thiên Cơ hóa Lộc, Thiên Lương hóa Quyền. - Người sinh năm Đinh, sao Thiên Đồng, Thái Âm trấn mệnh tại Tý, Ngọ, Thái Âm hóa Lộc, Thiên Đồng hóa Quyền. - Người sinh năm Kỷ, sao Vũ Khúc, Tham Lang trấn mệnh tại Sửu, Mùi, Vũ Khúc hóa Lộc, Tham Lang hóa Quyền. - Người sinh năm Tân, sao Cự Môn, Thái Dương trấn mệnh tại cung Dần, Thân, Cự Môn hóa Lộc, Thái Dương hóa Quyền. Các sao tại cung mệnh cần phải miếu vượng, tại cung tam phương tứ chính...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Hóa Quyền",
+          "Hóa Lộc"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 30,
+    "name": "Khoa Quyền Lộc Giáp Cách",
+    "category": "Cát Cục",
+    "description": "Hai bên Cung Mệnh (giáp cung) có các sao Hóa Khoa, Hóa Quyền, Hóa Lộc.",
+    "reason": "Cung Mệnh được cặp sao Tam Hóa kẹp hai bên nâng đỡ.",
+    "co_ca": "N/A",
+    "binh_chu": "Trong ba sao Hóa là Hóa Lộc, Hóa Quyền, Hóa Khoa, có hai sao nằm hai bên cung mệnh (giáp mệnh) là hợp với cách cục này. Cụ thể như sau: 1. Người sinh năm Giáp, Thiên Đồng trấn mệnh tại Tỵ Hợi hai cung bên cạnh là Phá Quân hóa Quyền và Vũ Khúc hóa Khoa. 2. Người sinh năm Ất, Tử Vi, Thiên Tướng trấn mệnh tại Thìn, Tuất, hai cung bên cạnh là Thiên Cơ hóa Lộc, Thiên Lương hóa Quyền, đồng thời sao Tử Vi tại cung mệnh lại được hóa Khoa. 3. Người sinh năm Đinh, Vũ Khúc, Thiên Phủ trấn mệnh tại cung Tý, Ngọ, hai cung bên cạnh là Thái Âm hóa Lộc và Thiên Đồng hóa Quyền. 4. Người sinh năm Kỷ, Thái Âm, T...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "giap_cung": {
+        "stars_required": [
+          "Hóa Khoa",
+          "Hóa Quyền",
+          "Hóa Lộc"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 31,
+    "name": "Song Lộc Giáp Mệnh Cách",
+    "category": "Cát Cục",
+    "description": "Cung Mệnh được Lộc Tồn và Hóa Lộc kẹp ở hai cung kề bên.",
+    "reason": "Hai nguồn tài lộc vây quanh Cung Mệnh, chủ về tài lộc dồi dào, không lo thiếu thốn.",
+    "co_ca": "N/A",
+    "binh_chu": "Tức Lộc Tồn, Hóa Lộc nằm ở hai bên cung mệnh, gồm những trường hợp cụ thể sau đây: 1. Người sinh năm Giáp, sao Thiên Lương, Đà La trấn mệnh tại Sửu, cung Dần có Lộc Tồn và cung Tý có Liêm Trinh hóa Lộc kèm hai bên cung Sửu (Đây cũng đồng thời là cách cục Nhật Nguyệt tịnh minh, Tọa quý hướng quý). 2. Người sinh năm Ất, sao Thất Sát, Kình Dương trấn mệnh tại cung Thìn, cung Mão có Lộc Tồn và cung Tỵ có Thiên Cơ hóa Lộc kèm hai bên cung Thìn. 3. Người sinh năm Bính, sao Tham Lang, Kình dương trấn mệnh tại cung Ngọ, cung Tỵ có Lộc Tồn và cung Mùi có Thiên Đồng hóa Lộc kèm hai bên cung Ngọ (Đây cũn...",
+    "uu_khuyet_diem": "Ưu điểm: Chức vị tài lộc song toàn, một đời yên ổn, xuất thân phú quý. | Khuyết điểm: Đối với cách cục Quyền Lộc tuần phùng nếu bị Hung tinh, sát",
+    "conditions": {
+      "giap_cung": {
+        "stars_required": [
+          "Lộc Tồn",
+          "Hóa Lộc"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 32,
+    "name": "Tham Vũ Đồng Hành Cách",
+    "category": "Cát Cục",
+    "description": "Tham Lang và Vũ Khúc đồng cung tại Sửu Mùi (Tiền bần hậu phú).",
+    "reason": "Vũ Khúc tài tinh kết hợp Tham Lang; phát muộn sau tuổi 30, càng về sau càng giàu có.",
+    "co_ca": "Vũ Tham nhập miếu quý kham ngôn\nTất chủ vi quan chưởng đại quyền\nVăn tác giám ti thân hiển đạt\nVõ thần dũng mãnh trấn biên cương\n114\nNghĩa là:\nVũ Tham nhập miếu là rất tốt\nẮt được làm quan nắm quyền hành\nVăn nhân hoạn lội được hiển đạt\nVõ tướng anh hùng trấn biên cương.\nKinh văn có câu: \" Tham Vũ đồng cung, uy danh lừng lẫy biên cương\", \" Tham\nVũ nằm tại Mộ cung, ba mươi mới được phát phúc\", '\"Tham Vũ không phát\nngười trẻ tuổi, vận quá ba mươi có phúc lành\", \" Tiền bần hậu phú (Nghèo\ntrước giàu sau), vũ tham nằm cùng cung thân, mệnh\".",
+    "binh_chu": "113 Tức Tham Lang, Vũ Khúc nằm tại bốn cung Mộ (Thìn, Tuất, Sửu, Mùi), trấn giữ hoặc hội chiếu cung thân mệnh. Cách cục này có hai loại: Cung mệnh, cung thân tại Sửu, Mùi, có hai sao Vũ Khúc, Tham Lang trấn thủ. Sao Tham Lang, Vũ Khúc tại cung Thìn, Tuất, một sao trấn mệnh, một sao trấn cung thân. Cung vị tam phương, tứ chính của cung mệnh cần phải có cát tinh mới được coi là phù hợp với cách cục này. Ưa gặp được Lộc Tồn, Phụ, Bật, Xương, Khúc, Khôi, Việt cùng các sao hóa cát, cũng cưa gặp Tham Lang cùng Hỏa Tinh, Linh Tinh đồng cung. Lá số được cách cục này nếu theo nghiệp văn sẽ làm quan to,...",
+    "uu_khuyet_diem": "Ưu điểm: Theo nghiệp văn sẽ làm quan lớn, theo nghiệp võ nắm giữ binh | Khuyết điểm: Phần nhiều vận trình tuổi trẻ bất lợi, nên trước nghèo hèn sau",
+    "conditions": {
+      "cung_menh": {
+        "branches_in": [
+          "Sửu",
+          "Mùi"
+        ]
+      },
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Tham Lang",
+          "Vũ Khúc"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 33,
+    "name": "Tham Hỏa Tương Phùng Cách",
+    "category": "Cát Cục Bộc Phát",
+    "description": "Tham Lang gặp Hỏa Tinh tại Cung Mệnh hoặc Tam Phương hội chiếu.",
+    "reason": "Cách Hỏa Tham bộc phát bất ngờ, chủ về cơ hội may mắn tài lộc phát vọt.",
+    "co_ca": "Tham Lang ngộ Hỏa tất anh hùng\nChỉ nhật biên đình lập đại công\n115\nCánh đắc phúc nguyên lâm miếu vượng\nTrướng hô thiên vạn hổ bôn môn\nTứ mộ cung trung phúc khí nùng\nĐề binh chỉ nhật lập biên công\nHỏa tinh củng hội thành vi quý\nDanh chấn chư di định hữu phong\nNghĩa là:\nTham Lang gặp Hỏa ấy anh hùng\nBiên cương nhanh chóng lập đại công\nCó được",
+    "binh_chu": "Sao Tham Lang trấn mệnh gặp Hỏa Tinh tại cung mệnh hoặc cung tam phương tứ chính hội chiếu là cách cục này. Hỏa tinh và Tham Lang cùng trấn thủ tại cung mệnh là tốt nhất, tiếp đó là nằm tại cung tam hợp. Nếu sao Tham Lang nằm tại các cung Thìn, Tuất, Sửu, Mùi gia hội với Lộc Tồn, Hóa Khoa, Hóa Quyền, Hóa Lộc, Tả Phụ, Hữu Bật, Thiên Khôi, Thiên Việt là cách cục cực tốt, chủ về đại phú, đại quý. Người này theo nghiệp võ sẽ lập công, nắm giữ quyền lực quân sự của quốc gia. Theo nghiệp kinh doanh sẽ phát tài nhanh chóng, tài vận hanh thông. Ưa gặp linh tinh gia hội. Ca Quyết: Tham Lang ngộ Hỏa tất...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Tham Lang"
+        ]
+      },
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Hỏa Tinh"
+        ],
+        "min_count": 1
+      }
+    }
+  },
+  {
+    "id": 34,
+    "name": "Tham Linh Tương Phùng Cách",
+    "category": "Cát Cục Bộc Phát",
+    "description": "Tham Lang gặp Linh Tinh tại Cung Mệnh hoặc Tam Phương hội chiếu.",
+    "reason": "Cách Linh Tham chủ về sự nghiệp âm thầm tích lũy rồi bùng nổ hiển đạt.",
+    "co_ca": "Tham Lang cánh đắc dữ Linh phùng\nNhập miếu cung trung phúc khí long\nLập địa anh hùng dữ thượng tướng\nĐề binh chỉ nhật lập biên công\nNghĩa là:\nTham Lang cùng Linh Tinh gặp gỡ\nĐóng tại cung miếu phúc vô cùng\nAnh hùng cái thế hoặc danh tướng\nCầm quân nhanh chóng lập quân công.\nTrong kinh văn có câu: \" Hỏa Tinh và Tham Lang nằm tại cung mệnh, hoặc tại\ncung tam phương tứ chính củng chiếu cung mệnh là thuộc cách cục này,",
+    "binh_chu": "Tham Linh tịnh thủ). Sao Tham Lang trấn tại cung mệnh, gặp Linh Tinh tại cung mệnh hoặc cung tam phương tứ chính củng chiếu, là thuộc cách cục này. Sao Linh Tinh và Tham Lang cũng nằm tại cung mệnh là tốt nhất, thứ đến là nằm tại cung tam hợp. Nếu sao Tham Lang nằm tại bốn cung Mộ là Thìn , Tuất, Sửu, Mùi lại có 116 Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Khôi, Việt gia hội là cách cục cực tốt, chủ về đại phú, đại quý. Sở hữu cách cục này theo nghiệp võ sẽ lập đại công, nắm giữ quyền lực quân sự của quốc gia, theo nghiệp kinh doanh sẽ phát tài nhanh chóng, tài vận hanh thôn, ưa gặp Hỏa Tinh gia hộ...",
+    "uu_khuyet_diem": "Khuyết điểm: Gặp Kình dương, Đà La sẽ bất lợi.",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Tham Lang"
+        ]
+      },
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Linh Tinh"
+        ],
+        "min_count": 1
+      }
+    }
+  },
+  {
+    "id": 35,
+    "name": "Quý Tinh Giáp Mệnh Cách",
+    "category": "Cát Cục",
+    "description": "Cung Mệnh được cặp sao quý (Nhật Nguyệt, Tả Hữu, hoặc Khôi Việt) kẹp hai bên.",
+    "reason": "Quý tinh nâng đỡ hai bên Cung Mệnh, tạo bệ phóng vững chắc trong cuộc sống.",
+    "co_ca": "Mệnh lý vô hung Thiên Quý giáp\nCát tinh đắc ngộ hảo sinh nhai\nNhược phi hàn mặc văn chương sĩ\nDã thị phong y túc thực gia\nNghĩa là:\nMệnh không hung tinh gặp thiên quý\nCó thêm",
+    "binh_chu": "Cách cục này gồm bốn loại, nhưng đều yêu cầu các sao tại cung vị tam phương tứ chính của cung mệnh phải miếu vượng hóa cát mới có thể giàu sang, thành tựu. Nếu nằm kèm hai bên các cung khác thì lực không đủ, tác dụng không lớn. 1. Cách cục Tử Vi giáp mệnh: Cung mệnh tại Dần Thân gặp Tử Vi và Thiên Phủ kèm ở hai bên cung mệnh, cung tam phương của cung mệnh có cát tinh, chủ về giàu sang. Nếu không có cát tinh là mệnh bình thường. 2. Cách cục Nhật Nguyệt giáp mệnh: Cung mệnh tại Sửu Mùi, gặp Thái Dương và Thái Âm kèm ở hai bên cung mệnh, còn có tên là Nhật Nguyệt giáp tài, là vì với cách cục này,...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "giap_cung_pairs": [
+        [
+          "Thái Dương",
+          "Thái Âm"
+        ],
+        [
+          "Tả Phù",
+          "Hữu Bật"
+        ],
+        [
+          "Thiên Khôi",
+          "Thiên Việt"
+        ]
+      ]
+    }
+  },
+  {
+    "id": 36,
+    "name": "Liêm Trinh Văn Vũ Cách",
+    "category": "Cát Cục",
+    "description": "Liêm Trinh miếu địa tại Dần Thân gặp Vũ Khúc và Văn Xương hội chiếu.",
+    "reason": "Văn võ song toàn, Liêm Trinh chính trực kết hợp Vũ Khúc tài năng và Văn Xương khoa bảng.",
+    "co_ca": "Mệnh trung Văn Vũ hỷ triều viên\nNhập miếu bình sinh phúc khí toàn\nThuần túy văn năng cao chiết quế\n120\nChinh chiến võ định trấn tam biên\nNghĩa là:\nVăn Xương Vũ Khúc ưa chầu mệnh\nNhập miếu một đời phúc dồi dào\nVăn chương tốt đẹp thường đỗ đạt\nVõ công chinh phạt định trong ngoài\nKinh văn có câu: \" Liêm Trinh gặp Văn Xương ưa thích lễ nhạc\".",
+    "binh_chu": "Sao Liêm Trinh nhập miếu tại Dần, Thân, có Văn Xương, Vũ Khúc hội chiếu là thuộc cách cục này. Ưu điểm: Văn võ song toàn, nếu Liêm Trinh nhập miếu trấn mệnh tại Dần Thân, gặp Văn Xương, Vũ Khúc sẽ có nhiều phúc. Nếu gặp Lộc Tồn một đời giàu có. Khuyết điểm: Tình duyên trắc trở. Ca Quyết: Mệnh trung Văn Vũ hỷ triều viên Nhập miếu bình sinh phúc khí toàn Thuần túy văn năng cao chiết quế 120 Chinh chiến võ định trấn tam biên Nghĩa là: Văn Xương Vũ Khúc ưa chầu mệnh Nhập miếu một đời phúc dồi dào Văn chương tốt đẹp thường đỗ đạt Võ công chinh phạt định trong ngoài Kinh văn có câu: \" Liêm Trinh gặp...",
+    "uu_khuyet_diem": "Ưu điểm: Văn võ song toàn, nếu Liêm Trinh nhập miếu trấn mệnh tại Dần | Khuyết điểm: Tình duyên trắc trở.",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Liêm Trinh"
+        ],
+        "branches_in": [
+          "Dần",
+          "Thân"
+        ]
+      },
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Vũ Khúc",
+          "Văn Xương"
+        ],
+        "min_count": 2
+      }
+    }
+  },
+  {
+    "id": 37,
+    "name": "Phụ Củng Văn Tinh Cách",
+    "category": "Cát Cục",
+    "description": "Văn Xương tại Cung Mệnh được Tả Phù củng chiếu.",
+    "reason": "Tài hoa mẫn tiệp của Văn Xương có thêm sự giúp sức thực tế của Tả Phù.",
+    "co_ca": "Phụ tinh củng mệnh tối kham ngôn\nMẫn tiệp tài hoa chúng mạc tiên\nKhinh thời soái thần kiêm ngũ mã\nTrọng tu nhập tướng chuẩn uy quyền\nNghĩa là:\nTả Phụ chiếu mệnh là rất tốt\n121\nMẫn tiệp tài hoa chẳng ai bì\nÍt cũng tướng tài cùng cự phú\nNhiều ắt trọng thần đủ quyền uy",
+    "binh_chu": "Văn Xương tại cung mệnh được Tả Phụ củng chiếu. Ưu điểm: Mẫn tiệp, tài hoa, giữ chức vụ cao, được tôn quý, trọng vọng Khuyết điểm: Gặp sát tinh là mệnh bình thường Ca Quyết: Phụ tinh củng mệnh tối kham ngôn Mẫn tiệp tài hoa chúng mạc tiên Khinh thời soái thần kiêm ngũ mã Trọng tu nhập tướng chuẩn uy quyền Nghĩa là: Tả Phụ chiếu mệnh là rất tốt 121 Mẫn tiệp tài hoa chẳng ai bì Ít cũng tướng tài cùng cự phú Nhiều ắt trọng thần đủ quyền uy...",
+    "uu_khuyet_diem": "Ưu điểm: Mẫn tiệp, tài hoa, giữ chức vụ cao, được tôn quý, trọng vọng | Khuyết điểm: Gặp sát tinh là mệnh bình thường",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Văn Xương"
+        ]
+      },
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Tả Phù"
+        ],
+        "min_count": 1
+      }
+    }
+  },
+  {
+    "id": 38,
+    "name": "Hùng Tú Triều Viên Cách",
+    "category": "Cát Cục",
+    "description": "Sao Liêm Trinh trấn Mệnh tại Thân hoặc Mùi không bị sát tinh xâm hại.",
+    "reason": "Hùng tú triều viên, chủ về tuổi trẻ làm nên cơ nghiệp lừng lẫy, phát tài nhanh chóng.",
+    "co_ca": "Thân Mùi Liêm Trinh đắc địa phương\nTúng gia Thất Sát bất vi hung\nThanh danh hiển đạt phong vân viễn\nNhị hạn ưu du phú quý trung\nNghĩa là:\nLiêm Trinh đắc địa tại Mùi Thân\nDù gặp Thất Sát cũng không hung\nThanh danh hiển đạt nhanh thăng tiến\nHai hạn thong dong cảnh giàu sang\n122\nKinh văn có viết: \" Liêm Trinh trấn mệnh tại Thân Mùi, không gặp tứ sát sẽ\ngiàu sang, danh tiếng lừng lấy bốn phương\" (",
+    "binh_chu": "Sao Liêm Trinh trấn mệnh tại Thân, Mùi, không gặp sát tinh. Gặp cách cục này, chủ về tuổi trẻ làm nên cơ nghiệp lừng lẫy, phát tài nhanh chóng, được nổi danh. Liêm Trinh hóa Lộc tại cung Mùi, hoặc tại Dần, Thân có Lộc Tồn đồng cung là cách cục Liêm Trinh thanh bạch. Ưu điểm: Tuổi trẻ có thành tựu vang dội, phát tài nhanh chóng, nổi tiếng. Khuyết điểm: Gặp sát tinh là mệnh bình thường Ca quyết: Thân Mùi Liêm Trinh đắc địa phương Túng gia Thất Sát bất vi hung Thanh danh hiển đạt phong vân viễn Nhị hạn ưu du phú quý trung Nghĩa là: Liêm Trinh đắc địa tại Mùi Thân Dù gặp Thất Sát cũng không hung T...",
+    "uu_khuyet_diem": "Ưu điểm: Tuổi trẻ có thành tựu vang dội, phát tài nhanh chóng, nổi tiếng. | Khuyết điểm: Gặp sát tinh là mệnh bình thường",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Liêm Trinh"
+        ],
+        "branches_in": [
+          "Thân",
+          "Mùi"
+        ],
+        "stars_none": [
+          "Kình Dương",
+          "Đà La",
+          "Hỏa Tinh",
+          "Linh Tinh"
+        ]
+      }
+    }
+  },
+  {
+    "id": 39,
+    "name": "Quyền Sát Hóa Lộc Cách",
+    "category": "Cát Cục Uy Quyền",
+    "description": "Thất Sát gặp Sát tinh đắc địa và Hóa Lộc / Hóa Quyền.",
+    "reason": "Biến uy lực của sát tinh thành quyền bính và tài lộc.",
+    "co_ca": "Tam sát gia lâm miếu vượng cung\nTính tình cương mãnh chấn anh hùng\nKỷ phiên hiểm địa đô kinh quá\nLẫm lẫm uy quyền chúng hãm đồng\nNghĩa là:\n123\nTam sát đóng tại cung miếu vượng\nTính tình cương liệt xứng anh hùng\nNhiều phen nguy hiểm từng nếm trải\nQuyền uy lẫm liệt chẳng tầm thường\nKinh văn có viết: \" Kình dương gặp miếu gặp cát tinh, phú quý, nổi tiếng (cách\ncục kình dương nhập miếu), \" Kình dương, Hỏa Tinh, cùng trấn mệnh tại Thìn\nTuất Sửu Mùi, uy quyền vượt bậc\", \" Hỏa tinh (Linh tinh) trấn mệnh miếu\nvượng gặp cát tinh, tại cung đối và cung tam hợp không có hung tinh, nghiệp\nvõ lập công\", \" Hỏa Linh gặp gỡ nhập miếu, danh tiếng lừng lẫy trong ngoài \",\n\" Linh Tinh trấn mệnh, miếu vượng gặp Tử Vi, không sang thì giàu\", \" Linh\ntinh, Hỏa tinh nhập miếu, cũng là có phúc\", \" Dương, Đà, Hỏa , Linh gặp cát\nphát tài, gặp hung là kỵ\".",
+    "binh_chu": "Sao Kình dương, Đà La, Hỏa, Linh trấn mệnh nhập miếu được ba sao Thất Sát, Hóa Lộc , Hóa Quyền miếu vượng hội chiếu, ngoài ra cung vị tam phương, tứ chính của cung mệnh cần có cát tinh mới phù hợp với cách cục này. Sở hữu cách cục này chủ về tính cách cương cường quyết liệt, anh hùng khẳng khái, phải trải qua trùng trùng gian nan nguy hiểm, chết đi sống lại, nên theo nghiệp võ hoặc các nghề mang tính mạo hiểm, đầu cơ sẽ có thành tựu lớn. Người có cách cục này sẽ gặp phải tai họa tù ngục, nếu không gặp cát tinh đồng cung hoặc gia hội, ắt sẽ thành kẻ côn đồ hung dữ, thân thể tàn tật hoặc bị tai...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Thất Sát"
+        ],
+        "min_count": 1
+      },
+      "tam_phuong_sat": {
+        "stars_required": [
+          "Kình Dương",
+          "Đà La",
+          "Hỏa Tinh",
+          "Linh Tinh"
+        ],
+        "min_count": 1
+      },
+      "tam_phuong_loc": {
+        "stars_required": [
+          "Hóa Lộc",
+          "Hóa Quyền",
+          "Lộc Tồn"
+        ],
+        "min_count": 1
+      }
+    }
+  },
+  {
+    "id": 40,
+    "name": "Lộc Hợp Uyên Ương Cách",
+    "category": "Đại Cát Cục",
+    "description": "Lộc Tồn và Hóa Lộc cùng đồng thủ tại Cung Mệnh.",
+    "reason": "Hai sao Lộc hội tụ trùng phùng tại Cung Mệnh, chủ về cự phú, tài vận vô cùng hanh thông.",
+    "co_ca": "Lộc hợp uyên ương phúc khí cao\nTư nhân văn vũ tất anh hào\nĐôi kim tích ngọc thân vinh quý\nTước vị cao thiên ý tử bào\n124\nNghĩa là:\nLộc hợp thành đôi phúc dồi dào\nVăn tài võ lược xứng anh hào\nNgọc vàng chồng chất thân vinh hiển\nĐai vàng áo tía chức quyền cao\nKinh văn có viết: \" Hai Lộc gặp nhau một đời phú quý\".",
+    "binh_chu": "Lộc Tồn và Hóa Lộc cùng trấn cung mệnh, lá số có cách cục này, một đời tài vận hanh thông, thành bậc cự phú, thường làm chủ doanh nghiệp tư nhân, giám đốc công ty, hoặc nhà kinh doanh bất động sản. Nếu không cũng là quan chức chính trị cấp cao, nhờ chính trị mà phát tài. Ca Quyết: Lộc hợp uyên ương phúc khí cao Tư nhân văn vũ tất anh hào Đôi kim tích ngọc thân vinh quý Tước vị cao thiên ý tử bào 124 Nghĩa là: Lộc hợp thành đôi phúc dồi dào Văn tài võ lược xứng anh hào Ngọc vàng chồng chất thân vinh hiển Đai vàng áo tía chức quyền cao Kinh văn có viết: \" Hai Lộc gặp nhau một đời phú quý\"....",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Lộc Tồn",
+          "Hóa Lộc"
+        ]
+      }
+    }
+  },
+  {
+    "id": 41,
+    "name": "Song Lộc Triều Viên Cách",
+    "category": "Cát Cục",
+    "description": "Lộc Tồn và Hóa Lộc cùng hội chiếu Cung Mệnh từ Tam Phương Tứ Chính.",
+    "reason": "Hai nguồn tài lộc hội chiếu Cung Mệnh, chủ về tài lộc dồi dào từ nhiều nguồn.",
+    "co_ca": "Tài quan nhị xứ dữ thiên di\nSong lộc phùng chi tối hữu ích\nĐức hợp càn khôn nhân kính trọng\nThao thao phú quý thế hy kỳ\nNghĩa là:\nTài quan hai cung cùng thiên di\nHai Lộc gặp nhau thật thích nghi\nĐức ngang trời đất ngừoi kính trọng\nGiàu sang chất ngất khó ai bì\nKinh văn có viết: \" Hai Lộc gặp nhau một đời phú quý\".\n125",
+    "binh_chu": "Cung vị tam phương tứ chính của cung mệnh có Lộc Tồn, Hóa Lộc gia hội. Ca quyết: Tài quan nhị xứ dữ thiên di Song lộc phùng chi tối hữu ích Đức hợp càn khôn nhân kính trọng Thao thao phú quý thế hy kỳ Nghĩa là: Tài quan hai cung cùng thiên di Hai Lộc gặp nhau thật thích nghi Đức ngang trời đất ngừoi kính trọng Giàu sang chất ngất khó ai bì Kinh văn có viết: \" Hai Lộc gặp nhau một đời phú quý\". 125...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Lộc Tồn",
+          "Hóa Lộc"
+        ],
+        "min_count": 2
+      },
+      "cung_menh": {
+        "not_both": [
+          "Lộc Tồn",
+          "Hóa Lộc"
+        ]
+      }
+    }
+  },
+  {
+    "id": 42,
+    "name": "Lộc Mã Bội Ấn Cách",
+    "category": "Cát Cục",
+    "description": "Lộc Tồn/Hóa Lộc cùng Thiên Mã và Thiên Tướng hội tụ.",
+    "reason": "Lộc Mã sóng đôi lại được ấn kiếm Thiên Tướng tôn vinh, chủ về chức vị và quyền tài.",
+    "co_ca": "N/A",
+    "binh_chu": "Lộc Tồn hoặc Hóa Lộc cùng Thiên Mã, Thiên Tướng cùng miếu vượng, trấn mệnh....",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "tam_phuong_loc": {
+        "stars_required": [
+          "Lộc Tồn",
+          "Hóa Lộc"
+        ],
+        "min_count": 1
+      },
+      "tam_phuong_ma": {
+        "stars_required": [
+          "Thiên Mã"
+        ],
+        "min_count": 1
+      },
+      "tam_phuong_tuong": {
+        "stars_required": [
+          "Thiên Tướng"
+        ],
+        "min_count": 1
+      }
+    }
+  },
+  {
+    "id": 43,
+    "name": "Lộc Mã Giao Trì Cách",
+    "category": "Cát Cục",
+    "description": "Lộc Tồn (hoặc Hóa Lộc) gặp Thiên Mã tại Cung Mệnh hoặc Tam Phương.",
+    "reason": "Tài lộc bôn ba năng động, dễ kinh doanh buôn bán thành công, phát tài xa quê hương.",
+    "co_ca": "N/A",
+    "binh_chu": "Tại cung vị tam phương tứ chính của cung mệnh có Lộc Tồn (hoặc Hóa Lộc), lại có Thiên Mã gia hội. Lá số sở hữu cách cục này thường là phát tài tại quê người hoặc có được tiền tài từ nơi xa đến, môi trường sống có nhiều thay đổi lớn, thường xa quê, du lịch, sự nghiệp chủ về bôn ba vất vả để làm ăn. Gặp nhiều cát tinh sẽ trở thành cự phú. Kinh văn có viết: \" Lộc Mã thích được song hành\", \" Thiên Lộc, Thiên Mã, thi cử thành tích lẫy lừng\". Nhận định về cát cách Hóa Lộc, Lộc Tồn: Sao Hóa Lộc và Sao Lộc Tồn là hai tài tinh quan trọng trong Tử Vi Đẩu Số, hai ngôi sao này có những điểm tương đồng và...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "tam_phuong_loc": {
+        "stars_required": [
+          "Lộc Tồn",
+          "Hóa Lộc"
+        ],
+        "min_count": 1
+      },
+      "tam_phuong_ma": {
+        "stars_required": [
+          "Thiên Mã"
+        ],
+        "min_count": 1
+      }
+    }
+  },
+  {
+    "id": 44,
+    "name": "Nhị Diệu Đồng Lâm Cách",
+    "category": "Cát Cục",
+    "description": "Thái Dương và Thái Âm đồng cung tại Sửu hoặc Mùi.",
+    "reason": "Nhật Nguyệt đồng cung tại Sửu Mùi, hội cát tinh chủ về biến hóa đa tài và giàu có.",
+    "co_ca": "Mệnh trung nhật nguyệt hỷ tương phùng\nCánh ngộ Khoa Quyền tại hóa trung\nThử mệnh võ quan tu kiện tiết\nVăn quan định chủ vị tam công\nNghĩa là:\nThái Âm, Thái Dương ưa gặp mặt",
+    "binh_chu": "Mệnh đóng tại cung Sửu, Thái Âm và Thái Dương tại Mùi, Mệnh đóng tại cung Mùi, Thái Dương và Thái Âm tại cung Sửu. Tại cung vị tam phương có sao Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Xương, Khúc là phù hợp với cách cục này. Ca quyết: Mệnh trung nhật nguyệt hỷ tương phùng Cánh ngộ Khoa Quyền tại hóa trung Thử mệnh võ quan tu kiện tiết Văn quan định chủ vị tam công Nghĩa là: Thái Âm, Thái Dương ưa gặp mặt Nếu gặp Khoa, Quyền được hóa xong Đi theo nghiệp võ được công lớn Quan văn thăng chức đến tam công Kinh văn có viết: \" Mệnh đóng tại Sửu được Thái Dương, Thái Âm chầu về sinh năm Bính, Mậu nhiều...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Thái Dương",
+          "Thái Âm"
+        ],
+        "branches_in": [
+          "Sửu",
+          "Mùi"
+        ]
+      }
+    }
+  },
+  {
+    "id": 45,
+    "name": "Cực Hướng Ly Minh Cách",
+    "category": "Đại Cát Cục",
+    "description": "Sao Tử Vi (Cực) trấn Mệnh tại cung Ngọ (Ly) không gặp sát tinh.",
+    "reason": "Đế tinh Tử Vi ở vị trí hoàng kim Ngọ cung độc tôn chiếu sáng, đại quý hiển đạt.",
+    "co_ca": "Thừa thông Tư gián túc uy phong\nKhí tượng đường đường lập điện trung\nKỷ chuyển vương đình phân nội sự\nChung thân phú quý vị tam công\nNghĩa là:\nNgự sử tư gián đủ uy phong\nUy nghi, lẫm liệt ở trong cung\n130\nMột tay xử lý việc chính sự\nTrọn đời phú quý chức tam công\nKinh văn viết rằng: \" Tử Vi đóng tại cung Ngọ, không gặp sát tinh, làm quan\nđến công khanh\", \" Tử Vi tại Ngọ, không gặp Dương, Đà, sinh năm Giáp, Đinh,\nKỷ làm quan đến công khanh.",
+    "binh_chu": "Sao Tử Vi trấn mệnh tại cung Ngọ, cung vị tam phương tứ chính không có sát tinh, là hợp với cách cục này. Sao Tử Vi là sao Bắc Cực, cung Ngọ là vị trí của quẻ Ly, nên mới có tên gọi này. Theo cách cục này, Tử Vi nhập miếu tại cung Ngọ, nếu không gặp sát tinh, cho dù không được cát tinh phò trợ cũng chủ về phú quý, nếu gặp được cát tinh sẽ hiển đạt làm quan lớn hoặc trở thành bậc cự phú trong giới kinh doanh nên đây là cách cục cực tốt. Nếu sao Tử Vi trấn mệnh tại cung Tý, uy thế kém xa so với cung Ngọ. Ca quyết: Thừa thông Tư gián túc uy phong Khí tượng đường đường lập điện trung Kỷ chuyển vươ...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Tử Vi"
+        ],
+        "branches_in": [
+          "Ngọ"
+        ],
+        "stars_none": [
+          "Kình Dương",
+          "Đà La",
+          "Hỏa Tinh",
+          "Linh Tinh"
+        ]
+      }
+    }
+  },
+  {
+    "id": 46,
+    "name": "Hóa Tinh Phản Quý Cách",
+    "category": "Đặc Biệt Cát Cục",
+    "description": "Thiên Đồng tại Tuất (Can Đinh) hoặc Cự Môn tại Thìn (Can Tân).",
+    "reason": "Nghịch cảnh hóa thành phản quý, chủ về vượt khó vươn lên đỉnh cao danh vọng.",
+    "co_ca": "Tam tinh biến hóa tối vô cùng\nĐồng Tuất tương phùng Cự biến long\nSinh trị Đinh, Tân tu phú quý\n131\nThanh niên công chính miếu đường trung\nNghĩa là:\nBa",
+    "binh_chu": "Sao Thiên Đồng trấn mệnh tại cung Tuất, can năm sinh là Đinh, sao Cự Môn trấn mệnh tại cung Thìn, can năm sinh là Tân, hai trường hợp này là cách cục Hóa tinh phản quý. Do sao Thiên Đồng tại cung Tuất là cùng bình, vốn dĩ bất lợi, nhưng nếu gặp người sinh năm Đinh, cung Dần có Thái Âm hóa Lộc, Thiên Cơ hóa Khoa, cung mệnh có Thiên Đồng hóa Quyền, cung đối có Cự Môn hóa Lộc xung chiếu, nên lại là cách cục đại phú, đại quý. Cự Môn tại Thìn là cung bình, vốn dĩ bất lợi, nhưng nếu gặp người sinh năm Tân, sẽ có Cự Môn hóa Lộc, ám hợp với Lộc Tồn tại cung Dậu, cung tài bạch có Thái Âm hóa Quyền nên...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "any_of": [
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Thiên Đồng"
+            ],
+            "branches_in": [
+              "Tuất"
+            ]
+          },
+          "stem_contains": "Đinh"
+        },
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Cự Môn"
+            ],
+            "branches_in": [
+              "Thìn"
+            ]
+          },
+          "stem_contains": "Tân"
+        }
+      ]
+    }
+  },
+  {
+    "id": 47,
+    "name": "Tướng Tinh Đắc Địa Cách",
+    "category": "Cát Cục",
+    "description": "Sao Vũ Khúc miếu vượng trấn Mệnh có Lộc/Quyền/Khoa hội chiếu.",
+    "reason": "Vũ Khúc tài tinh nhập miếu, chủ về uy dũng, quả quyết và tài chính vững vàng.",
+    "co_ca": "Tướng tinh nhập miếu thực vi tường\nVị chính quan cao đáo xứ cường\nLược địa công thành đa diệu toán\nUy phong lẫm lẫm trấn biên cương\n132\nNghĩa là:\nVũ Khúc nhập miếu thực cát tường\nChức trọng quyền cao thực vững vàng\nCướp đất hạ thành nhiều mưu kế\nUy phong lẫm liệt trấn biên cương\nKinh văn có viết: \" Vũ Khúc miếu vượng, uy danh hiển hách\", \" Vũ Khúc nhập\nmiếu nằm cùng cung với Văn Khúc, đại quan, đại tướng\", \" Vũ Khúc, Khôi,\nViệt cùng miếu vượng, làm quan giàu có\", \" Vũ Khúc, Lộc, Mã đồng cung phát\ntài tại quê người\".\nNhận định về các cách cục trên:\nNhị diệu đồng lâm:\nCung mệnh đóng tại Sửu, Thái Dương, Thái Âm tại Mùi, hoặc cung mệnh đóng\ntại Mùi, Thái Dương, Thái Âm đóng tại Sửu. Tại cung vị tam phương có Lộc\nTồn, Khoa Quyền Lộc, Tả Hữu, Khôi Việt gia hội.\nƯu điểm có trí tuệ hơn người, phúc lộc song toàn, mệnh đóng tại cung Sửu tốt\nhơn so với đóng cung Mùi. Khuyết điểm có tính thận trọng, bảo thủ, đề phòng\ntrắc trở trong tình duyên, hôn nhân.\nĐan trì, quế trì:\nThái Dương trấn mệnh tại Thìn, Tỵ, Thái Âm trấn mệnh tại Dậu, Tuất, cả hai",
+    "binh_chu": "Sao vũ Khúc trấn mệnh, lại có Lộc Tồn, Khoa, Khoa, Quyền, Lộc, Tả , Xương, Khúc gia hội là thuộc cách cục này. Ca quyết: Tướng tinh nhập miếu thực vi tường Vị chính quan cao đáo xứ cường Lược địa công thành đa diệu toán Uy phong lẫm lẫm trấn biên cương 132 Nghĩa là: Vũ Khúc nhập miếu thực cát tường Chức trọng quyền cao thực vững vàng Cướp đất hạ thành nhiều mưu kế Uy phong lẫm liệt trấn biên cương Kinh văn có viết: \" Vũ Khúc miếu vượng, uy danh hiển hách\", \" Vũ Khúc nhập miếu nằm cùng cung với Văn Khúc, đại quan, đại tướng\", \" Vũ Khúc, Khôi, Việt cùng miếu vượng, làm quan giàu có\", \" Vũ Khúc,...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Vũ Khúc"
+        ],
+        "branches_in": [
+          "Sửu",
+          "Mùi",
+          "Dần",
+          "Thân"
+        ]
+      },
+      "tam_phuong_tu_chinh": {
+        "stars_required": [
+          "Hóa Lộc",
+          "Hóa Quyền",
+          "Hóa Khoa",
+          "Lộc Tồn"
+        ],
+        "min_count": 1
+      }
+    }
+  },
+  {
+    "id": 48,
+    "name": "Nhật Nguyệt Chiếu Bích Cách",
+    "category": "Cát Cục Điền Trạch",
+    "description": "Thái Dương và Thái Âm đồng cung tại Điền Trạch (Sửu/Mùi).",
+    "reason": "Nhật Nguyệt chiếu vách tại Cung Điền Trạch, chủ về sở hữu bất động sản và điền sản bao la.",
+    "co_ca": "N/A",
+    "binh_chu": "vách). Thái Âm, Thái Dương tại Sửu Mùi, đóng tại cung Điền Trạch (Khi đó sao Phá Quân sẽ trấn mệnh tại Thìn Tuất), đồng cung hoặc hội chiếu Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Xương, Khúc, Khôi, Việt. Lá số gặp được cách cục này chủ về giàu có tột bậc, đặc biệt là về lĩnh vực bất động sản như nhà cửa, đất đai, rừng núi, biệt thự, hoặc được thừa kế gia sản. Nhưng tại cung vị tam phương tứ chính cũng cần phải có cát tinh hoặc cát Hóa (sao hóa cát) mới tốt đẹp, nếu gặp hung sát tinh lại trở thành mệnh nghèo hèn, tuy cung điền trạch có cát tinh cũng không phát huy được tác dụng....",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_dien": {
+        "stars_all": [
+          "Thái Dương",
+          "Thái Âm"
+        ],
+        "branches_in": [
+          "Sửu",
+          "Mùi"
+        ]
+      }
+    }
+  },
+  {
+    "id": 49,
+    "name": "Tài Lộc Giáp Mã Cách",
+    "category": "Cát Cục",
+    "description": "Thiên Mã tại Mệnh được Vũ Khúc và Hóa Lộc kẹp ở hai cung kề bên.",
+    "reason": "Ngựa Thiên Mã mang tài lộc dồi dào hai bên, chủ về năng động bôn ba sinh đại phú.",
+    "co_ca": "N/A",
+    "binh_chu": "Sao Thiên Mã đóng tại cung mệnh ở hai cung bên cạnh có Vũ Khúc và Hóa Lộc kèm mệnh. Nếu cung mệnh đóng tại Trường Sinh hoặc Đế Vượng lại càng tốt đẹp. Lá số có cách cục này phần nhiều đều ham đầu cơ buôn bán, dám mạo hiểm, không ngại khó, nên chủ về nghèo trước sướng sau, nhưng không được sang hiển. Nếu cung mệnh tại Trường Sinh, Đế Vượng cung tam phương tứ chính có cát tinh gia hội, mới có thể trở nên cự phú. Nếu không gặp Tả, Hữu, Xương, Khúc vẫn là mệnh bình thường. Có những trường hợp cụ thể như sau: 1. Sao Thái Dương, Thiên Mã trấn mệnh tại cung Tỵ hoặc Hợi nếu sinh năm 135 Quý sao Phá Qu...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Thiên Mã"
+        ]
+      },
+      "giap_cung_pairs": [
+        [
+          "Vũ Khúc",
+          "Hóa Lộc"
+        ]
+      ]
+    }
+  },
+  {
+    "id": 50,
+    "name": "Minh Lộc Ám Lộc Cách",
+    "category": "Cát Cục",
+    "description": "Cung Mệnh có Lộc (Hóa Lộc/Lộc Tồn) ngầm hợp (Lục Hợp) với Lộc ở cung khác.",
+    "reason": "Một Lộc sáng ở Mệnh, một Lộc ngầm trợ giúp từ cung Lục Hợp, quý khoản của cải kín đáo.",
+    "co_ca": "N/A",
+    "binh_chu": "Tức cung mệnh có sao Hóa Lộc (hoặc Lộc Tồn), ngầm hợp với sao Lộc Tồn (hoặc Hóa Lộc) tại cung mệnh. Gồm những trường hợp cụ thể sau đây: 1. Người sinh năm Giáp, Liêm Trinh, Tham Lang tại Hợi, Liêm Trinh hóa Lộc, tại cung Dần có Lộc Tồn ngầm hợp với cung Hợi, mệnh đóng tại Dần hoặc Hợi. 2. Người sinh năm Ất, sao Thiên Cơ, Thiên Lương tại Tuất, Thiên Cơ hóa Lộc tại cung Mão có Lộc Tồn ngầm hợp với cung Tuất, mệnh đóng tại Tuất hoặc Mão. 3. Người sinh năm Bính, sao Thiên Đồng, Thiên Lương tại Thân, Thiên Đồng hóa Lộc tại cung Tỵ có Lộc Tồn ngầm hợp với cung Thân, mệnh đóng tại Thân hoặc Tỵ. 4. Ng...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "any_of": [
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Hóa Lộc"
+            ]
+          },
+          "luc_hop": {
+            "stars_all": [
+              "Lộc Tồn"
+            ]
+          }
+        },
+        {
+          "cung_menh": {
+            "stars_all": [
+              "Lộc Tồn"
+            ]
+          },
+          "luc_hop": {
+            "stars_all": [
+              "Hóa Lộc"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 51,
+    "name": "Khoa Minh Lộc Ám Cách",
+    "category": "Cát Cục",
+    "description": "",
+    "reason": "",
+    "co_ca": "N/A",
+    "binh_chu": "Sao Hóa Lộc trấn mệnh, sao Lộc Tồn đóng tại cung ám hợp của cung mệnh. Cách cục này gồm những trường hợp cụ thể sau: Người sinh năm Giáp, Vũ Khúc tại Hợi, Hóa Khoa trấn mệnh, tại cung Dần có Lộc Tồn ám hợp. Người sinh năm Ất, Tử Vi tại Tuất, Hóa Khoa trấn mệnh, tại cung Mão có Lộc Tồn ám hợp (cũng là cách Quyền Lộc giáp mệnh). Người sinh năm Bính, Văn Xương tại Thân, Hóa Khoa trấn mệnh, tại cung Tỵ có Lộc Tồn ám hợp Người sinh năm Đinh, Thiên Cơ tại Mùi, Hóa Khoa trấn mệnh, tại cung Ngọ có Lộc tồn ám hợp. Người sinh năm Mậu, Hữu Bật tại Thân, Hóa Khoa trấn mệnh, Lộc Tồn ở Tỵ ám hợp. 138 Người...",
+    "uu_khuyet_diem": "",
+    "conditions": {
+      "cung_menh": {
+        "stars_all": [
+          "Hóa Khoa"
+        ]
+      },
+      "luc_hop": {
+        "stars_any": [
+          "Lộc Tồn",
+          "Hóa Lộc"
+        ]
+      }
+    }
+  }
+]

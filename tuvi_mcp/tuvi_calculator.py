@@ -11,6 +11,7 @@ from .ansaotuvi.AmDuong import dichCung, thienCan, timThienMa
 from .ansaotuvi.App import lapDiaBan
 from .ansaotuvi.DiaBan import diaBan as DiaBanClass
 from .ansaotuvi.ThienBan import lapThienBan
+from .cach_cuc_evaluator import evaluate_cach_cuc
 
 # Branch maps
 BRANCH_NAMES = ["", "Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"]
@@ -460,7 +461,9 @@ def get_horoscope_chart(
         "lai_nhan_cung": lai_nhan_cung,
     }
 
-    return {"thien_ban": thien_ban_data, "dia_ban": cungs}
+    chart_res = {"thien_ban": thien_ban_data, "dia_ban": cungs}
+    chart_res["cach_cuc"] = evaluate_cach_cuc(chart_res)
+    return chart_res
 
 
 def calculate_transit_stars(current_year: int) -> list:

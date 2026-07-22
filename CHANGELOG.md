@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.0] - 2026-07-22
+
+### Added
+- **51 Cách Cục Evaluation Engine**: Added automatic pattern recognition for all 51 traditional astrological formations (**51 Cách Cục Trung Châu Phái**) directly integrated into chart generation APIs (`generate_horoscope` and `get_saved_horoscope`).
+- **Data-Driven Rules Dataset (`tuvi_mcp/data/cach_cuc.json`)**: Extracted and structured complete metadata, poems (**Cổ Ca**), Vương Đình Chi commentary (**Bình Chú**), Pros & Cons (**Ưu/Khuyết điểm**), and declarative evaluation conditions for all 51 cách cục.
+- **Exact Star Name Matching**: Implemented exact normalized string matching in `cach_cuc_evaluator.py` to ensure zero false-positive partial matches.
+- **Comprehensive Test Suite**: Added dedicated unit tests validating cách cục evaluation schemas, specific pattern matches (e.g. Thạch Trung Ẩn Ngọc), and malformed input handling.
+
 ## [0.1.9] - 2026-07-22
 
 ### Added
