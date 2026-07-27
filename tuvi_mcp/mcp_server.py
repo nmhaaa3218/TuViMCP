@@ -70,8 +70,9 @@ def generate_horoscope(
       - `thien_ban`: Dict containing calculated demographics, pillars/Can-Chi (year, month, day,
         hour), element (Hành Cục), destiny (Bản Mệnh), etc.
       - `dia_ban`: List of 12 dicts, each representing an astrological house (cung), including
-        `cung_so` (1-12), `cung_ten` (name), `cung_chu` (domain), `sao` (list of stars), and
-        optional transit/Hạn keys.
+        `cung_so` (1-12), `cung_ten` (name), `cung_chu` (domain), `sao` (list of stars),
+        `quan_he_hinh_hoc` (static 100% geometric relationships: `xung_chieu`, `tam_hop`, `nhi_hop`, `giap_cung`),
+        and optional transit/Hạn keys.
     - **Errors**: Returns an error dictionary `{"error": "error_message"}` if calculations fail
       (e.g. invalid date formats, out-of-range birth years).
     """

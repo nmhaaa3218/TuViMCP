@@ -18,6 +18,32 @@ BRANCH_NAMES = ["", "Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "
 
 CAN_NAMES = ["", "Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"]
 
+LUC_HOP_MAP = {
+    1: 2, 2: 1,      # Tý - Sửu
+    3: 12, 12: 3,    # Dần - Hợi
+    4: 11, 11: 4,    # Mão - Tuất
+    5: 10, 10: 5,    # Thìn - Dậu
+    6: 9, 9: 6,      # Tỵ - Thân
+    7: 8, 8: 7,      # Ngọ - Mùi
+}
+
+
+def get_quan_he_hinh_hoc(cung_so: int) -> dict:
+    """Returns static geometric relationships (Xung Chiếu, Tam Hợp, Nhị Hợp, Giáp Cung) for a house index (1-12)."""
+    opp_so = ((cung_so - 1 + 6) % 12) + 1
+    tri1_so = ((cung_so - 1 + 4) % 12) + 1
+    tri2_so = ((cung_so - 1 + 8) % 12) + 1
+    nh_so = LUC_HOP_MAP.get(cung_so, 1)
+    g_left_so = ((cung_so - 2) % 12) + 1
+    g_right_so = (cung_so % 12) + 1
+
+    return {
+        "xung_chieu": BRANCH_NAMES[opp_so],
+        "tam_hop": [BRANCH_NAMES[tri1_so], BRANCH_NAMES[tri2_so]],
+        "nhi_hop": BRANCH_NAMES[nh_so],
+        "giap_cung": [BRANCH_NAMES[g_left_so], BRANCH_NAMES[g_right_so]],
+    }
+
 HOUR_BRANCH_MAP = {
     "tý": 1,
     "sửu": 2,
@@ -422,6 +448,7 @@ def get_horoscope_chart(
                 "cung_than": getattr(cung, "cungThan", False),
                 "tuan_trung": getattr(cung, "tuanTrung", False),
                 "triet_lo": getattr(cung, "trietLo", False),
+                "quan_he_hinh_hoc": get_quan_he_hinh_hoc(cung.cungSo),
                 "sao": [serialize_sao(s) for s in cung.cungSao],
             }
         )

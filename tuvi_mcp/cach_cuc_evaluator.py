@@ -76,8 +76,12 @@ def get_giap_cung(dia_ban: list, cung_so: int) -> tuple:
 def get_luc_hop_cung(dia_ban: list, cung_so: int) -> dict:
     """Returns the 6-Harmony (Lục Hợp) house for a given house index."""
     luc_hop_map = {
-        1: 10, 10: 1, 2: 9, 9: 2, 3: 8, 8: 3,
-        4: 7, 7: 4, 5: 6, 6: 5, 11: 12, 12: 11
+        1: 2, 2: 1,      # Tý - Sửu
+        3: 12, 12: 3,    # Dần - Hợi
+        4: 11, 11: 4,    # Mão - Tuất
+        5: 10, 10: 5,    # Thìn - Dậu
+        6: 9, 9: 6,      # Tỵ - Thân
+        7: 8, 8: 7       # Ngọ - Mùi
     }
     lh_so = luc_hop_map.get(cung_so)
     return get_cung_by_so(dia_ban, lh_so) if lh_so else None

@@ -52,6 +52,14 @@ def test_chart_generation():
     for cung in tuan_cungs:
         assert cung["tuan_trung"] is True, f"Cung {cung['cung_so']} should have Tuần-Trung"
 
+    # 4. Verify static geometry relationships (quan_he_hinh_hoc)
+    ty_cung = [c for c in chart["dia_ban"] if c["cung_so"] == 1][0]
+    qh = ty_cung["quan_he_hinh_hoc"]
+    assert qh["xung_chieu"] == "Ngọ"
+    assert set(qh["tam_hop"]) == {"Thìn", "Thân"}
+    assert qh["nhi_hop"] == "Sửu"
+    assert qh["giap_cung"] == ["Hợi", "Sửu"]
+
     # Ensure stars are populated
     has_stars = False
     for cung in chart["dia_ban"]:
