@@ -10,7 +10,7 @@ from datetime import datetime
 
 from mcp.server.fastmcp import FastMCP, Image
 
-from . import tuvi_calculator
+from . import auspicious_calculator, tuvi_calculator
 from .image_generator import generate_laso_image
 
 mcp = FastMCP("TuViMCP")
@@ -190,6 +190,50 @@ def get_van_han(
         )
     except Exception as e:
         return {"error": str(e)}
+
+
+@mcp.tool()
+def get_auspicious_info(
+    day: int = None,
+    month: int = None,
+    year: int = None,
+    is_solar: bool = True,
+) -> dict:
+    """
+    Evaluate Auspicious Days (Ngày Hoàng Đạo / Hắc Đạo), Auspicious Hours (Giờ Hoàng Đạo / Hắc Đạo),
+    12 Trực, 28 Tú (Nhị Thập Bát Tú), Lục Diệu, Tiết Khí, and Auspicious Directions (Thần Hướng).
+
+    ### Purpose and Use Cases
+    Use this tool when users ask to check good/bad days, auspicious hours for specific activities
+    (wedding, opening a store, starting construction, signing contracts, travel/auspicious direction),
+    12 Trực, 28 Tú, Lục Diệu, or Tiết Khí for a given calendar date.
+
+    ### Parameters
+    - `day`: Day of month (1-31). Defaults to current day if omitted.
+    - `month`: Month of year (1-12). Defaults to current month if omitted.
+    - `year`: Year (four digits e.g. 2026). Defaults to current year if omitted.
+    - `is_solar`: Set to `True` (default) for Solar date (Dương lịch), or `False` for Lunar date (Âm lịch).
+
+    ### Returns
+    A rich Vietnamese JSON structure detailing:
+    - `duong_lich`, `am_lich`, `can_chi_ngay`
+    - `tiet_khi_hien_tai`, `tiet_khi_tiep_theo`
+    - `ngay_hoang_dao` (Sao Hoàng Đạo/Hắc Đạo, Cát/Hung)
+    - `truc_ngay` (Tên Trực, Cát/Hung, Lời khuyên cổ truyền)
+    - `nhi_thap_bat_tu` (Tên Sao, Động vật, Cát/Hung)
+    - `luc_dieu` (Tốc Hỷ, Đại An, Lưu Niên...)
+    - `huong_xuat_hanh` (Hỷ Thần, Tài Thần, Phúc Thần, Dương/Âm Quý Thần)
+    - `gio_hoang_dao` (12 Giờ Canh Chi, Khung giờ, Sao Hoàng Đạo/Hắc Đạo, Cát/Hung)
+    """
+    now = datetime.now()
+    if day is None:
+        day = now.day
+    if month is None:
+        month = now.month
+    if year is None:
+        year = now.year
+
+    return auspicious_calculator.get_auspicious_details(day, month, year, is_solar=is_solar)
 
 
 @mcp.tool()

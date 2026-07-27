@@ -348,6 +348,47 @@ def test_cach_cuc_evaluation():
     assert conv_err["error_code"] == "INVALID_INPUT_PARAMETER"
 
 
+def test_auspicious_info():
+    from tuvi_mcp.auspicious_calculator import get_auspicious_details
+    from tuvi_mcp.mcp_server import get_auspicious_info
+
+    # 1. Test calculation for 27/07/2026
+    res = get_auspicious_details(27, 7, 2026, is_solar=True)
+    assert "error" not in res
+    assert res["duong_lich"] == "27/07/2026"
+    assert "Bính Ngọ" in res["am_lich"]
+    assert "Nhâm Dần" in res["can_chi_ngay"]
+    assert res["ngay_hoang_dao"]["is_hoang_dao"] is True
+    assert res["ngay_hoang_dao"]["ten_sao"] == "Kim Quỹ"
+    assert res["truc_ngay"]["ten"] == "Trực Nguy"
+    assert res["nhi_thap_bat_tu"]["ten"] == "Sao Tâm"
+    assert "Tốc Hỷ" in res["luc_dieu"]
+    assert "Đại Thử" in res["tiet_khi_hien_tai"]
+    assert "Lập Thu" in res["tiet_khi_tiep_theo"]
+    assert res["huong_xuat_hanh"]["hy_than"] == "Chính Nam"
+    assert len(res["gio_hoang_dao"]) == 12
+
+    # 2. Test MCP tool wrapper with explicit date
+    mcp_res = get_auspicious_info(day=27, month=7, year=2026, is_solar=True)
+    assert mcp_res == res
+
+    # 3. Test MCP tool wrapper with default values (current date)
+    from datetime import datetime
+    now = datetime.now()
+    default_res = get_auspicious_info()
+    assert "error" not in default_res
+    assert default_res["duong_lich"] == f"{now.day:02d}/{now.month:02d}/{now.year}"
+    # 4. Test edge cases: invalid date validation
+    err_res = get_auspicious_info(day=35, month=13, year=2026)
+    assert "error" in err_res
+    assert err_res["error_code"] == "INVALID_INPUT_PARAMETER"
+
+    # 5. Test 28 Tú Sao Mão key lookup
+    from tuvi_mcp.auspicious_calculator import XIU_MAP
+    assert "昴" in XIU_MAP
+    assert XIU_MAP["昴"]["ten"] == "Sao Mão"
+
+
 # Cleanup hook to remove temp file after test session
 def pytest_sessionfinish(session, exitstatus):
     try:
