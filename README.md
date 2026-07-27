@@ -23,7 +23,7 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 - **Horoscope Generation:** Converts Solar or Lunar birth dates and times into a full Tử Vi chart (Thiên Bàn and Địa Bàn with 12 houses and over 100 stars).
 - **High-Quality Image Rendering:** Generates beautiful, print-ready chart images with element-based colored text (Green for Wood, Red for Fire, Yellow for Earth, Gray for Metal, Blue for Water), custom badge boxes for Tuần & Triệt, and geometric connecting lines highlighting the Mệnh and Thân relationship.
 - **Vận Hạn (Transit Analysis):** Computes transit stars (Lưu tinh) and maps the active 10-year period (Đại Hạn), yearly period (Tiểu Hạn), and monthly period (Nguyệt Hạn) for any target year and month (e.g., 2026).
-- **Local Persistence:** Save, retrieve, list, and delete horoscope charts from a local SQLite database (`tuvi_horoscopes.db`).
+- **Local Persistence (Python Library):** Includes built-in SQLite database utilities (`tuvi_mcp.database`) for Python library consumers to save, retrieve, list, and delete horoscope profiles.
 - **Flexible Hour Mapping:** Automatically maps calendar hours (e.g., "14:30") or string names (e.g., "Ngọ", "Tý") to the correct Earthly Branch hour index.
 - **Local Inlining (Independent):** Includes the core `ansaotuvi` calculation logic internally with custom Tuần/Triệt double-cung fixes.
 
@@ -90,7 +90,7 @@ All tools run locally inside the MCP environment. They require no external authe
 
 #### 1. `generate_horoscope`
 Generates a full Tử Vi chart from raw birth details, with optional high-quality chart image rendering.
-* **Purpose & Comparison:** Use this for on-the-fly, unsaved calculations. Use `get_saved_horoscope` to load previously saved profiles.
+* **Purpose & Comparison:** Use this tool to compute and inspect an astrological birth chart from scratch for arbitrary birth details.
 * **Side Effects:** If `generate_image` is `True`, renders a PNG file to a temporary location on the local filesystem and returns its path.
 * **Arguments:**
   - `name` (string): Person's name (default: "Khách").
@@ -118,39 +118,7 @@ Calculates yearly transit stars and active houses (major, yearly, and monthly pe
   - `current_month` (integer): Target Lunar month to inspect (1-12, default: 1).
 * **Return Value:** A dictionary with keys `person_details` (Can-Chi), `target_period` (resolved age and target), `transit_stars`, `dai_han`, and `tieu_han`. Returns `{"error": "error_message"}` if input details are invalid.
 
-#### 3. `save_horoscope`
-Saves birth details to the SQLite database.
-* **Purpose & Comparison:** Saves birth details so they can be loaded later without manually entering birth details again.
-* **Side Effects:** Write operation. Inserts a new record into the SQLite database (`~/.tuvi_mcp/tuvi_horoscopes.db`).
-* **Arguments:**
-  - `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`, `notes` (string, optional).
-* **Return Value:** A dictionary `{"message": "Successfully saved...", "id": <record_id>}`. Returns `{"error": "error_message"}` on validation/database failure.
-
-#### 4. `list_saved_horoscopes`
-Lists all saved records from the database.
-* **Purpose & Comparison:** Discover saved horoscope profiles before loading/deleting them.
-* **Side Effects:** Read-only database query.
-* **Return Value:** A list of profile dictionaries containing `id`, `name`, birth details, `notes`, and `created_at`. Returns a list with an error dictionary `[{"error": "error_message"}]` on query failures.
-
-#### 5. `get_saved_horoscope`
-Retrieves a saved record and generates its chart.
-* **Purpose & Comparison:** Loads a saved profile. Useful to avoid re-entering raw parameters.
-* **Side Effects:** Read-only database query and base chart calculation.
-* **Arguments:**
-  - `horoscope_id` (integer, optional): The database ID of the record.
-  - `name` (string, optional): The name of the record.
-  - *Interaction:* At least one must be provided. If both are supplied, `horoscope_id` takes precedence. If only `name` is provided, retrieves the *latest* matching record.
-* **Return Value:** The full horoscope chart dictionary structure (`chart_data`) with database metadata added under a `"metadata"` key (`{"id": <int>, "notes": <str>, "created_at": <timestamp>}`). Returns `{"error": "Horoscope record not found"}` if not found.
-
-#### 6. `delete_saved_horoscope`
-Deletes a record from the database.
-* **Purpose & Comparison:** Permanently removes a profile from the database.
-* **Side Effects:** Destructive write operation. Cannot be automatically undone.
-* **Arguments:**
-  - `horoscope_id` (integer): The database ID of the record to delete.
-* **Return Value:** A success message dictionary `{"message": "Successfully deleted..."}`. Returns `{"error": "No horoscope record found with ID..."}` if missing.
-
-#### 7. `convert_calendar`
+#### 3. `convert_calendar`
 Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calendars.
 * **Purpose & Comparison:** Translate dates back and forth. Crucial for converting Solar target timeframes to Lunar periods before calling `get_van_han`.
 * **Side Effects:** None (mathematical calculation).
@@ -304,7 +272,7 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 
 * **Xem Vận Hạn:** Tính toán các sao lưu động như Lưu Thái Tuế, Lưu Lộc Tồn, v.v., đồng thời xác định các cung hạn đang kích hoạt gồm Đại Hạn 10 năm, Tiểu Hạn theo năm và Nguyệt Hạn theo tháng cho bất kỳ năm/tháng cần xem nào, ví dụ năm 2026.
 
-* **Lưu trữ cục bộ:** Hỗ trợ lưu, truy xuất, liệt kê và xóa thông tin lá số thông qua cơ sở dữ liệu SQLite cục bộ (`tuvi_horoscopes.db`).
+* **Lưu trữ cục bộ (Dành cho Python Library):** Cung cấp sẵn module cơ sở dữ liệu SQLite cục bộ (`tuvi_mcp.database`) hỗ trợ lưu, truy xuất, liệt kê và xóa thông tin lá số khi tích hợp trực tiếp bằng mã Python.
 
 * **Tự động quy đổi giờ sinh:** Có thể tự động chuyển đổi giờ theo đồng hồ, ví dụ `"14:30"`, hoặc tên giờ truyền thống, ví dụ `"Ngọ"`, `"Tý"`, sang đúng chỉ số Địa Chi tương ứng.
 
@@ -407,41 +375,7 @@ Tính toán sao lưu động và xác định các cung hạn đang kích hoạt
 
 ---
 
-#### 3. `save_horoscope`
-
-Lưu thông tin ngày giờ sinh vào cơ sở dữ liệu SQLite cục bộ.
-
-* **Tham số:**
-  * `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`, `notes` (string, tùy chọn).
-
----
-
-#### 4. `list_saved_horoscopes`
-
-Liệt kê toàn bộ lá số đã được lưu trong cơ sở dữ liệu.
-
----
-
-#### 5. `get_saved_horoscope`
-
-Truy xuất một bản ghi đã lưu và tạo lại lá số tương ứng.
-
-* **Tham số:**
-  * `horoscope_id` (integer, tùy chọn)
-  * `name` (string, tùy chọn)
-
----
-
-#### 6. `delete_saved_horoscope`
-
-Xóa một bản ghi lá số đã lưu khỏi cơ sở dữ liệu.
-
-* **Tham số:**
-  * `horoscope_id` (integer): ID của lá số cần xóa.
-
----
-
-#### 7. `convert_calendar`
+#### 3. `convert_calendar`
 
 Chuyển đổi ngày qua lại giữa Dương lịch và Âm lịch.
 

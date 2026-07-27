@@ -332,22 +332,12 @@ def test_cach_cuc_evaluation():
     assert res_transit["error_code"] == "INVALID_INPUT_PARAMETER"
 
     # 5. Test MCP tool validations
-    from tuvi_mcp.mcp_server import convert_calendar, get_saved_horoscope, delete_saved_horoscope
+    from tuvi_mcp.mcp_server import convert_calendar
 
     # convert_calendar with bad year/month
     conv_err = convert_calendar(day=35, month=13, year=1700)
     assert "error" in conv_err
     assert conv_err["error_code"] == "INVALID_INPUT_PARAMETER"
-
-    # get_saved_horoscope missing params
-    get_err = get_saved_horoscope(horoscope_id=None, name=None)
-    assert "error" in get_err
-    assert get_err["error_code"] == "MISSING_REQUIRED_PARAMETER"
-
-    # delete_saved_horoscope invalid ID
-    del_err = delete_saved_horoscope(horoscope_id=-1)
-    assert "error" in del_err
-    assert del_err["error_code"] == "INVALID_INPUT_PARAMETER"
 
 
 # Cleanup hook to remove temp file after test session
