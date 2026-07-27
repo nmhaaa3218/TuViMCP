@@ -8,11 +8,17 @@ class NineStar:
     """
 
     NUMBER = ("一", "二", "三", "四", "五", "六", "七", "八", "九")
+    NUMBER_VI = ("Nhất", "Nhị", "Tam", "Tứ", "Ngũ", "Lục", "Thất", "Bát", "Cửu")
     COLOR = ("白", "黑", "碧", "绿", "黄", "白", "赤", "白", "紫")
+    COLOR_VI = ("Bạch", "Hắc", "Bích", "Lục", "Hoàng", "Bạch", "Xích", "Bạch", "Tử")
     WU_XING = ("水", "土", "木", "木", "土", "金", "金", "土", "火")
+    WU_XING_VI = ("Thủy", "Thổ", "Mộc", "Mộc", "Thổ", "Kim", "Kim", "Thổ", "Hỏa")
     POSITION = ("坎", "坤", "震", "巽", "中", "乾", "兑", "艮", "离")
+    POSITION_VI = ("Khảm", "Khôn", "Chấn", "Tốn", "Trung", "Càn", "Đoài", "Cấn", "Ly")
     NAME_BEI_DOU = ("天枢", "天璇", "天玑", "天权", "玉衡", "开阳", "摇光", "洞明", "隐元")
+    NAME_BEI_DOU_VI = ("Tham Lang", "Cự Môn", "Lộc Tồn", "Văn Khúc", "Liêm Trinh", "Vũ Khúc", "Phá Quân", "Tả Phụ", "Hữu Bật")
     NAME_XUAN_KONG = ("贪狼", "巨门", "禄存", "文曲", "廉贞", "武曲", "破军", "左辅", "右弼")
+    NAME_XUAN_KONG_VI = ("Tham Lang", "Cự Môn", "Lộc Tồn", "Văn Khúc", "Liêm Trinh", "Vũ Khúc", "Phá Quân", "Tả Phụ", "Hữu Bật")
     NAME_QI_MEN = ("天蓬", "天芮", "天冲", "天辅", "天禽", "天心", "天柱", "天任", "天英")
     BA_MEN_QI_MEN = ("休", "死", "伤", "杜", "", "开", "惊", "生", "景")
     NAME_TAI_YI = ("太乙", "摄提", "轩辕", "招摇", "天符", "青龙", "咸池", "太阴", "天乙")
@@ -21,6 +27,7 @@ class NineStar:
     LUCK_XUAN_KONG = ("吉", "凶", "凶", "吉", "凶", "吉", "凶", "吉", "吉")
     LUCK_QI_MEN = ("大凶", "大凶", "小吉", "大吉", "大吉", "大吉", "小凶", "小吉", "小凶")
     YIN_YANG_QI_MEN = ("阳", "阴", "阳", "阳", "阳", "阴", "阴", "阳", "阴")
+
 
     def __init__(self, index):
         self.__index = index

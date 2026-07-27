@@ -7,20 +7,20 @@ class Lunar:
     """
     阴历日期
     """
-    JIE_QI = ("冬至", "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪")
-    JIE_QI_IN_USE = ("DA_XUE", "冬至", "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "DONG_ZHI", "XIAO_HAN", "DA_HAN", "LI_CHUN", "YU_SHUI", "JING_ZHE")
+    JIE_QI = ("Đông Chí", "Tiểu Hàn", "Đại Hàn", "Lập Xuân", "Vũ Thủy", "Kinh Trập", "Xuân Phân", "Thanh Minh", "Cốc Vũ", "Lập Hạ", "Tiểu Mãn", "Mang Chủng", "Hạ Chí", "Tiểu Thử", "Đại Thử", "Lập Thu", "Xử Thử", "Bạch Lộ", "Thu Phân", "Hàn Lộ", "Sương Giáng", "Lập Đông", "Tiểu Tuyết", "Đại Tuyết")
+    JIE_QI_IN_USE = ("DA_XUE", "Đông Chí", "Tiểu Hàn", "Đại Hàn", "Lập Xuân", "Vũ Thủy", "Kinh Trập", "Xuân Phân", "Thanh Minh", "Cốc Vũ", "Lập Hạ", "Tiểu Mãn", "Mang Chủng", "Hạ Chí", "Tiểu Thử", "Đại Thử", "Lập Thu", "Xử Thử", "Bạch Lộ", "Thu Phân", "Hàn Lộ", "Sương Giáng", "Lập Đông", "Tiểu Tuyết", "Đại Tuyết", "DONG_ZHI", "XIAO_HAN", "DA_HAN", "LI_CHUN", "YU_SHUI", "JING_ZHE")
+    JIE_QI_CN = ("大雪", "冬至", "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至", "小寒", "大寒", "立春", "雨水", "惊蛰")
+
 
     def __init__(self, lunar_year: int, lunar_month: int, lunar_day: int, hour: int, minute: int, second: int):
-        from . import LunarYear
-        y = LunarYear.fromYear(lunar_year)
-        m = y.getMonth(lunar_month)
-        if m is None:
-            raise Exception("wrong lunar year %d  month %d" % (lunar_year, lunar_month))
-        if lunar_day < 1:
-            raise Exception("lunar day must bigger than 0")
-        days = m.getDayCount()
-        if lunar_day > days:
-            raise Exception("only %d days in lunar year %d month %d" % (days, lunar_year, lunar_month))
+        if lunar_day < 1 or lunar_day > 30:
+            raise Exception("lunar day must be between 1 and 30")
+        from .util.VnCalendarUtil import lunar_to_solar_vn
+        lunar_m = abs(lunar_month)
+        leap = 1 if lunar_month < 0 else 0
+        sd, sm, sy = lunar_to_solar_vn(lunar_day, lunar_m, lunar_year, leap, 7.0)
+        if sd == 0 and sm == 0 and sy == 0:
+            raise Exception("wrong lunar year %d month %d" % (lunar_year, lunar_month))
         self.__year = lunar_year
         self.__month = lunar_month
         self.__day = lunar_day
@@ -30,11 +30,11 @@ class Lunar:
         self.__jieQi = {}
         self.__jieQiList = []
         self.__eightChar = None
-        noon = Solar.fromJulianDay(m.getFirstJulianDay() + lunar_day - 1)
-        self.__solar = Solar.fromYmdHms(noon.getYear(), noon.getMonth(), noon.getDay(), hour, minute, second)
-        if noon.getYear() != lunar_year:
-            y = LunarYear.fromYear(noon.getYear())
+        self.__solar = Solar.fromYmdHms(sy, sm, sd, hour, minute, second)
+        from . import LunarYear
+        y = LunarYear.fromYear(sy)
         self.__compute(y)
+
 
     def __compute(self, y):
         self.__computeJieQi(y)
@@ -48,8 +48,12 @@ class Lunar:
         julian_days = y.getJieQiJulianDays()
         for i in range(0, len(Lunar.JIE_QI_IN_USE)):
             name = Lunar.JIE_QI_IN_USE[i]
-            self.__jieQi[name] = Solar.fromJulianDay(julian_days[i])
+            solar_dt = Solar.fromJulianDay(julian_days[i])
+            self.__jieQi[name] = solar_dt
+            if i < len(Lunar.JIE_QI_CN):
+                self.__jieQi[Lunar.JIE_QI_CN[i]] = solar_dt
             self.__jieQiList.append(name)
+
 
     def __computeYear(self):
         # 以正月初一开始
@@ -76,9 +80,10 @@ class Lunar:
         solar_ymd_hms = self.__solar.toYmdHms()
 
         # 获取立春的阳历时刻
-        li_chun = self.__jieQi["立春"]
+        li_chun = self.__jieQi["Lập Xuân"]
         if li_chun.getYear() != solar_year:
             li_chun = self.__jieQi["LI_CHUN"]
+
         li_chun_ymd = li_chun.toYmd()
         li_chun_ymd_hms = li_chun.toYmdHms()
 
@@ -193,19 +198,11 @@ class Lunar:
 
     @staticmethod
     def fromSolar(solar):
-        from . import LunarYear
-        year = 0
-        month = 0
-        day = 0
-        ly = LunarYear.fromYear(solar.getYear())
-        for m in ly.getMonths():
-            days = solar.subtract(Solar.fromJulianDay(m.getFirstJulianDay()))
-            if days < m.getDayCount():
-                year = m.getYear()
-                month = m.getMonth()
-                day = days + 1
-                break
-        return Lunar(year, month, day, solar.getHour(), solar.getMinute(), solar.getSecond())
+        from .util.VnCalendarUtil import solar_to_lunar_vn
+        d, m, y, leap = solar_to_lunar_vn(solar.getDay(), solar.getMonth(), solar.getYear(), 7.0)
+        lunar_month = -m if leap else m
+        return Lunar(y, lunar_month, d, solar.getHour(), solar.getMinute(), solar.getSecond())
+
 
     def getYear(self):
         return self.__year
@@ -300,17 +297,50 @@ class Lunar:
     def getDayInGanZhiExact2(self):
         return "%s%s" % (self.getDayGanExact2(), self.getDayZhiExact2())
 
-    def getTimeGan(self):
-        return LunarUtil.GAN[self.__timeGanIndex + 1]
 
-    def getTimeZhi(self):
-        return LunarUtil.ZHI[self.__timeZhiIndex + 1]
+    def getYearGanVn(self):
+        return LunarUtil.GAN_VI[self.__yearGanIndex + 1]
 
-    def getTimeInGanZhi(self):
-        return "%s%s" % (self.getTimeGan(), self.getTimeZhi())
+    def getYearZhiVn(self):
+        return LunarUtil.ZHI_VI[self.__yearZhiIndex + 1]
+
+    def getYearInGanZhiVn(self):
+        return "%s %s" % (self.getYearGanVn(), self.getYearZhiVn())
+
+    def getMonthGanVn(self):
+        return LunarUtil.GAN_VI[self.__monthGanIndex + 1]
+
+    def getMonthZhiVn(self):
+        return LunarUtil.ZHI_VI[self.__monthZhiIndex + 1]
+
+    def getMonthInGanZhiVn(self):
+        return "%s %s" % (self.getMonthGanVn(), self.getMonthZhiVn())
+
+    def getDayGanVn(self):
+        return LunarUtil.GAN_VI[self.__dayGanIndex + 1]
+
+    def getDayZhiVn(self):
+        return LunarUtil.ZHI_VI[self.__dayZhiIndex + 1]
+
+    def getDayInGanZhiVn(self):
+        return "%s %s" % (self.getDayGanVn(), self.getDayZhiVn())
+
+    def getTimeGanVn(self):
+        return LunarUtil.GAN_VI[self.__timeGanIndex + 1]
+
+    def getTimeZhiVn(self):
+        return LunarUtil.ZHI_VI[self.__timeZhiIndex + 1]
+
+    def getTimeInGanZhiVn(self):
+        return "%s %s" % (self.getTimeGanVn(), self.getTimeZhiVn())
+
+
 
     def getYearShengXiao(self):
         return LunarUtil.SHENGXIAO[self.__yearZhiIndex + 1]
+
+    def getYearShengXiaoVn(self):
+        return LunarUtil.SHENGXIAO_VI[self.__yearZhiIndex + 1]
 
     def getYearShengXiaoByLiChun(self):
         return LunarUtil.SHENGXIAO[self.__yearZhiIndexByLiChun + 1]
@@ -321,14 +351,24 @@ class Lunar:
     def getMonthShengXiao(self):
         return LunarUtil.SHENGXIAO[self.__monthZhiIndex + 1]
 
+    def getMonthShengXiaoVn(self):
+        return LunarUtil.SHENGXIAO_VI[self.__monthZhiIndex + 1]
+
     def getMonthShengXiaoExact(self):
         return LunarUtil.SHENGXIAO[self.__monthZhiIndexExact + 1]
 
     def getDayShengXiao(self):
         return LunarUtil.SHENGXIAO[self.__dayZhiIndex + 1]
 
+    def getDayShengXiaoVn(self):
+        return LunarUtil.SHENGXIAO_VI[self.__dayZhiIndex + 1]
+
     def getTimeShengXiao(self):
         return LunarUtil.SHENGXIAO[self.__timeZhiIndex + 1]
+
+    def getTimeShengXiaoVn(self):
+        return LunarUtil.SHENGXIAO_VI[self.__timeZhiIndex + 1]
+
 
     def getYearInChinese(self):
         y = str(self.__year)
@@ -590,19 +630,19 @@ class Lunar:
     def __convertJieQi(name):
         jq = name
         if "DONG_ZHI" == jq:
-            jq = "冬至"
+            jq = "Đông Chí"
         elif "DA_HAN" == jq:
-            jq = "大寒"
+            jq = "Đại Hàn"
         elif "XIAO_HAN" == jq:
-            jq = "小寒"
+            jq = "Tiểu Hàn"
         elif "LI_CHUN" == jq:
-            jq = "立春"
+            jq = "Lập Xuân"
         elif "DA_XUE" == jq:
-            jq = "大雪"
+            jq = "Đại Tuyết"
         elif "YU_SHUI" == jq:
-            jq = "雨水"
+            jq = "Vũ Thủy"
         elif "JING_ZHE" == jq:
-            jq = "惊蛰"
+            jq = "Kinh Trập"
         return jq
 
     def getJie(self):
@@ -654,8 +694,19 @@ class Lunar:
         if md in LunarUtil.FESTIVAL:
             fs.append(LunarUtil.FESTIVAL[md])
         if abs(self.__month) == 12 and self.__day >= 29 and self.__year != self.next(1).getYear():
-            fs.append("除夕")
+            fs.append("Trừ Tịch (Đêm Giao Thừa)")
         return fs
+
+    def getVietnameseFestivals(self):
+        from .VietnameseHoliday import VietnameseHoliday
+        fs = []
+        h = VietnameseHoliday.get_lunar_holiday(abs(self.__month), self.__day, self.__month < 0)
+        if h:
+            fs.append(h)
+        if abs(self.__month) == 12 and self.__day >= 29 and self.__year != self.next(1).getYear():
+            fs.append("Đêm Giao Thừa")
+        return fs
+
 
     def getOtherFestivals(self):
         arr = []
@@ -665,22 +716,24 @@ class Lunar:
             for f in fs:
                 arr.append(f)
         solar_ymd = self.__solar.toYmd()
-        if solar_ymd == self.__jieQi["清明"].next(-1).toYmd():
-            arr.append("寒食节")
+        if solar_ymd == self.__jieQi["Thanh Minh"].next(-1).toYmd():
+            arr.append("Hàn Thực")
 
-        jq = self.__jieQi["立春"]
+        jq = self.__jieQi["Lập Xuân"]
         offset = 4 - jq.getLunar().getDayGanIndex()
         if offset < 0:
             offset += 10
         if solar_ymd == jq.next(offset + 40).toYmd():
-            arr.append("春社")
+            arr.append("Xuân Xã")
 
-        jq = self.__jieQi["立秋"]
+        jq = self.__jieQi["Lập Thu"]
         offset = 4 - jq.getLunar().getDayGanIndex()
         if offset < 0:
             offset += 10
         if solar_ymd == jq.next(offset + 40).toYmd():
-            arr.append("秋社")
+            arr.append("Thu Xã")
+        return arr
+
         return arr
 
     def getEightChar(self):
@@ -726,23 +779,54 @@ class Lunar:
             offset += 12
         return LunarUtil.ZHI_XING[offset + 1]
 
+    def getZhiXingVn(self):
+        offset = self.__dayZhiIndex - self.__monthZhiIndex
+        if offset < 0:
+            offset += 12
+        return LunarUtil.ZHI_XING_VI[offset + 1]
+
+    def getDayZhiXing(self):
+        return self.getZhiXing()
+
+    def getDayZhiXingVn(self):
+        return self.getZhiXingVn()
+
     def getDayTianShen(self):
         return LunarUtil.TIAN_SHEN[(self.__dayZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getMonthZhi()]) % 12 + 1]
+
+    def getDayTianShenVn(self):
+        return LunarUtil.TIAN_SHEN_VI[(self.__dayZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getMonthZhi()]) % 12 + 1]
 
     def getTimeTianShen(self):
         return LunarUtil.TIAN_SHEN[(self.__timeZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getDayZhiExact()]) % 12 + 1]
 
+    def getTimeTianShenVn(self):
+        return LunarUtil.TIAN_SHEN_VI[(self.__timeZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getDayZhiExact()]) % 12 + 1]
+
     def getDayTianShenType(self):
         return LunarUtil.TIAN_SHEN_TYPE[self.getDayTianShen()]
+
+    def getDayTianShenTypeVn(self):
+        return LunarUtil.TIAN_SHEN_TYPE.get(self.getDayTianShenVn(), "Hoàng Đạo")
 
     def getTimeTianShenType(self):
         return LunarUtil.TIAN_SHEN_TYPE[self.getTimeTianShen()]
 
+    def getTimeTianShenTypeVn(self):
+        return LunarUtil.TIAN_SHEN_TYPE.get(self.getTimeTianShenVn(), "Hoàng Đạo")
+
     def getDayTianShenLuck(self):
         return LunarUtil.TIAN_SHEN_TYPE_LUCK[self.getDayTianShenType()]
 
+    def getDayTianShenLuckVn(self):
+        return LunarUtil.TIAN_SHEN_TYPE_LUCK.get(self.getDayTianShenTypeVn(), "Cát")
+
     def getTimeTianShenLuck(self):
         return LunarUtil.TIAN_SHEN_TYPE_LUCK[self.getTimeTianShenType()]
+
+    def getTimeTianShenLuckVn(self):
+        return LunarUtil.TIAN_SHEN_TYPE_LUCK.get(self.getTimeTianShenTypeVn(), "Cát")
+
 
     def getDayPositionTai(self):
         return LunarUtil.POSITION_TAI_DAY[LunarUtil.getJiaZiIndex(self.getDayInGanZhi())]
