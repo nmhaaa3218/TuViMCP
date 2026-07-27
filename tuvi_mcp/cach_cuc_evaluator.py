@@ -100,7 +100,7 @@ def has_star(cung: dict, star_name: str, star_attr: str = None) -> bool:
             s_attr = s.get("attribute", "") or ""
             if star_attr.lower() in s_attr.lower():
                 return True
-            return True
+            return False
     return False
 
 

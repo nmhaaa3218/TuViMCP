@@ -79,7 +79,7 @@ class lapThienBan(object):
         self.hanhCuc = nguHanh(cuc)['id']
         self.tenCuc = nguHanh(cuc)['tenCuc']
 
-        self.menhChu = diaChi[self.chiNam]['menhChu']
+        self.menhChu = diaChi[diaBan.cungMenh]['menhChu']
         self.thanChu = diaChi[self.chiNam]['thanChu']
 
         self.menh = nguHanhNapAm(self.chiNam, self.canNam)
