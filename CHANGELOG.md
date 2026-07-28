@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.2] - 2026-07-28
+
+### Added
+- **Public library API** (Phase 1 of library refactor): new typed, ergonomic surface for Python consumers.
+  - `tuvi_mcp.Horoscope` — class with `from_birth(...)`, `.chart()`, `.transit()`, `.auspicious()`, `.render_chart()` methods.
+  - `tuvi_mcp.BirthInfo` — frozen, validated dataclass for birth input.
+  - `tuvi_mcp.Gender` — `IntEnum` (`MALE = 1`, `FEMALE = -1`).
+  - `tuvi_mcp.Calendar` — `Enum` (`SOLAR`, `LUNAR`).
+  - `tuvi_mcp.HoroscopeResult` — typed chart result with `.to_dict()` serializer.
+  - `tuvi_mcp.calendar` — stable re-export of `convert_solar_to_lunar` / `convert_lunar_to_solar` / `validate_calendar_convert`.
+  - `tuvi_mcp.auspicious` — stable re-export of `get_auspicious_details`.
+- **17 new tests** in `tests/test_library_api.py` covering the public API surface.
+
+### Notes
+- All existing imports (`from tuvi_mcp import tuvi_calculator`, etc.) continue to work unchanged. The new API is purely additive.
+
+---
+
+## [0.3.1] - 2026-07-28
+
+### Added
+- **Nhật Hạn (daily transit) support**: `get_van_han_analysis` and the `get_van_han` MCP tool now accept an optional `current_day` parameter (1-30). When provided, the result includes a `nhat_han` entry identifying the active daily cycle cung, derived clockwise from the active Nguyệt Hạn cung. Day 1 collapses to Nguyệt Hạn; day 13 wraps back to it. (ee49ea2)
+- **Daily transit input validation**: `current_day` is now rejected with `INVALID_INPUT_PARAMETER` if it falls outside 1-30, matching the upper bound of a lunar month. (ee49ea2)
+- **Regression tests** for Nhật Hạn — null without `current_day`, equivalence with Nguyệt Hạn on day 1, clockwise progression on day 2, wrap-around at day 13, off-by-one at day 12, and validation errors at day 0 and 31. (ee49ea2)
+
+---
+
 ## [0.3.0] - 2026-07-28
 
 ### Fixed
