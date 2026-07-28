@@ -5,7 +5,7 @@ from .util import LunarUtil
 
 class LunarMonth:
     """
-    农历月
+    Lunar month
     """
 
     def __init__(self, lunar_year, lunar_month, day_count, first_julian_day, index):
@@ -88,11 +88,11 @@ class LunarMonth:
     def getPositionTaiSui(self):
         m = abs(self.__month) % 4
         if 0 == m:
-            p = "巽"
+            p = "Tốn"
         elif 1 == m:
-            p = "艮"
+            p = "Cấn"
         elif 3 == m:
-            p = "坤"
+            p = "Khôn"
         else:
             p = LunarUtil.POSITION_GAN[Solar.fromJulianDay(self.getFirstJulianDay()).getLunar().getMonthGanIndex()]
         return p
@@ -111,16 +111,16 @@ class LunarMonth:
         return NineStar.fromIndex(offset)
 
     def toString(self):
-        return "%d年%s%s月(%d天)" % (self.__year, ("闰" if self.isLeap() else ""), LunarUtil.MONTH[abs(self.__month)], self.__dayCount)
+        return "%d năm %s%s tháng (%d ngày)" % (self.__year, ("Nhuận " if self.isLeap() else ""), LunarUtil.MONTH[abs(self.__month)], self.__dayCount)
 
     def __str__(self):
         return self.toString()
 
     def next(self, n):
         """
-        获取往后推几个月的阴历月，如果要往前推，则月数用负数
-        :param n: 月数
-        :return: 阴历月
+        Get lunar month pushed forward by n months, use negative for backward
+        :param n: Months
+        :return: Lunar month
         """
         if 0 == n:
             return LunarMonth.fromYm(self.__year, self.__month)

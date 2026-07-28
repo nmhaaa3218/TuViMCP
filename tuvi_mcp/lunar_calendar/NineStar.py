@@ -4,29 +4,40 @@ from .util import LunarUtil
 
 class NineStar:
     """
-    九星
+    Nine Star
     """
 
-    NUMBER = ("一", "二", "三", "四", "五", "六", "七", "八", "九")
+    NUMBER = ("Nhất", "Nhị", "Tam", "Tứ", "Ngũ", "Lục", "Thất", "Bát", "Cửu")
     NUMBER_VI = ("Nhất", "Nhị", "Tam", "Tứ", "Ngũ", "Lục", "Thất", "Bát", "Cửu")
-    COLOR = ("白", "黑", "碧", "绿", "黄", "白", "赤", "白", "紫")
+    COLOR = ("Bạch", "Hắc", "Bích", "Lục", "Hoàng", "Bạch", "Xích", "Bạch", "Tử")
     COLOR_VI = ("Bạch", "Hắc", "Bích", "Lục", "Hoàng", "Bạch", "Xích", "Bạch", "Tử")
-    WU_XING = ("水", "土", "木", "木", "土", "金", "金", "土", "火")
+    WU_XING = ("Thủy", "Thổ", "Mộc", "Mộc", "Thổ", "Kim", "Kim", "Thổ", "Hỏa")
     WU_XING_VI = ("Thủy", "Thổ", "Mộc", "Mộc", "Thổ", "Kim", "Kim", "Thổ", "Hỏa")
-    POSITION = ("坎", "坤", "震", "巽", "中", "乾", "兑", "艮", "离")
+    POSITION = ("Khảm", "Khôn", "Chấn", "Tốn", "Trung", "Càn", "Đoài", "Cấn", "Ly")
     POSITION_VI = ("Khảm", "Khôn", "Chấn", "Tốn", "Trung", "Càn", "Đoài", "Cấn", "Ly")
-    NAME_BEI_DOU = ("天枢", "天璇", "天玑", "天权", "玉衡", "开阳", "摇光", "洞明", "隐元")
+    NAME_BEI_DOU = ("Tham Lang", "Cự Môn", "Lộc Tồn", "Văn Khúc", "Liêm Trinh", "Vũ Khúc", "Phá Quân", "Tả Phụ", "Hữu Bật")
     NAME_BEI_DOU_VI = ("Tham Lang", "Cự Môn", "Lộc Tồn", "Văn Khúc", "Liêm Trinh", "Vũ Khúc", "Phá Quân", "Tả Phụ", "Hữu Bật")
-    NAME_XUAN_KONG = ("贪狼", "巨门", "禄存", "文曲", "廉贞", "武曲", "破军", "左辅", "右弼")
+    NAME_XUAN_KONG = ("Tham Lang", "Cự Môn", "Lộc Tồn", "Văn Khúc", "Liêm Trinh", "Vũ Khúc", "Phá Quân", "Tả Phụ", "Hữu Bật")
     NAME_XUAN_KONG_VI = ("Tham Lang", "Cự Môn", "Lộc Tồn", "Văn Khúc", "Liêm Trinh", "Vũ Khúc", "Phá Quân", "Tả Phụ", "Hữu Bật")
-    NAME_QI_MEN = ("天蓬", "天芮", "天冲", "天辅", "天禽", "天心", "天柱", "天任", "天英")
-    BA_MEN_QI_MEN = ("休", "死", "伤", "杜", "", "开", "惊", "生", "景")
-    NAME_TAI_YI = ("太乙", "摄提", "轩辕", "招摇", "天符", "青龙", "咸池", "太阴", "天乙")
-    TYPE_TAI_YI = ("吉神", "凶神", "安神", "安神", "凶神", "吉神", "凶神", "吉神", "吉神")
-    SONG_TAI_YI = ("门中太乙明，星官号贪狼，赌彩财喜旺，婚姻大吉昌，出入无阻挡，参谒见贤良，此行三五里，黑衣别阴阳。", "门前见摄提，百事必忧疑，相生犹自可，相克祸必临，死门并相会，老妇哭悲啼，求谋并吉事，尽皆不相宜，只可藏隐遁，若动伤身疾。", "出入会轩辕，凡事必缠牵，相生全不美，相克更忧煎，远行多不利，博彩尽输钱，九天玄女法，句句不虚言。", "招摇号木星，当之事莫行，相克行人阻，阴人口舌迎，梦寐多惊惧，屋响斧自鸣，阴阳消息理，万法弗违情。", "五鬼为天符，当门阴女谋，相克无好事，行路阻中途，走失难寻觅，道逢有尼姑，此星当门值，万事有灾除。", "神光跃青龙，财气喜重重，投入有酒食，赌彩最兴隆，更逢相生旺，休言克破凶，见贵安营寨，万事总吉同。", "吾将为咸池，当之尽不宜，出入多不利，相克有灾情，赌彩全输尽，求财空手回，仙人真妙语，愚人莫与知，动用虚惊退，反复逆风吹。", "坐临太阴星，百祸不相侵，求谋悉成就，知交有觅寻，回风归来路，恐有殃伏起，密语中记取，慎乎莫轻行。", "迎来天乙星，相逢百事兴，运用和合庆，茶酒喜相迎，求谋并嫁娶，好合有天成，祸福如神验，吉凶甚分明。")
-    LUCK_XUAN_KONG = ("吉", "凶", "凶", "吉", "凶", "吉", "凶", "吉", "吉")
-    LUCK_QI_MEN = ("大凶", "大凶", "小吉", "大吉", "大吉", "大吉", "小凶", "小吉", "小凶")
-    YIN_YANG_QI_MEN = ("阳", "阴", "阳", "阳", "阳", "阴", "阴", "阳", "阴")
+    NAME_QI_MEN = ("Thiên Bồng", "Thiên Nhuế", "Thiên Xung", "Thiên Phụ", "Thiên Cầm", "Thiên Tâm", "Thiên Trụ", "Thiên Nhậm", "Thiên Anh")
+    BA_MEN_QI_MEN = ("Hưu", "Tử", "Thương", "Đỗ", "", "Khai", "Kinh", "Sinh", "Cảnh")
+    NAME_TAI_YI = ("Thái Ất", "Nhiếp Đề", "Hiên Viên", "Chiêu Dao", "Thiên Phù", "Thanh Long", "Hàm Trì", "Thái Âm", "Thiên Ất")
+    TYPE_TAI_YI = ("Cát Thần", "Hung Thần", "An Thần", "An Thần", "Hung Thần", "Cát Thần", "Hung Thần", "Cát Thần", "Cát Thần")
+    SONG_TAI_YI = (
+        "Cửa gặp Thái Ất sáng, sao hiệu Tham Lang, cầu xin tài lộc hưng vong, hôn nhân đại cát hanh thông, ra vào không trở ngại, gặp gỡ bậc hiền lương, đi năm ba dặm, mặc áo đen phân âm dương.",
+        "Trước cửa thấy Nhiếp Đề, trăm việc phải nghiền ngẫm, tương sinh còn tạm được, tương khắc họa tất tới, Tử Môn cùng hội họi, bà lão khóc thảm thương, cầu mưu sự cát, chẳng nên chăng hợp, chỉ nên ẩn núp trốn tránh, động tới thương tích thân.",
+        "Ra vào gặp Hiên Viên, mọi việc tất ràng buộc, tương sinh chẳng tốt đẹp, tương khắc càng lo buồn, đi xa nhiều bất lợi, đánh bạc thua sạch tiền, Cửu Thiên Huyền Nữ pháp, câu câu chẳng vọng ngôn.",
+        "Chiêu Dao hiệu Mộc Tinh, đương sự chớ nên hành, tương khắc kẻ qua đường trở ngại, người âm mồm miệng nghinh đón, chiêm bao nhiều kinh sợ, nhà vang tiếng búa tự kêu, âm dương tiêu tin lý, vạn pháp chẳng trái tình.",
+        "Ngũ Quỷ là Thiên Phù, cửa gặp đàn bà âm mưu, tương khắc chẳng việc tốt, đường đi trở ngại nửa đường, đi lạc khó tìm kiếm, đường gặp có ni cô, sao này đương cửa trị, vạn sự có tai trừ.",
+        "Thần quang nhảy Thanh Long, khí tài vui mừng nặng, đầu tư có rượu thịt, đánh bạc hưng thịnh nhất, lại gặp tương sinh vượng, thôi nói khắc phá hung, thấy quý lập doanh trại, vạn sự tổng cát đồng.",
+        "Ta sẽ vì Hàm Trì, đương nó hết chẳng nên, ra vào nhiều bất lợi, tương khắc có tai tình, đánh bạc thua sạch hết, cầu tài tay không về, tiên nhân quả diệu ngữ, người ngu chớ nên biết, động dụng hư kinh thoái, lặp lặp nghịch phong thổi.",
+        "Ngồi đến Thái Âm tinh, trăm họa chẳng xâm phạm, cầu mưu mọi sự thành, tri giao có tìm kiếm, hồi phong quy lại lộ, sợ có ương phục khởi, mật ngữ trung ký thụ, thận hề chớ khinh hành.",
+        "Nghênh đón Thiên Ất tinh, tương phùng trăm sự hưng, vận dụng hòa hợp mừng, trà rượu vui nghênh đón, cầu mưu và xin cưới, hảo hợp có thiên thành, họa phúc như thần nghiệm, cát hung thật phân minh."
+    )
+    LUCK_XUAN_KONG = ("Cát", "Hung", "Hung", "Cát", "Hung", "Cát", "Hung", "Cát", "Cát")
+    LUCK_QI_MEN = ("Đại Hung", "Đại Hung", "Tiểu Cát", "Đại Cát", "Đại Cát", "Đại Cát", "Tiểu Hung", "Tiểu Cát", "Tiểu Hung")
+    YIN_YANG_QI_MEN = ("Dương", "Âm", "Dương", "Dương", "Dương", "Âm", "Âm", "Dương", "Âm")
+
 
 
     def __init__(self, index):
@@ -100,21 +111,21 @@ class NineStar:
         s += self.getPositionDesc()
         s += ") "
         s += self.getNameInBeiDou()
-        s += " 玄空["
+        s += " Huyền Không["
         s += self.getNameInXuanKong()
         s += " "
         s += self.getLuckInXuanKong()
-        s += "] 奇门["
+        s += "] Kỳ Môn["
         s += self.getNameInQiMen()
         s += " "
         s += self.getLuckInQiMen()
         if len(self.getBaMenInQiMen()) > 0:
             s += " "
             s += self.getBaMenInQiMen()
-            s += "门"
+            s += " Môn"
         s += " "
         s += self.getYinYangInQiMen()
-        s += "] 太乙["
+        s += "] Thái Ất["
         s += self.getNameInTaiYi()
         s += " "
         s += self.getTypeInTaiYi()

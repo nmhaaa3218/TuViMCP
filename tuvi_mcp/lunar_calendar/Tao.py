@@ -5,7 +5,7 @@ from .util import LunarUtil, TaoUtil
 
 class Tao:
     """
-    道历
+    Taoist calendar
     """
 
     BIRTH_YEAR = -2697
@@ -58,14 +58,14 @@ class Tao:
             for f in fs:
                 festivals.append(f)
         jq = self.__lunar.getJieQi()
-        if "冬至" == jq:
+        if "Đông Chí" == jq:
             festivals.append(TaoFestival("元始天尊圣诞"))
-        elif "夏至" == jq:
+        elif "Hạ Chí" == jq:
             festivals.append(TaoFestival("灵宝天尊圣诞"))
-        # 八节日
+        # Eight Festivals (Ba Jie)
         if jq in TaoUtil.BA_JIE:
             festivals.append(TaoFestival(TaoUtil.BA_JIE[jq]))
-        # 八会日
+        # Eight Meeting Days (Ba Hui)
         gz = self.__lunar.getDayInGanZhi()
         if gz in TaoUtil.BA_HUI:
             festivals.append(TaoFestival(TaoUtil.BA_HUI[gz]))
@@ -94,7 +94,7 @@ class Tao:
         return self.__lunar.getDayInGanZhi() in TaoUtil.BA_HUI
 
     def isDayMingWu(self):
-        return "戊" == self.__lunar.getDayGan()
+        return "Mậu" == self.__lunar.getDayGan()
 
     def isDayAnWu(self):
         return self.__lunar.getDayZhi() == TaoUtil.AN_WU[abs(self.getMonth()) - 1]
@@ -106,17 +106,17 @@ class Tao:
         ret = False
         mz = self.__lunar.getMonthZhi()
         dgz = self.__lunar.getDayInGanZhi()
-        if mz in "寅卯辰":
-            if "戊寅" == dgz:
+        if mz in ("Dần", "Mão", "Thìn"):
+            if "Mậu Dần" == dgz:
                 ret = True
-        elif mz in "巳午未":
-            if "甲午" == dgz:
+        elif mz in ("Tỵ", "Ngọ", "Mùi"):
+            if "Giáp Ngọ" == dgz:
                 ret = True
-        elif mz in "申酉戌":
-            if "戊申" == dgz:
+        elif mz in ("Thân", "Dậu", "Tuất"):
+            if "Mậu Thân" == dgz:
                 ret = True
-        elif mz in "亥子丑":
-            if "甲子" == dgz:
+        elif mz in ("Hợi", "Tý", "Sửu"):
+            if "Giáp Tý" == dgz:
                 ret = True
         return ret
 
@@ -127,4 +127,4 @@ class Tao:
         return "%s年%s月%s" % (self.getYearInChinese(), self.getMonthInChinese(), self.getDayInChinese())
 
     def toFullString(self):
-        return "道歷%s年，天运%s年，%s月，%s日。%s月%s日，%s時。" % (self.getYearInChinese(), self.__lunar.getYearInGanZhi(), self.__lunar.getMonthInGanZhi(), self.__lunar.getDayInGanZhi(), self.getMonthInChinese(), self.getDayInChinese(), self.__lunar.getTimeZhi())
+        return "Đạo lịch %s năm, Thiên vận %s năm, %s tháng, %s ngày. %s tháng %s ngày, %s giờ." % (self.getYearInChinese(), self.__lunar.getYearInGanZhi(), self.__lunar.getMonthInGanZhi(), self.__lunar.getDayInGanZhi(), self.getMonthInChinese(), self.getDayInChinese(), self.__lunar.getTimeZhi())

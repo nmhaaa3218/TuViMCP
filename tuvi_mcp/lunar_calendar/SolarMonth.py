@@ -6,7 +6,7 @@ from .util import SolarUtil
 
 class SolarMonth:
     """
-    阳历月
+    Solar month
     """
 
     def __init__(self, year, month):
@@ -31,15 +31,15 @@ class SolarMonth:
         return "%d-%d" % (self.__year, self.__month)
 
     def toFullString(self):
-        return "%d年%d月" % (self.__year, self.__month)
+        return "Tháng %d năm %d" % (self.__month, self.__year)
 
     def __str__(self):
         return self.toString()
 
     def getDays(self):
         """
-        获取本月的阳历日期列表
-        :return: 阳历日期列表
+        Get solar dates of this month
+        :return: List of solar dates
         """
         days = []
         d = Solar.fromYmd(self.__year, self.__month, 1)
@@ -50,9 +50,9 @@ class SolarMonth:
 
     def getWeeks(self, start):
         """
-        获取本月的阳历日期列表
-        :param start: 星期几作为一周的开始，1234560分别代表星期一至星期天
-        :return: 阳历日期列表
+        Get solar date list of this month
+        :param start: Day of week as start, 1234560 for Monday to Sunday
+        :return: List of solar dates
         """
         weeks = []
         week = SolarWeek.fromYmd(self.__year, self.__month, 1, start)
@@ -66,9 +66,9 @@ class SolarMonth:
 
     def next(self, months):
         """
-        获取往后推几个月的阳历月，如果要往前推，则月数用负数
-        :param months: 月数
-        :return: 阳历月
+        Get solar month pushed forward by months, use negative for backward
+        :param months: Months
+        :return: Solar month
         """
         n = 1
         if months < 0:

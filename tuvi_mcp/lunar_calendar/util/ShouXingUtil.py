@@ -4,7 +4,7 @@ from math import sin, cos, floor
 
 class ShouXingUtil:
     """
-    寿星天文历工具
+    Shouxing astronomical calendar utility
     """
     PI = 3.141592653589793
     PI_2 = 2 * PI
@@ -12,7 +12,7 @@ class ShouXingUtil:
     SECOND_PER_DAY = 86400
     SECOND_PER_RAD = 648000 / PI
 
-    # 中精度章动计算表
+    # Medium precision nutation table
     __NUT_B = (
         2.1824, -33.75705, 36e-6, -1720, 920,
         3.5069, 1256.66393, 11e-6, -132, 57,
@@ -26,7 +26,7 @@ class ShouXingUtil:
         3.55, 628.362, 0, 2, 0
     )
 
-    # TD - UT1 计算表
+    # TD - UT1 calculation table
     __DT_AT = (
         -4000, 108371.7, -13036.80, 392.000, 0.0000,
         -500, 17201.0, -627.82, 16.170, -0.3413,
@@ -323,47 +323,47 @@ class ShouXingUtil:
         return s
 
     __QI_KB = (
-        1640650.479938, 15.21842500,  # -221-11-09 h=0.01709 古历·秦汉
-        1642476.703182, 15.21874996,  # -216-11-09 h=0.01557 古历·秦汉
-        1683430.515601, 15.218750011,  # -104-12-25 h=0.01560 汉书·律历志(太初历)平气平朔 回归年=365.25000
-        1752157.640664, 15.218749978,  # 85-02-23 h=0.01559 后汉书·律历志(四分历) 回归年=365.25000
-        1807675.003759, 15.218620279,  # 237-02-22 h=0.00010 晋书·律历志(景初历) 回归年=365.24689
-        1883627.765182, 15.218612292,  # 445-02-03 h=0.00026 宋书·律历志(何承天元嘉历) 回归年=365.24670
-        1907369.128100, 15.218449176,  # 510-02-03 h=0.00027 宋书·律历志(祖冲之大明历) 回归年=365.24278
-        1936603.140413, 15.218425000,  # 590-02-17 h=0.00149 随书·律历志(开皇历) 回归年=365.24220
-        1939145.524180, 15.218466998,  # 597-02-03 h=0.00121 随书·律历志(大业历) 回归年=365.24321
-        1947180.798300, 15.218524844,  # 619-02-03 h=0.00052 新唐书·历志(戊寅元历)平气定朔 回归年=365.24460
-        1964362.041824, 15.218533526,  # 666-02-17 h=0.00059 新唐书·历志(麟德历) 回归年=365.24480
-        1987372.340971, 15.218513908,  # 729-02-16 h=0.00096 新唐书·历志(大衍历,至德历) 回归年=365.24433
-        1999653.819126, 15.218530782,  # 762-10-03 h=0.00093 新唐书·历志(五纪历) 回归年=365.24474
-        2007445.469786, 15.218535181,  # 784-02-01 h=0.00059 新唐书·历志(正元历,观象历) 回归年=365.24484
-        2021324.917146, 15.218526248,  # 822-02-01 h=0.00022 新唐书·历志(宣明历) 回归年=365.24463
-        2047257.232342, 15.218519654,  # 893-01-31 h=0.00015 新唐书·历志(崇玄历) 回归年=365.24447
-        2070282.898213, 15.218425000,  # 956-02-16 h=0.00149 旧五代·历志(钦天历) 回归年=365.24220
-        2073204.872850, 15.218515221,  # 964-02-16 h=0.00166 宋史·律历志(应天历) 回归年=365.24437
-        2080144.500926, 15.218530782,  # 983-02-16 h=0.00093 宋史·律历志(乾元历) 回归年=365.24474
-        2086703.688963, 15.218523776,  # 1001-01-31 h=0.00067 宋史·律历志(仪天历,崇天历) 回归年=365.24457
-        2110033.182763, 15.218425000,  # 1064-12-15 h=0.00669 宋史·律历志(明天历) 回归年=365.24220
-        2111190.300888, 15.218425000,  # 1068-02-15 h=0.00149 宋史·律历志(崇天历) 回归年=365.24220
-        2113731.271005, 15.218515671,  # 1075-01-30 h=0.00038 李锐补修(奉元历) 回归年=365.24438
-        2120670.840263, 15.218425000,  # 1094-01-30 h=0.00149 宋史·律历志 回归年=365.24220
-        2123973.309063, 15.218425000,  # 1103-02-14 h=0.00669 李锐补修(占天历) 回归年=365.24220
-        2125068.997336, 15.218477932,  # 1106-02-14 h=0.00056 宋史·律历志(纪元历) 回归年=365.24347
-        2136026.312633, 15.218472436,  # 1136-02-14 h=0.00088 宋史·律历志(统元历,乾道历,淳熙历) 回归年=365.24334
-        2156099.495538, 15.218425000,  # 1191-01-29 h=0.00149 宋史·律历志(会元历) 回归年=365.24220
-        2159021.324663, 15.218425000,  # 1199-01-29 h=0.00149 宋史·律历志(统天历) 回归年=365.24220
-        2162308.575254, 15.218461742,  # 1208-01-30 h=0.00146 宋史·律历志(开禧历) 回归年=365.24308
-        2178485.706538, 15.218425000,  # 1252-05-15 h=0.04606 淳祐历 回归年=365.24220
-        2178759.662849, 15.218445786,  # 1253-02-13 h=0.00231 会天历 回归年=365.24270
-        2185334.020800, 15.218425000,  # 1271-02-13 h=0.00520 宋史·律历志(成天历) 回归年=365.24220
-        2187525.481425, 15.218425000,  # 1277-02-12 h=0.00520 本天历 回归年=365.24220
-        2188621.191481, 15.218437494,  # 1280-02-13 h=0.00015 元史·历志(郭守敬授时历) 回归年=365.24250
+        1640650.479938, 15.21842500,  # -221-11-09 h=0.01709 Ancient calendar·Qin-Han
+        1642476.703182, 15.21874996,  # -216-11-09 h=0.01557 Ancient calendar·Qin-Han
+        1683430.515601, 15.218750011,  # -104-12-25 h=0.01560 Book of Han·Treatise on Calendar (Taichu Calendar) mean solar terms/mean new moons Tropical year=365.25000
+        1752157.640664, 15.218749978,  # 85-02-23 h=0.01559 Book of Later Han·Treatise on Calendar (Sifen Calendar) Tropical year=365.25000
+        1807675.003759, 15.218620279,  # 237-02-22 h=0.00010 Book of Jin·Treatise on Calendar (Jingchu Calendar) Tropical year=365.24689
+        1883627.765182, 15.218612292,  # 445-02-03 h=0.00026 Book of Song·Treatise on Calendar (He Chengtian's Yuanjia Calendar) Tropical year=365.24670
+        1907369.128100, 15.218449176,  # 510-02-03 h=0.00027 Book of Song·Treatise on Calendar (Zu Chongzhi's Daming Calendar) Tropical year=365.24278
+        1936603.140413, 15.218425000,  # 590-02-17 h=0.00149 Book of Sui·Treatise on Calendar (Kaihuang Calendar) Tropical year=365.24220
+        1939145.524180, 15.218466998,  # 597-02-03 h=0.00121 Book of Sui·Treatise on Calendar (Daye Calendar) Tropical year=365.24321
+        1947180.798300, 15.218524844,  # 619-02-03 h=0.00052 New Book of Tang·Treatise on Calendar (Wuyin Yuan Calendar) mean solar terms/fixed new moons Tropical year=365.24460
+        1964362.041824, 15.218533526,  # 666-02-17 h=0.00059 New Book of Tang·Treatise on Calendar (Linde Calendar) Tropical year=365.24480
+        1987372.340971, 15.218513908,  # 729-02-16 h=0.00096 New Book of Tang·Treatise on Calendar (Dayan Calendar, Zhide Calendar) Tropical year=365.24433
+        1999653.819126, 15.218530782,  # 762-10-03 h=0.00093 New Book of Tang·Treatise on Calendar (Wuji Calendar) Tropical year=365.24474
+        2007445.469786, 15.218535181,  # 784-02-01 h=0.00059 New Book of Tang·Treatise on Calendar (Zhengyuan Calendar, Guanxiang Calendar) Tropical year=365.24484
+        2021324.917146, 15.218526248,  # 822-02-01 h=0.00022 New Book of Tang·Treatise on Calendar (Xuanming Calendar) Tropical year=365.24463
+        2047257.232342, 15.218519654,  # 893-01-31 h=0.00015 New Book of Tang·Treatise on Calendar (Chongxuan Calendar) Tropical year=365.24447
+        2070282.898213, 15.218425000,  # 956-02-16 h=0.00149 Old Five Dynasties·Treatise on Calendar (Qintian Calendar) Tropical year=365.24220
+        2073204.872850, 15.218515221,  # 964-02-16 h=0.00166 History of Song·Treatise on Calendar (Yingtian Calendar) Tropical year=365.24437
+        2080144.500926, 15.218530782,  # 983-02-16 h=0.00093 History of Song·Treatise on Calendar (Qianyuan Calendar) Tropical year=365.24474
+        2086703.688963, 15.218523776,  # 1001-01-31 h=0.00067 History of Song·Treatise on Calendar (Yitian Calendar, Chongtian Calendar) Tropical year=365.24457
+        2110033.182763, 15.218425000,  # 1064-12-15 h=0.00669 History of Song·Treatise on Calendar (Mingtian Calendar) Tropical year=365.24220
+        2111190.300888, 15.218425000,  # 1068-02-15 h=0.00149 History of Song·Treatise on Calendar (Chongtian Calendar) Tropical year=365.24220
+        2113731.271005, 15.218515671,  # 1075-01-30 h=0.00038 Li Rui supplement (Fengyuan Calendar) Tropical year=365.24438
+        2120670.840263, 15.218425000,  # 1094-01-30 h=0.00149 History of Song·Treatise on Calendar Tropical year=365.24220
+        2123973.309063, 15.218425000,  # 1103-02-14 h=0.00669 Li Rui supplement (Zhantian Calendar) Tropical year=365.24220
+        2125068.997336, 15.218477932,  # 1106-02-14 h=0.00056 History of Song·Treatise on Calendar (Jiyuan Calendar) Tropical year=365.24347
+        2136026.312633, 15.218472436,  # 1136-02-14 h=0.00088 History of Song·Treatise on Calendar (Tongyuan Calendar, Qiandao Calendar, Chunxi Calendar) Tropical year=365.24334
+        2156099.495538, 15.218425000,  # 1191-01-29 h=0.00149 History of Song·Treatise on Calendar (Huiyuan Calendar) Tropical year=365.24220
+        2159021.324663, 15.218425000,  # 1199-01-29 h=0.00149 History of Song·Treatise on Calendar (Tongtian Calendar) Tropical year=365.24220
+        2162308.575254, 15.218461742,  # 1208-01-30 h=0.00146 History of Song·Treatise on Calendar (Kaixi Calendar) Tropical year=365.24308
+        2178485.706538, 15.218425000,  # 1252-05-15 h=0.04606 Chunyou Calendar Tropical year=365.24220
+        2178759.662849, 15.218445786,  # 1253-02-13 h=0.00231 Huitian Calendar Tropical year=365.24270
+        2185334.020800, 15.218425000,  # 1271-02-13 h=0.00520 History of Song·Treatise on Calendar (Chengtian Calendar) Tropical year=365.24220
+        2187525.481425, 15.218425000,  # 1277-02-12 h=0.00520 Bentian Calendar Tropical year=365.24220
+        2188621.191481, 15.218437494,  # 1280-02-13 h=0.00015 History of Yuan·Treatise on Calendar (Guo Shoujing's Shoushi Calendar) Tropical year=365.24250
         2322147.76  # 1645-09-21
     )
-    # 1645-09-23开始7567个节气修正表
+    # Solar term correction table starting 1645-09-23 (7567 entries)
     __QB = ""
     __SHUO_KB = (1457698.231017, 29.53067166, 1546082.512234, 29.53085106, 1640640.735300, 29.53060000, 1642472.151543, 29.53085439, 1683430.509300, 29.53086148, 1752148.041079, 29.53085097, 1807665.420323, 29.53059851, 1883618.114100, 29.53060000, 1907360.704700, 29.53060000, 1936596.224900, 29.53060000, 1939135.675300, 29.53060000, 1947168.00)
-    # 619-01-21开始16598个朔日修正表 d0=1947168
+    # New moon correction table starting 619-01-21 (16598 entries) d0=1947168
     __SB = ""
 
     def __init__(self):
@@ -628,7 +628,7 @@ class ShouXingUtil:
         f2 = ShouXingUtil.__QI_KB[size - 1] - pc
         f3 = 2436935
         if jd < f1 or jd >= f3:
-            # 2451259是1999.3.21，太阳视黄经为0，春分 定气计算
+            # 2451259 = 1999-03-21, solar apparent ecliptic longitude = 0, vernal equinox - fixed solar term calculation
             d = floor(ShouXingUtil.qiHigh(floor((jd + pc - 2451259) / 365.2422 * 24) * ShouXingUtil.PI / 12) + 0.5)
         elif f1 <= jd < f2:
             for i in range(0, size, 2):
@@ -641,7 +641,7 @@ class ShouXingUtil:
             d -= Solar.J2000
         elif f2 <= jd < f3:
             d = floor(ShouXingUtil.qiLow(floor((jd + pc - 2451259) / 365.2422 * 24) * ShouXingUtil.PI / 12) + 0.5)
-            # 找定气修正值
+            # Find solar term correction value
             index = floor((jd - f2) / 365.2422 * 24)
             n = ShouXingUtil.__QB[index:index + 1]
             if "1" == n:

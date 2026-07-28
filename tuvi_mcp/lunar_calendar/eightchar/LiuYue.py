@@ -5,7 +5,7 @@ from ..util import LunarUtil
 
 class LiuYue:
     """
-    流月
+    Liu Yue (Monthly Cycle)
     """
 
     def __init__(self, liu_nian, index):
@@ -17,49 +17,50 @@ class LiuYue:
 
     def getMonthInChinese(self):
         """
-        获取中文的月
-        :return: 中文月，如正
+        Get month in Chinese
+        :return: Chinese month, e.g. First
         """
         return LunarUtil.MONTH[self.__index + 1]
 
     def getGanZhi(self):
         """
-        获取干支
+        Get GanZhi (Heavenly Stem & Earthly Branch)
         <p>
-        《五虎遁》
-        甲己之年丙作首，
-        乙庚之年戊为头，
-        丙辛之年寻庚上，
-        丁壬壬寅顺水流，
-        若问戊癸何处走，
-        甲寅之上好追求。
-        :return: 干支
+        "Five Tiger Escape" formula:
+        Jia-Ki year Bing is first,
+        Yi-Geng year Wu is head,
+        Bing-Xin year find Geng above,
+        Ding-Ren Nham-Yin flows downstream,
+        If asked where Wu-Qui goes,
+        Jia-Yin above is good pursuit.
+        :return: GanZhi
         """
         offset = 0
         year_gan_zhi = self.__liuNian.getGanZhi()
-        year_gan = year_gan_zhi[:1]
-        if "甲" == year_gan or "己" == year_gan:
+        year_gan = year_gan_zhi.split()[0] if " " in year_gan_zhi else year_gan_zhi[:1]
+        if year_gan in ["Giáp", "Kỷ"]:
             offset = 2
-        elif "乙" == year_gan or "庚" == year_gan:
+        elif year_gan in ["Ất", "Canh"]:
             offset = 4
-        elif "丙" == year_gan or "辛" == year_gan:
+        elif year_gan in ["Bính", "Tân"]:
             offset = 6
-        elif "丁" == year_gan or "壬" == year_gan:
+        elif year_gan in ["Đinh", "Nhâm"]:
             offset = 8
         gan = LunarUtil.GAN[(self.__index + offset) % 10 + 1]
         zhi = LunarUtil.ZHI[(self.__index + LunarUtil.BASE_MONTH_ZHI_INDEX) % 12 + 1]
-        return gan + zhi
+        return f"{gan} {zhi}"
+
 
     def getXun(self):
         """
-        获取所在旬
-        :return: 旬
+        Get Xun (cycle)
+        :return: Xun
         """
         return LunarUtil.getXun(self.getGanZhi())
 
     def getXunKong(self):
         """
-        获取旬空(空亡)
-        :return: 旬空(空亡)
+        Get XunKong (Void)
+        :return: XunKong (Void)
         """
         return LunarUtil.getXunKong(self.getGanZhi())

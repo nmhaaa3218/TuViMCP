@@ -7,12 +7,12 @@ from .util import ShouXingUtil, LunarUtil
 
 class LunarYear:
     """
-    农历年
+    Lunar year
     """
 
-    YUAN = ("下", "上", "中")
+    YUAN = ("Hạ", "Thượng", "Trung")
 
-    YUN = ("七", "八", "九", "一", "二", "三", "四", "五", "六")
+    YUN = ("Thất", "Bát", "Cửu", "Nhất", "Nhị", "Tam", "Tứ", "Ngũ", "Lục")
 
     __LEAP_11 = (75, 94, 170, 265, 322, 398, 469, 553, 583, 610, 678, 735, 754, 773, 849, 887, 936, 1050, 1069, 1126, 1145, 1164, 1183, 1259, 1278, 1308, 1373, 1403, 1441, 1460, 1498, 1555, 1593, 1612, 1631, 1642, 2033, 2128, 2147, 2242, 2614, 2728, 2910, 3062, 3244, 3339, 3616, 3711, 3730, 3825, 4007, 4159, 4197, 4322, 4341, 4379, 4417, 4531, 4599, 4694, 4713, 4789, 4808, 4971, 5085, 5104, 5161, 5180, 5199, 5294, 5305, 5476, 5677, 5696, 5772, 5791, 5848, 5886, 6049, 6068, 6144, 6163, 6258, 6402, 6440, 6497, 6516, 6630, 6641, 6660, 6679, 6736, 6774, 6850, 6869, 6899, 6918, 6994, 7013, 7032, 7051, 7070, 7089, 7108, 7127, 7146, 7222, 7271, 7290, 7309, 7366, 7385, 7404, 7442, 7461, 7480, 7491, 7499, 7594, 7624, 7643, 7662, 7681, 7719, 7738, 7814, 7863, 7882, 7901, 7939, 7958, 7977, 7996,
                  8034, 8053, 8072, 8091, 8121, 8159, 8186, 8216, 8235, 8254, 8273, 8311, 8330, 8341, 8349, 8368, 8444, 8463, 8474, 8493, 8531, 8569, 8588, 8626, 8664, 8683, 8694, 8702, 8713, 8721, 8751, 8789, 8808, 8816, 8827, 8846, 8884, 8903, 8922, 8941, 8971, 9036, 9066, 9085, 9104, 9123, 9142, 9161, 9180, 9199, 9218, 9256, 9294, 9313, 9324, 9343, 9362, 9381, 9419, 9438, 9476, 9514, 9533, 9544, 9552, 9563, 9571, 9582, 9601, 9639, 9658, 9666, 9677, 9696, 9734, 9753, 9772, 9791, 9802, 9821, 9886, 9897, 9916, 9935, 9954, 9973, 9992)
@@ -52,26 +52,26 @@ class LunarYear:
 
     def compute(self):
         from . import Lunar, Solar, LunarMonth
-        # 节气
+        # Solar terms
         jq = []
-        # 合朔，即每月初一
+        # New moon (first day of each month)
         hs = []
-        # 每月天数，长度15
+        # Days per month, length 15
         day_counts = []
-        # 月份
+        # Months
         months = []
 
         current_year = self.__year
         jd = floor((current_year - 2000) * 365.2422 + 180)
-        # 355是2000.12冬至，得到较靠近jd的冬至估计值
+        # 355 is the Winter Solstice of 2000.12, get an estimated Winter Solstice close to jd
         w = floor((jd - 355 + 183) / 365.2422) * 365.2422 + 355
         if ShouXingUtil.calcQi(w) > jd:
             w -= 365.2422
-        # 25个节气时刻(北京时间)，从冬至开始到下一个冬至以后
+        # 25 solar term times (Beijing time), starting from Winter Solstice to the next Winter Solstice
         for i in range(0, 26):
             jq.append(ShouXingUtil.calcQi(w + 15.2184 * i))
 
-        # 从上年的大雪到下年的立春 精确的节气
+        # From last year's Major Snow to next year's Start of Spring, precise solar terms
         for i in range(0, len(Lunar.JIE_QI_IN_USE)):
             if i == 0:
                 jd = ShouXingUtil.qiAccurate2(jq[0] - 15.2184)
@@ -81,11 +81,11 @@ class LunarYear:
                 jd = ShouXingUtil.qiAccurate2(jq[25] + 15.2184 * (i - 26))
             self.__jieQiJulianDays.append(jd + Solar.J2000)
 
-        # 冬至前的初一，今年"首朔"的日月黄经差w
+        # First new moon before Winter Solstice, the solar-lunar longitude difference w
         w = ShouXingUtil.calcShuo(jq[0])
         if w > jq[0]:
             w -= 29.53
-        # 递推每月初一
+        # Recurse each month's first day
         for i in range(0, 16):
             hs.append(ShouXingUtil.calcShuo(w + 29.5306 * i))
         # 每月
@@ -185,8 +185,8 @@ class LunarYear:
 
     def getLeapMonth(self):
         """
-        获取闰月
-        :return: 闰月数字，1代表闰1月，0代表无闰月
+        Get leap month
+        :return: Leap month number, 1 for leap 1st month, 0 for no leap month
         """
         for m in self.__months:
             if m.getYear() == self.__year and m.isLeap():
@@ -195,9 +195,9 @@ class LunarYear:
 
     def getMonth(self, lunar_month):
         """
-        获取农历月
-        :param lunar_month: 闰月数字，1代表闰1月，0代表无闰月
-        :return: 农历月
+        Get lunar month
+        :param lunar_month: Leap month number, 1 for leap 1st month, 0 for no leap month
+        :return: Lunar month
         """
         for m in self.__months:
             if m.getYear() == self.__year and m.getMonth() == lunar_month:
@@ -224,8 +224,8 @@ class LunarYear:
 
     def getGengTian(self):
         """
-        获取耕田（正月第一个丑日是初几，就是几牛耕田）
-        :return: 耕田，如：六牛耕田
+        Get plowing (first Chou day of first month, e.g. Six Oxen Plowing)
+        :return: Plowing, e.g. Six Oxen Plowing
         """
         return self.__getZaoByZhi(1, "几牛耕田")
 
@@ -234,8 +234,8 @@ class LunarYear:
 
     def getZhiShui(self):
         """
-        获取治水（正月第一个辰日是初几，就是几龙治水）
-        :return: 治水，如：二龙治水
+        Get water management (first Chen day of first month, e.g. Two Dragons Water Management)
+        :return: Water management, e.g. Two Dragons Water Management
         """
         return self.__getZaoByZhi(4, "几龙治水")
 
@@ -256,15 +256,15 @@ class LunarYear:
 
     def getFenBing(self):
         """
-        获取分饼（正月第一个丙日是初几，就是几人分饼）
-        :return: 分饼，如：六人分饼
+        Get cake division (first Bing day of first month, e.g. Six People Share Cake)
+        :return: Cake division, e.g. Six People Share Cake
         """
         return self.__getZaoByGan(2, "几人分饼")
 
     def getDeJin(self):
         """
-        获取得金（正月第一个辛日是初几，就是几日得金）
-        :return: 得金，如：一日得金
+        Get gold acquisition (first Xin day of first month, e.g. One Day Acquires Gold)
+        :return: Gold acquisition, e.g. One Day Acquires Gold
         """
         return self.__getZaoByGan(7, "几日得金")
 
@@ -275,10 +275,10 @@ class LunarYear:
         return self.__getZaoByGan(3, self.__getZaoByZhi(2, "几人几锄"))
 
     def getYuan(self):
-        return LunarYear.YUAN[int((self.__year + 2696) / 60) % 3] + "元"
+        return LunarYear.YUAN[int((self.__year + 2696) / 60) % 3] + " Nguyên"
 
     def getYun(self):
-        return LunarYear.YUN[int((self.__year + 2696) / 20) % 9] + "运"
+        return LunarYear.YUN[int((self.__year + 2696) / 20) % 9] + " Vận"
 
     def getNineStar(self):
         index = LunarUtil.getJiaZiIndex(self.getGanZhi()) + 1
@@ -326,8 +326,8 @@ class LunarYear:
 
     def next(self, n):
         """
-        获取往后推几年的阴历年，如果要往前推，则年数用负数
-        :param n: 年数
-        :return: 阴历年
+        Get lunar year pushed forward by n years, use negative for backward
+        :param n: Years
+        :return: Lunar year
         """
         return LunarYear.fromYear(self.__year + n)

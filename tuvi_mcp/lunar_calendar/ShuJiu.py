@@ -3,7 +3,7 @@
 
 class ShuJiu:
     """
-    数九
+    Shu Jiu (Winter counting)
     """
 
     def __init__(self, name, index):
@@ -29,4 +29,4 @@ class ShuJiu:
         return self.__name
 
     def toFullString(self):
-        return "%s第%d天" % (self.__name, self.__index)
+        return "%s ngày %d" % (self.__name, self.__index)

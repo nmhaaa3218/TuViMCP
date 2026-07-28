@@ -5,7 +5,7 @@ from ..util import LunarUtil
 
 class Yun:
     """
-    运
+    Fortune (Yun)
     """
 
     def __init__(self, eight_char, gender, sect=1):
@@ -18,7 +18,7 @@ class Yun:
 
     def __compute_start(self, sect):
         """
-        起运计算
+        Compute start of fortune
         """
         prev_jie = self.__lunar.getPrevJie()
         next_jie = self.__lunar.getNextJie()
@@ -40,7 +40,7 @@ class Yun:
         else:
             end_time_zhi_index = 11 if end.getHour() == 23 else LunarUtil.getTimeZhiIndex(end.toYmdHms()[11: 16])
             start_time_zhi_index = 11 if start.getHour() == 23 else LunarUtil.getTimeZhiIndex(start.toYmdHms()[11: 16])
-            # 时辰差
+            # Time difference (Zhi)
             hour_diff = end_time_zhi_index - start_time_zhi_index
             day_diff = end.subtract(start)
             if hour_diff < 0:
@@ -58,42 +58,42 @@ class Yun:
 
     def getGender(self):
         """
-        获取性别
-        :return: 性别(1男 ， 0女)
+        Get gender
+        :return: Gender (1 male, 0 female)
         """
         return self.__gender
 
     def getStartYear(self):
         """
-        获取起运年数
-        :return: 起运年数
+        Get start year of fortune
+        :return: Start year of fortune
         """
         return self.__startYear
 
     def getStartMonth(self):
         """
-        获取起运月数
-        :return: 起运月数
+        Get start month of fortune
+        :return: Start month of fortune
         """
         return self.__startMonth
 
     def getStartDay(self):
         """
-        获取起运天数
-        :return: 起运天数
+        Get start day of fortune
+        :return: Start day of fortune
         """
         return self.__startDay
 
     def getStartHour(self):
         """
-        获取起运小时数
-        :return: 起运小时数
+        Get start hour of fortune
+        :return: Start hour of fortune
         """
         return self.__startHour
 
     def isForward(self):
         """
-        是否顺推
+        Whether forward (顺推)
         :return: true/false
         """
         return self.__forward
@@ -103,8 +103,8 @@ class Yun:
 
     def getStartSolar(self):
         """
-        获取起运的阳历日期
-        :return: 阳历日期
+        Get solar date of fortune start
+        :return: Solar date
         """
         solar = self.__lunar.getSolar()
         solar = solar.nextYear(self.__startYear)
@@ -114,9 +114,9 @@ class Yun:
 
     def getDaYun(self, n: int = 10):
         """
-        获取大运
-        :param n: 轮数
-        :return: 大运
+        Get Da Yun (Decade Fortune)
+        :param n: Count
+        :return: Da Yun
         """
         da_yun = []
         for i in range(0, n):

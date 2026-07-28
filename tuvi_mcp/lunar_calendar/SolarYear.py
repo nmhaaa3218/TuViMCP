@@ -5,7 +5,7 @@ from . import SolarMonth
 
 class SolarYear:
     """
-    阳历年
+    Solar year
     """
 
     MONTH_COUNT = 12
@@ -28,15 +28,15 @@ class SolarYear:
         return str(self.__year)
 
     def toFullString(self):
-        return "%d年" % self.__year
+        return "Năm %d" % self.__year
 
     def __str__(self):
         return self.toString()
 
     def getMonths(self):
         """
-        获取本年的阳历月列表
-        :return: 阳历月列表
+        Get solar months of this year
+        :return: List of solar months
         """
         months = []
         m = SolarMonth.fromYm(self.__year, 1)
@@ -47,8 +47,8 @@ class SolarYear:
 
     def next(self, years):
         """
-        获取往后推几年的阳历年，如果要往前推，则月数用负数
-        :param years: 年数
-        :return: 阳历年
+        Get solar year pushed forward by years, use negative for backward
+        :param years: Years
+        :return: Solar year
         """
         return SolarYear.fromYear(self.__year + years)

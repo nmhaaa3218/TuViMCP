@@ -3,7 +3,7 @@
 
 class TaoFestival:
     """
-    道历节日
+    Taoist calendar festival
     """
 
     def __init__(self, name, remark=None):

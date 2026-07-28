@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 class Holiday:
     """
-    节假日
+    Holiday
     """
 
     def __init__(self, day, name, work, target):
         """
-        初始化
-        :param day: 日期，YYYY-MM-DD格式
-        :param name: 名称，如：国庆
-        :param work: 是否调休，即是否要上班
-        :param target: 关联的节日，YYYY-MM-DD格式
+        Initialize
+        :param day: Date, YYYY-MM-DD format
+        :param name: Name, e.g. National Day
+        :param work: Whether work (adjusted work day)
+        :param target: Associated festival date, YYYY-MM-DD format
         """
         self.__day = Holiday.__ymd(day)
         self.__name = name
@@ -46,7 +46,7 @@ class Holiday:
         self.__target = Holiday.__ymd(target)
 
     def toString(self):
-        return "%s %s%s %s" % (self.__day, self.__name, "调休" if self.__work else "", self.__target)
+        return "%s %s%s %s" % (self.__day, self.__name, " (đi làm bù)" if self.__work else "", self.__target)
 
     def __str__(self):
         return self.toString()

@@ -4,7 +4,7 @@ from ..util import LunarUtil
 
 class XiaoYun:
     """
-    小运
+    Xiao Yun (Yearly Fortune)
     """
 
     def __init__(self, da_yun, index, forward):
@@ -26,8 +26,8 @@ class XiaoYun:
 
     def getGanZhi(self):
         """
-        获取干支
-        :return: 干支
+        Get GanZhi (Heavenly Stem & Earthly Branch)
+        :return: GanZhi
         """
         offset = LunarUtil.getJiaZiIndex(self.__lunar.getTimeInGanZhi())
         add = self.__index + 1
@@ -42,14 +42,14 @@ class XiaoYun:
 
     def getXun(self):
         """
-        获取所在旬
-        :return: 旬
+        Get Xun (cycle)
+        :return: Xun
         """
         return LunarUtil.getXun(self.getGanZhi())
 
     def getXunKong(self):
         """
-        获取旬空(空亡)
-        :return: 旬空(空亡)
+        Get XunKong (Void)
+        :return: XunKong (Void)
         """
         return LunarUtil.getXunKong(self.getGanZhi())

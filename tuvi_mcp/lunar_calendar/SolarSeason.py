@@ -6,7 +6,7 @@ from . import SolarMonth
 
 class SolarSeason:
     """
-    阳历季度
+    Solar season (quarter)
     """
 
     MONTH_COUNT = 3
@@ -33,22 +33,22 @@ class SolarSeason:
         return "%d.%d" % (self.__year, self.getIndex())
 
     def toFullString(self):
-        return "%d年%d季度" % (self.__year, self.getIndex())
+        return "Quý %d năm %d" % (self.getIndex(), self.__year)
 
     def __str__(self):
         return self.toString()
 
     def getIndex(self):
         """
-        获取当月是第几季度
-        :return: 季度序号，从1开始
+        Get which quarter the month falls in
+        :return: Quarter index, starting from 1
         """
         return int(ceil(self.__month * 1.0 / SolarSeason.MONTH_COUNT))
 
     def getMonths(self):
         """
-        获取本季度的阳历月列表
-        :return: 阳历月列表
+        Get solar months of this quarter
+        :return: List of solar months
         """
         months = []
         index = self.getIndex() - 1
@@ -58,9 +58,9 @@ class SolarSeason:
 
     def next(self, seasons):
         """
-        季度推移
-        :param seasons: 推移的季度数，负数为倒推
-        :return: 推移后的季度
+        Quarter shift
+        :param seasons: Seasons to shift, negative for backward
+        :return: Shifted quarter
         """
         m = SolarMonth.fromYm(self.__year, self.__month).next(SolarSeason.MONTH_COUNT * seasons)
         return SolarSeason.fromYm(m.getYear(), m.getMonth())

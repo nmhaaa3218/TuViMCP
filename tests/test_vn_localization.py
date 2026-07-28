@@ -56,5 +56,5 @@ def test_vietnamese_than_hoang_dao():
     """Verify 12 Thần Hoàng Đạo / Hắc Đạo return Vietnamese names."""
     solar = Solar.fromYmd(2026, 7, 27)
     lunar = solar.getLunar()
-    assert lunar.getDayTianShenVn() in ["Thanh Long", "Minh Đường", "Thiên Hình", "Chu Tước", "Kim Quỹ", "Bảo Quang", "Bạch Hổ", "Ngọc Đường", "Thiên Lao", "Huyền Vũ", "Tư Mệnh", "Câu Trận"]
+    assert lunar.getDayTianShenVn() in ["Thanh Long", "Minh Đường", "Thiên Hình", "Chu Tước", "Kim Quỹ", "Thiên Đức", "Bạch Hổ", "Ngọc Đường", "Thiên Lao", "Huyền Vũ", "Tư Mệnh", "Câu Trần"]
 

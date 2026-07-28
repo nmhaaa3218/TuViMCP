@@ -5,7 +5,7 @@ from .util import LunarUtil
 
 class LunarTime:
     """
-    时辰
+    Time (Hour)
     """
 
     def __init__(self, lunar_year, lunar_month, lunar_day, hour, minute, second):
@@ -25,7 +25,7 @@ class LunarTime:
         return LunarUtil.ZHI[self.__zhiIndex + 1]
 
     def getGanZhi(self):
-        return "%s%s" % (self.getGan(), self.getZhi())
+        return "%s %s" % (self.getGan(), self.getZhi())
 
     def getShengXiao(self):
         return LunarUtil.SHENGXIAO[self.__zhiIndex + 1]
@@ -77,7 +77,7 @@ class LunarTime:
         return ""
 
     def getChongDesc(self):
-        return "(" + self.getChongGan() + self.getChong() + ")" + self.getChongShengXiao()
+        return "(" + self.getChongGan() + " " + self.getChong() + ")" + self.getChongShengXiao()
 
     def getSha(self):
         return LunarUtil.SHA[self.getZhi()]
@@ -96,15 +96,15 @@ class LunarTime:
 
     def getYi(self):
         """
-        获取时宜
-        :return: 宜
+        Get time Yi (suitable activities)
+        :return: Suitable
         """
         return LunarUtil.getTimeYi(self.__lunar.getDayInGanZhiExact(), self.getGanZhi())
 
     def getJi(self):
         """
-        获取时忌
-        :return: 忌
+        Get time Ji (unsuitable activities)
+        :return: Unsuitable
         """
         return LunarUtil.getTimeJi(self.__lunar.getDayInGanZhiExact(), self.getGanZhi())
 
@@ -112,14 +112,16 @@ class LunarTime:
         solar_ymd = self.__lunar.getSolar().toYmd()
         jie_qi = self.__lunar.getJieQiTable()
         asc = False
-        if jie_qi["冬至"] <= solar_ymd < jie_qi["夏至"]:
+        if jie_qi["Đông Chí"].toYmd() <= solar_ymd < jie_qi["Hạ Chí"].toYmd():
             asc = True
-        start = 7 if asc else 3
         day_zhi = self.__lunar.getDayZhi()
-        if day_zhi in "子午卯酉":
+        if day_zhi in ["Tý", "Ngọ", "Mão", "Dậu"]:
             start = 1 if asc else 9
-        elif day_zhi in "辰戌丑未":
+        elif day_zhi in ["Thìn", "Tuất", "Sửu", "Mùi"]:
             start = 4 if asc else 6
+        else:
+            start = 7 if asc else 3
+
         index = start + self.__zhiIndex - 1 if asc else start - self.__zhiIndex - 1
 
         if index > 8:
@@ -142,15 +144,15 @@ class LunarTime:
 
     def getXun(self):
         """
-        获取时辰所在旬
-        :return: 旬
+        Get time's Xun (cycle)
+        :return: Xun
         """
         return LunarUtil.getXun(self.getGanZhi())
 
     def getXunKong(self):
         """
-        获取值时空亡
-        :return: 空亡(旬空)
+        Get time's void (XunKong)
+        :return: XunKong (Void)
         """
         return LunarUtil.getXunKong(self.getGanZhi())
 

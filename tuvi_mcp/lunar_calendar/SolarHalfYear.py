@@ -6,7 +6,7 @@ from . import SolarMonth
 
 class SolarHalfYear:
     """
-    阳历半年
+    Solar half year
     """
 
     MONTH_COUNT = 6
@@ -33,22 +33,22 @@ class SolarHalfYear:
         return "%d.%d" % (self.__year, self.getIndex())
 
     def toFullString(self):
-        return "%d年%s半年" % (self.__year, ("上" if 1 == self.getIndex() else "下"))
+        return "Năm %s nửa %s năm" % (self.__year, ("đầu" if 1 == self.getIndex() else "cuối"))
 
     def __str__(self):
         return self.toString()
 
     def getIndex(self):
         """
-        获取当月是第几半年
-        :return: 半年序号，从1开始
+        Get which half of the year the month falls in
+        :return: Half year index, starting from 1
         """
         return int(ceil(self.__month * 1.0 / SolarHalfYear.MONTH_COUNT))
 
     def getMonths(self):
         """
-        获取本半年的阳历月列表
-        :return: 阳历月列表
+        Get solar months of this half year
+        :return: List of solar months
         """
         months = []
         index = self.getIndex() - 1
@@ -58,9 +58,9 @@ class SolarHalfYear:
 
     def next(self, half_years):
         """
-        半年推移
-        :param half_years: 推移的半年数，负数为倒推
-        :return: 推移后的半年
+        Half year shift
+        :param half_years: Half years to shift, negative for backward
+        :return: Shifted half year
         """
         m = SolarMonth.fromYm(self.__year, self.__month).next(SolarHalfYear.MONTH_COUNT * half_years)
         return SolarHalfYear.fromYm(m.getYear(), m.getMonth())

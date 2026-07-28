@@ -7,10 +7,10 @@ from .util import SolarUtil, LunarUtil, HolidayUtil
 
 class Solar:
     """
-    阳历日期
+    Solar date
     """
 
-    # 2000年儒略日数(2000-1-1 12:00:00 UTC)
+    # Julian day number for year 2000 (2000-1-1 12:00:00 UTC)
     J2000 = 2451545
 
     def __init__(self, year, month, day, hour, minute, second):
@@ -103,52 +103,56 @@ class Solar:
         from . import Lunar
         sect = 1 if 1 == sect else 2
         solar_list = []
-        # 月地支距寅月的偏移值
-        m = LunarUtil.find(month_gan_zhi[1:], LunarUtil.ZHI, -1) - 2
+        # Offset of month Zhi from Yin month
+        _, month_zhi = LunarUtil.splitGanZhi(month_gan_zhi)
+        m = LunarUtil.find(month_zhi, LunarUtil.ZHI, -1) - 2
         if m < 0:
             m += 12
-        # 月天干要一致
-        if ((LunarUtil.find(year_gan_zhi[:1], LunarUtil.GAN, -1) + 1) * 2 + m) % 10 != LunarUtil.find(month_gan_zhi[:1], LunarUtil.GAN, -1):
+        # Month Gan must match
+        year_gan, _ = LunarUtil.splitGanZhi(year_gan_zhi)
+        month_gan, _ = LunarUtil.splitGanZhi(month_gan_zhi)
+        if ((LunarUtil.find(year_gan, LunarUtil.GAN, -1) + 1) * 2 + m) % 10 != LunarUtil.find(month_gan, LunarUtil.GAN, -1):
             return solar_list
-        # 1年的立春是辛酉，序号57
+        # Li Chun (Start of Spring) of year 1 is Xin You, index 57
         y = LunarUtil.getJiaZiIndex(year_gan_zhi) - 57
         if y < 0:
             y += 60
         y += 1
-        # 节令偏移值
+        # Solar term offset
         m *= 2
-        # 时辰地支转时刻，子时按零点算
-        h = LunarUtil.find(time_gan_zhi[1:], LunarUtil.ZHI, -1) * 2
+        # Time Zhi to hour, Zi (0th hour) treated as midnight
+        _, time_zhi = LunarUtil.splitGanZhi(time_gan_zhi)
+        h = LunarUtil.find(time_zhi, LunarUtil.ZHI, -1) * 2
         hours = [h]
         if 0 == h and 2 == sect:
             hours.append(23)
         start_year = base_year - 1
 
-        # 结束年
+        # End year
         end_year = datetime.now().year
 
         while y <= end_year:
             if y >= start_year:
-                # 立春为寅月的开始
+                # Li Chun (Start of Spring) marks the start of Yin month
                 jie_qi_table = Lunar.fromYmd(y, 1, 1).getJieQiTable()
-                # 节令推移，年干支和月干支就都匹配上了
+                # Advance solar term, year and month GanZhi will match
                 solar_time = jie_qi_table[Lunar.JIE_QI_IN_USE[4 + m]]
                 if solar_time.getYear() >= base_year:
-                    # 日干支和节令干支的偏移值
+                    # Day GanZhi offset from solar term GanZhi
                     d = LunarUtil.getJiaZiIndex(day_gan_zhi) - LunarUtil.getJiaZiIndex(solar_time.getLunar().getDayInGanZhiExact2())
                     if d < 0:
                         d += 60
                     if d > 0:
-                        # 从节令推移天数
+                        # Advance days from solar term
                         solar_time = solar_time.next(d)
                     for hour in hours:
                         mi = 0
                         s = 0
                         if d == 0 and hour == solar_time.getHour():
-                            # 如果正好是节令当天，且小时和节令的小时数相等的极端情况，把分钟和秒钟带上
+                            # If exactly on the solar term day with matching hour, carry minutes and seconds
                             mi = solar_time.getMinute()
                             s = solar_time.getSecond()
-                        # 验证一下
+                        # Validate
                         solar = Solar.fromYmdHms(solar_time.getYear(), solar_time.getMonth(), solar_time.getDay(), hour, mi, s)
                         if d == 30:
                             solar = solar.nextHour(-1)
@@ -161,29 +165,29 @@ class Solar:
 
     def isLeapYear(self):
         """
-        是否闰年
-        :return: True/False 闰年/非闰年
+        Whether leap year
+        :return: True/False leap year/not leap year
         """
         return SolarUtil.isLeapYear(self.__year)
 
     def getWeek(self):
         """
-        获取星期，0代表周日，1代表周一
+        Get weekday, 0 for Sunday, 1 for Monday
         :return: 0123456
         """
         return (int(self.getJulianDay() + 0.5) + 7000001) % 7
 
     def getWeekInChinese(self):
         """
-        获取星期的中文
-        :return: 日一二三四五六
+        Get week in Chinese
+        :return: Sun-Sat (日一二三四五六)
         """
         return SolarUtil.WEEK[self.getWeek()]
 
     def getFestivals(self):
         """
-        获取节日，有可能一天会有多个节日
-        :return: 劳动节等
+        Get festivals, possibly multiple in one day
+        :return: e.g. Labor Day
         """
         festivals = []
         key = "%d-%d" % (self.__month, self.__day)
@@ -201,8 +205,8 @@ class Solar:
 
     def getOtherFestivals(self):
         """
-        获取非正式的节日，有可能一天会有多个节日
-        :return: 非正式的节日列表，如中元节
+        Get unofficial festivals, possibly multiple in one day
+        :return: Unofficial festival list, e.g. Hungry Ghost Festival
         """
         festivals = []
         key = "%d-%d" % (self.__month, self.__day)
@@ -213,8 +217,8 @@ class Solar:
 
     def getXingZuo(self):
         """
-        获取星座
-        :return: 星座
+        Get constellation/zodiac
+        :return: Constellation
         """
         index = 11
         y = self.__month * 100 + self.__day
@@ -244,8 +248,8 @@ class Solar:
 
     def getJulianDay(self):
         """
-        获取儒略日
-        :return: 儒略日
+        Get Julian day
+        :return: Julian day
         """
         y = self.__year
         m = self.__month
@@ -264,8 +268,8 @@ class Solar:
 
     def getLunar(self):
         """
-        获取农历
-        :return: 农历
+        Get lunar calendar
+        :return: Lunar
         """
         from .Lunar import Lunar
         return Lunar.fromSolar(self)
@@ -302,10 +306,10 @@ class Solar:
 
     def next(self, days, only_work_day=False):
         """
-        获取往后推几天的阳历日期，如果要往前推，则天数用负数
-        :param days: 天数
-        :param only_work_day: 是否仅工作日
-        :return: 阳历日期
+        Get solar date pushed forward by days, use negative for backward
+        :param days: Days
+        :param only_work_day: Whether only work days
+        :return: Solar date
         """
         if not only_work_day:
             return self.nextDay(days)
@@ -356,8 +360,8 @@ class Solar:
     def toFullString(self):
         s = self.toYmdHms()
         if self.isLeapYear():
-            s += " 闰年"
-        s += " 星期"
+            s += " Năm nhuận"
+        s += " Thứ "
         s += self.getWeekInChinese()
         for f in self.getFestivals():
             s += " (" + f + ")"
@@ -365,7 +369,6 @@ class Solar:
             s += " (" + f + ")"
         s += " "
         s += self.getXingZuo()
-        s += "座"
         return s
 
     def toString(self):

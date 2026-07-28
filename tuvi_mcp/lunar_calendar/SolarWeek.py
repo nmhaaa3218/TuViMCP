@@ -7,16 +7,16 @@ from .util import SolarUtil
 
 class SolarWeek:
     """
-    阳历周
+    Solar week
     """
 
     def __init__(self, year, month, day, start):
         """
-        通过年月日初始化
-        :param year: 年
-        :param month: 月，1到12
-        :param day: 日，1到31
-        :param start: 星期几作为一周的开始，1234560分别代表星期一至星期天
+        Initialize by year, month, day
+        :param year: Year
+        :param month: Month, 1 to 12
+        :param day: Day, 1 to 31
+        :param start: Day of week as start, 1234560 for Monday to Sunday
         """
         self.__year = year
         self.__month = month
@@ -47,15 +47,15 @@ class SolarWeek:
         return "%d.%d.%d" % (self.__year, self.__month, self.getIndex())
 
     def toFullString(self):
-        return "%d年%d月第%d周" % (self.__year, self.__month, self.getIndex())
+        return "Tuần %d tháng %d năm %d" % (self.getIndex(), self.__month, self.__year)
 
     def __str__(self):
         return self.toString()
 
     def getIndex(self):
         """
-        获取当前日期是在当月第几周
-        :return: 周序号，从1开始
+        Get which week of the month the current date falls in
+        :return: Week index, starting from 1
         """
         offset = Solar.fromYmd(self.__year, self.__month, 1).getWeek() - self.__start
         if offset < 0:
@@ -64,8 +64,8 @@ class SolarWeek:
 
     def getIndexInYear(self):
         """
-        获取当前日期是在当年第几周
-        :return: 周序号，从1开始
+        Get which week of the year the current date falls in
+        :return: Week index, starting from 1
         """
         offset = Solar.fromYmd(self.__year, 1, 1).getWeek() - self.__start
         if offset < 0:
@@ -74,8 +74,8 @@ class SolarWeek:
 
     def getFirstDay(self):
         """
-        获取本周第一天的阳历日期（可能跨月）
-        :return: 本周第一天的阳历日期
+        Get first day of this week (may cross month)
+        :return: First day's solar date
         """
         solar = Solar.fromYmd(self.__year, self.__month, self.__day)
         prev = solar.getWeek() - self.__start
@@ -85,8 +85,8 @@ class SolarWeek:
 
     def getFirstDayInMonth(self):
         """
-        获取本周第一天的阳历日期（仅限当月）
-        :return: 本周第一天的阳历日期
+        Get first day of this week (current month only)
+        :return: First day's solar date
         """
         for day in self.getDays():
             if self.__month == day.getMonth():
@@ -95,8 +95,8 @@ class SolarWeek:
 
     def getDays(self):
         """
-        获取本周的阳历日期列表（可能跨月）
-        :return: 本周的阳历日期列表
+        Get solar dates of this week (may cross month)
+        :return: List of solar dates
         """
         days = []
         first = self.getFirstDay()
@@ -107,8 +107,8 @@ class SolarWeek:
 
     def getDaysInMonth(self):
         """
-        获取本周的阳历日期列表（仅限当月）
-        :return: 本周的阳历日期列表（仅限当月）
+        Get solar dates of this week (current month only)
+        :return: List of solar dates (current month only)
         """
         days = []
         for day in self.getDays():
@@ -118,10 +118,10 @@ class SolarWeek:
 
     def next(self, weeks, separate_month):
         """
-        周推移
-        :param weeks: 推移的周数，负数为倒推
-        :param separate_month: 是否按月单独计算
-        :return: 推移后的阳历周
+        Week shift
+        :param weeks: Weeks to shift, negative for backward
+        :param separate_month: Whether to calculate per month separately
+        :return: Shifted solar week
         """
         if 0 == weeks:
             return SolarWeek.fromYmd(self.__year, self.__month, self.__day, self.__start)

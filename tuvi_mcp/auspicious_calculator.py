@@ -31,13 +31,13 @@ TIAN_SHEN_MAP = {
     "天刑": "Thiên Hình",
     "朱雀": "Chu Tước",
     "金匮": "Kim Quỹ",
-    "天德": "Bảo Quang (Thiên Đức)",
+    "天德": "Thiên Đức",
     "白虎": "Bạch Hổ",
     "玉堂": "Ngọc Đường",
     "天牢": "Thiên Lao",
     "玄武": "Huyền Vũ",
     "司命": "Tư Mệnh",
-    "勾陈": "Câu Trận",
+    "勾陈": "Câu Trần",
 }
 
 TIAN_SHEN_TYPE_MAP = {
@@ -53,99 +53,53 @@ TIAN_SHEN_LUCK_MAP = {
 
 # 12 Trực & Lời khuyên cổ truyền
 TRUC_MAP = {
-    "建": {
-        "ten": "Trực Kiến",
-        "danh_gia": "Cát (Tốt)",
-        "loi_khuyen": "Tốt cho việc khởi công, làm nhà, xuất hành, nhậm chức. Tránh đào giếng, nhặt của rơi.",
-    },
-    "除": {
-        "ten": "Trực Trừ",
-        "danh_gia": "Bình",
-        "loi_khuyen": "Tốt cho chữa bệnh, giải trừ tai ạch, dọn dẹp, tẩy uế. Tránh cưới hỏi, ký hợp đồng.",
-    },
-    "满": {
-        "ten": "Trực Mãn",
-        "danh_gia": "Cát (Tốt)",
-        "loi_khuyen": "Tốt cho tế lễ, cầu tài, mở kho, nhập học, cất may quần áo. Tránh xuất hành, kiện tụng.",
-    },
-    "平": {
-        "ten": "Trực Bình",
-        "danh_gia": "Bình",
-        "loi_khuyen": "Tốt cho sửa đường, làm phẳng, hòa giải, đắp đập. Tránh khởi công công trình lớn.",
-    },
-    "定": {
-        "ten": "Trực Định",
-        "danh_gia": "Cát (Tốt)",
-        "loi_khuyen": "Tốt cho nhập học, ký kết, đính hôn, lập hợp đồng, chăn nuôi. Tránh kiện tụng, di chuyển.",
-    },
-    "执": {
-        "ten": "Trực Chấp",
-        "danh_gia": "Bình",
-        "loi_khuyen": "Tốt cho xây dựng, trồng trọt, săn bắt, bắt trộm. Tránh mở kho, xuất tiền tài.",
-    },
-    "破": {
-        "ten": "Trực Phá",
-        "danh_gia": "Hung (Xấu)",
-        "loi_khuyen": "Tốt cho phá vỡ, dỡ nhà, giải táng, chữa bệnh dứt điểm. Kỵ cưới hỏi, ký kết, kinh doanh.",
-    },
-    "危": {
-        "ten": "Trực Nguy",
-        "danh_gia": "Hung (Xấu)",
-        "loi_khuyen": "Tốt cho cúng tế, cầu an. Kỵ trèo cao, đi thuyền, làm việc mạo hiểm, thi công công trình.",
-    },
-    "成": {
-        "ten": "Trực Thành",
-        "danh_gia": "Cát (Tốt)",
-        "loi_khuyen": "Tốt cho nhập học, khai trương, cưới hỏi, kết hôn, nhập trạch, mở cửa hàng.",
-    },
-    "收": {
-        "ten": "Trực Thâu",
-        "danh_gia": "Cát (Tốt)",
-        "loi_khuyen": "Tốt cho thu hoạch, cất giữ tài sản, gặt hái, thu nợ, mua bán. Tránh mở cửa hàng, tang lễ.",
-    },
-    "开": {
-        "ten": "Trực Khai",
-        "danh_gia": "Cát (Tốt)",
-        "loi_khuyen": "Tốt cho mở cửa hàng, bắt đầu công việc, khai trương, cưới hỏi, nhập học. Tránh động thổ, an táng.",
-    },
-    "闭": {
-        "ten": "Trực Bế",
-        "danh_gia": "Hung (Xấu)",
-        "loi_khuyen": "Tốt cho đắp đập, xây nhà kho, an táng, cất giữ bí mật. Kỵ mở cửa hàng, xuất hành, khám bệnh.",
-    },
+    "Kiến": {"ten": "Trực Kiến", "danh_gia": "Cát (Tốt)", "loi_khuyen": "Tốt cho việc khởi công, làm nhà, xuất hành, nhậm chức. Tránh đào giếng, nhặt của rơi."},
+    "Trừ": {"ten": "Trực Trừ", "danh_gia": "Bình", "loi_khuyen": "Tốt cho chữa bệnh, giải trừ tai ạch, dọn dẹp, tẩy uế. Tránh cưới hỏi, ký hợp đồng."},
+    "Mãn": {"ten": "Trực Mãn", "danh_gia": "Cát (Tốt)", "loi_khuyen": "Tốt cho tế lễ, cầu tài, mở kho, nhập học, cất may quần áo. Tránh xuất hành, kiện tụng."},
+    "Bình": {"ten": "Trực Bình", "danh_gia": "Bình", "loi_khuyen": "Tốt cho sửa đường, làm phẳng, hòa giải, đắp đập. Tránh khởi công công trình lớn."},
+    "Định": {"ten": "Trực Định", "danh_gia": "Cát (Tốt)", "loi_khuyen": "Tốt cho nhập học, ký kết, đính hôn, lập hợp đồng, chăn nuôi. Tránh kiện tụng, di chuyển."},
+    "Chấp": {"ten": "Trực Chấp", "danh_gia": "Bình", "loi_khuyen": "Tốt cho xây dựng, trồng trọt, săn bắt, bắt trộm. Tránh mở kho, xuất tiền tài."},
+    "Phá": {"ten": "Trực Phá", "danh_gia": "Hung (Xấu)", "loi_khuyen": "Tốt cho phá vỡ, dỡ nhà, giải táng, chữa bệnh dứt điểm. Kỵ cưới hỏi, ký kết, kinh doanh."},
+    "Nguy": {"ten": "Trực Nguy", "danh_gia": "Hung (Xấu)", "loi_khuyen": "Tốt cho cúng tế, cầu an. Kỵ trèo cao, đi thuyền, làm việc mạo hiểm, thi công công trình."},
+    "Thành": {"ten": "Trực Thành", "danh_gia": "Cát (Tốt)", "loi_khuyen": "Tốt cho nhập học, khai trương, cưới hỏi, kết hôn, nhập trạch, mở cửa hàng."},
+    "Thu": {"ten": "Trực Thâu", "danh_gia": "Cát (Tốt)", "loi_khuyen": "Tốt cho thu hoạch, cất giữ tài sản, gặt hái, thu nợ, mua bán. Tránh mở cửa hàng, tang lễ."},
+    "Khai": {"ten": "Trực Khai", "danh_gia": "Cát (Tốt)", "loi_khuyen": "Tốt cho mở cửa hàng, bắt đầu công việc, khai trương, cưới hỏi, nhập học. Tránh động thổ, an táng."},
+    "Bế": {"ten": "Trực Bế", "danh_gia": "Hung (Xấu)", "loi_khuyen": "Tốt cho đắp đập, xây nhà kho, an táng, cất giữ bí mật. Kỵ mở cửa hàng, xuất hành, khám bệnh."},
 }
+
 
 # 28 Tú (Nhị Thập Bát Tú)
 XIU_MAP = {
-    "角": {"ten": "Sao Giác", "dong_vat": "Giác Mộc Đổng (Cá Thần)", "danh_gia": "Cát (Tốt)"},
-    "亢": {"ten": "Sao Cang", "dong_vat": "Cang Kim Long (Rồng)", "danh_gia": "Hung (Xấu)"},
-    "氐": {"ten": "Sao Đê", "dong_vat": "Đê Thổ Lạc (Cừu)", "danh_gia": "Hung (Xấu)"},
-    "房": {"ten": "Sao Phòng", "dong_vat": "Phòng Nhật Thố (Thỏ)", "danh_gia": "Cát (Tốt)"},
-    "心": {"ten": "Sao Tâm", "dong_vat": "Tâm Nguyệt Hồ (Cáo)", "danh_gia": "Hung (Xấu)"},
-    "尾": {"ten": "Sao Vĩ", "dong_vat": "Vĩ Hỏa Hổ (Hổ)", "danh_gia": "Cát (Tốt)"},
-    "箕": {"ten": "Sao Cơ", "dong_vat": "Cơ Thủy Báo (Báo)", "danh_gia": "Cát (Tốt)"},
-    "斗": {"ten": "Sao Đẩu", "dong_vat": "Đẩu Mộc Giải (Cua)", "danh_gia": "Cát (Tốt)"},
-    "牛": {"ten": "Sao Ngưu", "dong_vat": "Ngưu Kim Ngưu (Trâu)", "danh_gia": "Hung (Xấu)"},
-    "女": {"ten": "Sao Nữ", "dong_vat": "Nữ Thổ Bức (Dơi)", "danh_gia": "Hung (Xấu)"},
-    "虚": {"ten": "Sao Hư", "dong_vat": "Hư Nhật Thử (Chuột)", "danh_gia": "Hung (Xấu)"},
-    "危": {"ten": "Sao Nguy", "dong_vat": "Nguy Nguyệt Én (Chim Én)", "danh_gia": "Hung (Xấu)"},
-    "室": {"ten": "Sao Thất", "dong_vat": "Thất Hỏa Trư (Heo)", "danh_gia": "Cát (Tốt)"},
-    "壁": {"ten": "Sao Bích", "dong_vat": "Bích Thủy Du (Rái Cá)", "danh_gia": "Cát (Tốt)"},
-    "奎": {"ten": "Sao Khuê", "dong_vat": "Khuê Mộc Lang (Chó Chó)", "danh_gia": "Hung (Xấu)"},
-    "娄": {"ten": "Sao Lâu", "dong_vat": "Lâu Kim Cẩu (Chó)", "danh_gia": "Cát (Tốt)"},
-    "胃": {"ten": "Sao Vị", "dong_vat": "Vị Thổ Trĩ (Chim Chim)", "danh_gia": "Cát (Tốt)"},
-    "昴": {"ten": "Sao Mão", "dong_vat": "Mão Nhật Kê (Gà)", "danh_gia": "Hung (Xấu)"},
-    "毕": {"ten": "Sao Tất", "dong_vat": "Tất Nguyệt Ô (Quạ)", "danh_gia": "Cát (Tốt)"},
-    "觜": {"ten": "Sao Chủy", "dong_vat": "Chủy Hỏa Hầu (Khỉ)", "danh_gia": "Hung (Xấu)"},
-    "参": {"ten": "Sao Sâm", "dong_vat": "Sâm Thủy Vượn (Vượn)", "danh_gia": "Cát (Tốt)"},
-    "井": {"ten": "Sao Tỉnh", "dong_vat": "Tỉnh Mộc Hãn (Chim Trĩ)", "danh_gia": "Cát (Tốt)"},
-    "鬼": {"ten": "Sao Quỷ", "dong_vat": "Quỷ Kim Dương (Dê)", "danh_gia": "Hung (Xấu)"},
-    "柳": {"ten": "Sao Liễu", "dong_vat": "Liễu Thổ Chấu (Hoẵng)", "danh_gia": "Hung (Xấu)"},
-    "星": {"ten": "Sao Tinh", "dong_vat": "Tinh Nhật Mã (Ngựa)", "danh_gia": "Hung (Xấu)"},
-    "张": {"ten": "Sao Trương", "dong_vat": "Trương Nguyệt Lộc (Nai)", "danh_gia": "Cát (Tốt)"},
-    "翼": {"ten": "Sao Dực", "dong_vat": "Dực Hỏa Xà (Rắn)", "danh_gia": "Hung (Xấu)"},
-    "轸": {"ten": "Sao Chẩn", "dong_vat": "Chẩn Thủy Dẫn (Giun)", "danh_gia": "Cát (Tốt)"},
+    "Giác": {"ten": "Sao Giác", "dong_vat": "Giác Mộc Đổng (Cá Thần)", "danh_gia": "Cát (Tốt)"},
+    "Cang": {"ten": "Sao Cang", "dong_vat": "Cang Kim Long (Rồng)", "danh_gia": "Hung (Xấu)"},
+    "Đê": {"ten": "Sao Đê", "dong_vat": "Đê Thổ Lạc (Cừu)", "danh_gia": "Hung (Xấu)"},
+    "Phòng": {"ten": "Sao Phòng", "dong_vat": "Phòng Nhật Thố (Thỏ)", "danh_gia": "Cát (Tốt)"},
+    "Tâm": {"ten": "Sao Tâm", "dong_vat": "Tâm Nguyệt Hồ (Cáo)", "danh_gia": "Hung (Xấu)"},
+    "Vĩ": {"ten": "Sao Vĩ", "dong_vat": "Vĩ Hỏa Hổ (Hổ)", "danh_gia": "Cát (Tốt)"},
+    "Cơ": {"ten": "Sao Cơ", "dong_vat": "Cơ Thủy Báo (Báo)", "danh_gia": "Cát (Tốt)"},
+    "Đẩu": {"ten": "Sao Đẩu", "dong_vat": "Đẩu Mộc Giải (Cua)", "danh_gia": "Cát (Tốt)"},
+    "Ngưu": {"ten": "Sao Ngưu", "dong_vat": "Ngưu Kim Ngưu (Trâu)", "danh_gia": "Hung (Xấu)"},
+    "Nữ": {"ten": "Sao Nữ", "dong_vat": "Nữ Thổ Bức (Dơi)", "danh_gia": "Hung (Xấu)"},
+    "Hư": {"ten": "Sao Hư", "dong_vat": "Hư Nhật Thử (Chuột)", "danh_gia": "Hung (Xấu)"},
+    "Nguy": {"ten": "Sao Nguy", "dong_vat": "Nguy Nguyệt Én (Chim Én)", "danh_gia": "Hung (Xấu)"},
+    "Thất": {"ten": "Sao Thất", "dong_vat": "Thất Hỏa Trư (Heo)", "danh_gia": "Cát (Tốt)"},
+    "Bích": {"ten": "Sao Bích", "dong_vat": "Bích Thủy Du (Rái Cá)", "danh_gia": "Cát (Tốt)"},
+    "Khuê": {"ten": "Sao Khuê", "dong_vat": "Khuê Mộc Lang (Chó Sói)", "danh_gia": "Hung (Xấu)"},
+    "Lâu": {"ten": "Sao Lâu", "dong_vat": "Lâu Kim Cẩu (Chó)", "danh_gia": "Cát (Tốt)"},
+    "Vị": {"ten": "Sao Vị", "dong_vat": "Vị Thổ Trĩ (Chim Trĩ)", "danh_gia": "Cát (Tốt)"},
+    "Mão": {"ten": "Sao Mão", "dong_vat": "Mão Nhật Kê (Gà)", "danh_gia": "Hung (Xấu)"},
+    "Tất": {"ten": "Sao Tất", "dong_vat": "Tất Nguyệt Ô (Quạ)", "danh_gia": "Cát (Tốt)"},
+    "Chủy": {"ten": "Sao Chủy", "dong_vat": "Chủy Hỏa Hầu (Khỉ)", "danh_gia": "Hung (Xấu)"},
+    "Sâm": {"ten": "Sao Sâm", "dong_vat": "Sâm Thủy Vượn (Vượn)", "danh_gia": "Cát (Tốt)"},
+    "Tỉnh": {"ten": "Sao Tỉnh", "dong_vat": "Tỉnh Mộc Hãn (Chim Trĩ)", "danh_gia": "Cát (Tốt)"},
+    "Quỷ": {"ten": "Sao Quỷ", "dong_vat": "Quỷ Kim Dương (Dê)", "danh_gia": "Hung (Xấu)"},
+    "Liễu": {"ten": "Sao Liễu", "dong_vat": "Liễu Thổ Chấu (Hoẵng)", "danh_gia": "Hung (Xấu)"},
+    "Tinh": {"ten": "Sao Tinh", "dong_vat": "Tinh Nhật Mã (Ngựa)", "danh_gia": "Hung (Xấu)"},
+    "Trương": {"ten": "Sao Trương", "dong_vat": "Trương Nguyệt Lộc (Nai)", "danh_gia": "Cát (Tốt)"},
+    "Dực": {"ten": "Sao Dực", "dong_vat": "Dực Hỏa Xà (Rắn)", "danh_gia": "Hung (Xấu)"},
+    "Chẩn": {"ten": "Sao Chẩn", "dong_vat": "Chẩn Thủy Dẫn (Giun)", "danh_gia": "Cát (Tốt)"},
 }
+
 
 # Directions
 DIRECTION_MAP = {
@@ -181,6 +135,17 @@ LIU_YAO_MAP = {
     "小吉": "Tiểu Cát (Gặp may mắn nhỏ, quý nhân phù trợ)",
     "空亡": "Không Vong (Tránh mưu đại sự, phòng hao tốn)",
     "佛灭": "Không Vong (Tránh mưu đại sự, phòng hao tốn)",
+    # Vietnamese localized keys
+    "Tiên Thắng": "Tốc Hỷ (Tin vui đến nhanh, đi xa có lộc)",
+    "Hữu Dẫn": "Lưu Niên (Mọi việc dây dưa, mưu sự chậm trễ)",
+    "Tiên Bại": "Tiểu Cát (Gặp may mắn nhỏ, quý nhân phù trợ)",
+    "Phật Diệt": "Không Vong (Tránh mưu đại sự, phòng hao tốn)",
+    "Đại An": "Đại An (Mọi việc yên ổn, bình an, hanh thông)",
+    "Xích Khẩu": "Xích Khẩu (Dễ sinh khẩu thiệt, mâu thuẫn, phòng thị phi)",
+    "Tốc Hỷ": "Tốc Hỷ (Tin vui đến nhanh, đi xa có lộc)",
+    "Lưu Niên": "Lưu Niên (Mọi việc dây dưa, mưu sự chậm trễ)",
+    "Tiểu Cát": "Tiểu Cát (Gặp may mắn nhỏ, quý nhân phù trợ)",
+    "Không Vong": "Không Vong (Tránh mưu đại sự, phòng hao tốn)",
 }
 
 # Tiết khí (24 Solar Terms)
@@ -225,17 +190,33 @@ HOUR_WINDOW_MAP = {
     "酉": "17:00 - 19:00",
     "戌": "19:00 - 21:00",
     "亥": "21:00 - 23:00",
+    "Tý": "23:00 - 01:00",
+    "Sửu": "01:00 - 03:00",
+    "Dần": "03:00 - 05:00",
+    "Mão": "05:00 - 07:00",
+    "Thìn": "07:00 - 09:00",
+    "Tỵ": "09:00 - 11:00",
+    "Ngọ": "11:00 - 13:00",
+    "Mùi": "13:00 - 15:00",
+    "Thân": "15:00 - 17:00",
+    "Dậu": "17:00 - 19:00",
+    "Tuất": "19:00 - 21:00",
+    "Hợi": "21:00 - 23:00",
 }
+
 
 
 def format_gan_zhi(gan_zhi_str: str) -> str:
     """Format GanZhi string into Vietnamese with space e.g. '壬寅' -> 'Nhâm Dần'."""
     if not gan_zhi_str or len(gan_zhi_str) < 2:
         return gan_zhi_str
+    if " " in gan_zhi_str:
+        return gan_zhi_str
     g_zh, z_zh = gan_zhi_str[0], gan_zhi_str[1]
     g_vi = CAN_MAP.get(g_zh, g_zh)
     z_vi = ZHI_MAP.get(z_zh, z_zh)
     return f"{g_vi} {z_vi}"
+
 
 
 def translate_direction(zh_dir: str) -> str:
@@ -281,7 +262,7 @@ def get_auspicious_details(day: int, month: int, year: int, is_solar: bool = Tru
         raw_tian_shen_luck = lunar.getDayTianShenLuck()
 
         day_hoang_dao = {
-            "is_hoang_dao": raw_tian_shen_type == "黄道",
+            "is_hoang_dao": raw_tian_shen_type == "Hoàng Đạo",
             "ten_sao": TIAN_SHEN_MAP.get(raw_tian_shen, raw_tian_shen),
             "loai": TIAN_SHEN_TYPE_MAP.get(raw_tian_shen_type, raw_tian_shen_type),
             "danh_gia": TIAN_SHEN_LUCK_MAP.get(raw_tian_shen_luck, raw_tian_shen_luck),
@@ -345,7 +326,7 @@ def get_auspicious_details(day: int, month: int, year: int, is_solar: bool = Tru
                     "chi": zhi_vi,
                     "can_chi": format_gan_zhi(t.getGanZhi()),
                     "khung_gio": HOUR_WINDOW_MAP.get(zhi, ""),
-                    "is_hoang_dao": raw_h_type == "黄道",
+                    "is_hoang_dao": raw_h_type == "Hoàng Đạo",
                     "ten_sao": TIAN_SHEN_MAP.get(raw_h_shen, raw_h_shen),
                     "loai": TIAN_SHEN_TYPE_MAP.get(raw_h_type, raw_h_type),
                     "danh_gia": TIAN_SHEN_LUCK_MAP.get(raw_h_luck, raw_h_luck),
@@ -366,4 +347,7 @@ def get_auspicious_details(day: int, month: int, year: int, is_solar: bool = Tru
             "gio_hoang_dao": gio_hoang_dao,
         }
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return {"error": str(e)}
+

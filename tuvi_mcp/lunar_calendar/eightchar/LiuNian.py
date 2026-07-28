@@ -5,7 +5,7 @@ from ..util import LunarUtil
 
 class LiuNian:
     """
-    流年
+    Liu Nian (Yearly Cycle)
     """
 
     def __init__(self, da_yun, index):
@@ -26,10 +26,10 @@ class LiuNian:
 
     def getGanZhi(self):
         """
-        获取干支
-        :return: 干支
+        Get GanZhi (Heavenly Stem & Earthly Branch)
+        :return: GanZhi
         """
-        offset = LunarUtil.getJiaZiIndex(self.__lunar.getJieQiTable()["立春"].getLunar().getYearInGanZhiExact()) + self.__index
+        offset = LunarUtil.getJiaZiIndex(self.__lunar.getJieQiTable()["Lập Xuân"].getLunar().getYearInGanZhiExact()) + self.__index
         if self.__daYun.getIndex() > 0:
             offset += self.__daYun.getStartAge() - 1
         offset %= len(LunarUtil.JIA_ZI)
@@ -37,22 +37,22 @@ class LiuNian:
 
     def getXun(self):
         """
-        获取所在旬
-        :return: 旬
+        Get Xun (cycle)
+        :return: Xun
         """
         return LunarUtil.getXun(self.getGanZhi())
 
     def getXunKong(self):
         """
-        获取旬空(空亡)
-        :return: 旬空(空亡)
+        Get XunKong (Void)
+        :return: XunKong (Void)
         """
         return LunarUtil.getXunKong(self.getGanZhi())
 
     def getLiuYue(self):
         """
-        获取流月
-        :return: 流月
+        Get Liu Yue (Monthly Cycle)
+        :return: Liu Yue
         """
         n = 12
         liu_yue = []

@@ -5,7 +5,7 @@ from .util import LunarUtil, FotoUtil
 
 class Foto:
     """
-    佛历
+    Buddhist calendar
     """
 
     DEAD_YEAR = -543
@@ -65,8 +65,8 @@ class Foto:
 
     def getOtherFestivals(self):
         """
-        获取纪念日
-        :return: 非正式的节日列表，如中元节
+        Get memorial days
+        :return: Unofficial festival list, e.g. Hungry Ghost Festival
         """
         festivals = []
         key = "%d-%d" % (self.getMonth(), self.getDay())
@@ -81,7 +81,7 @@ class Foto:
 
     def isDayYangGong(self):
         for f in self.getFestivals():
-            if "杨公忌" == f.getName():
+            if "Dương Công Kỵ" == f.getName():
                 return True
         return False
 
@@ -134,7 +134,7 @@ class Foto:
         return self.toString()
 
     def toString(self):
-        return "%s年%s月%s" % (self.getYearInChinese(), self.getMonthInChinese(), self.getDayInChinese())
+        return "năm %s tháng %s ngày %s" % (self.getYearInChinese(), self.getMonthInChinese(), self.getDayInChinese())
 
     def toFullString(self):
         s = self.toString()

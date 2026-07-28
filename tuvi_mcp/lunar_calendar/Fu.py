@@ -3,8 +3,8 @@
 
 class Fu:
     """
-    三伏
-    <p>从夏至后第3个庚日算起，初伏为10天，中伏为10天或20天，末伏为10天。当夏至与立秋之间出现4个庚日时中伏为10天，出现5个庚日则为20天。</p>
+    San Fu (3 ten-day periods of summer)
+    <p>Counting from the 3rd Geng day after Summer Solstice: first Fu is 10 days, middle Fu is 10 or 20 days, last Fu is 10 days. When there are 4 Geng days between Summer Solstice and Start of Autumn, middle Fu is 10 days; when 5 Geng days, it is 20 days.</p>
     """
 
     def __init__(self, name, index):
@@ -30,4 +30,4 @@ class Fu:
         return self.__name
 
     def toFullString(self):
-        return "%s第%d天" % (self.__name, self.__index)
+        return "%s ngày %d" % (self.__name, self.__index)

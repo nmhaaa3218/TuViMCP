@@ -3,7 +3,7 @@
 
 class JieQi:
     """
-    节气
+    Solar term
     """
 
     def __init__(self, name, solar):
@@ -15,15 +15,15 @@ class JieQi:
 
     def getName(self):
         """
-        获取名称
-        :return: 名称
+        Get name
+        :return: Name
         """
         return self.__name
 
     def setName(self, name):
         """
-        设置名称
-        :param name: 名称
+        Set name
+        :param name: Name
         """
         from . import Lunar
         self.__name = name
@@ -40,28 +40,28 @@ class JieQi:
 
     def getSolar(self):
         """
-        获取阳历日期
-        :return: 阳历日期
+        Get solar date
+        :return: Solar date
         """
         return self.__solar
 
     def setSolar(self, solar):
         """
-        设置阳历日期
-        :param solar: 阳历日期
+        Set solar date
+        :param solar: Solar date
         """
         self.__solar = solar
 
     def isJie(self):
         """
-        是否节令
+        Whether Jie (solar term start)
         :return: true/false
         """
         return self.__jie
 
     def isQi(self):
         """
-        是否气令
+        Whether Qi (solar term midpoint)
         :return: true/false
         """
         return self.__qi

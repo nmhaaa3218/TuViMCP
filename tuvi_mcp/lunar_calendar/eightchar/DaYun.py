@@ -5,7 +5,7 @@ from ..util import LunarUtil
 
 class DaYun:
     """
-    大运
+    Da Yun (Decade Fortune)
     """
 
     def __init__(self, yun, index: int):
@@ -46,8 +46,8 @@ class DaYun:
 
     def getGanZhi(self):
         """
-        获取干支
-        :return: 干支
+        Get GanZhi (Heavenly Stem & Earthly Branch)
+        :return: GanZhi
         """
         if self.__index < 1:
             return ""
@@ -62,23 +62,23 @@ class DaYun:
 
     def getXun(self):
         """
-        获取所在旬
-        :return: 旬
+        Get Xun (cycle)
+        :return: Xun
         """
         return LunarUtil.getXun(self.getGanZhi())
 
     def getXunKong(self):
         """
-        获取旬空(空亡)
-        :return: 旬空(空亡)
+        Get XunKong (Void)
+        :return: XunKong (Void)
         """
         return LunarUtil.getXunKong(self.getGanZhi())
 
     def getLiuNian(self, n=10):
         """
-        获取流年
-        :param n: 轮数
-        :return: 流年
+        Get Liu Nian (Yearly Cycle)
+        :param n: Count
+        :return: Liu Nian
         """
         if self.__index < 1:
             n = self.__endYear - self.__startYear + 1
@@ -89,9 +89,9 @@ class DaYun:
 
     def getXiaoYun(self, n=10):
         """
-        获取小运
-        :param n: 轮数
-        :return: 小运
+        Get Xiao Yun (Yearly Fortune)
+        :param n: Count
+        :return: Xiao Yun
         """
         if self.__index < 1:
             n = self.__endYear - self.__startYear + 1

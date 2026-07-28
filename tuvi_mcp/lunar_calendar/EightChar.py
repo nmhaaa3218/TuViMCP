@@ -4,25 +4,18 @@ from .util import LunarUtil
 
 class EightChar:
     """
-    八字
+    Eight Characters (Ba Zi)
     """
 
-    MONTH_ZHI = ("", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥", "子", "丑")
+    MONTH_ZHI = ("", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi", "Tý", "Sửu")
 
-    CHANG_SHENG = ("长生", "沐浴", "冠带", "临官", "帝旺", "衰", "病", "死", "墓", "绝", "胎", "养")
+    CHANG_SHENG = ("Tràng Sinh", "Mộc Dục", "Quan Đới", "Lâm Quan", "Đế Vượng", "Suy", "Bệnh", "Tử", "Mộ", "Tuyệt", "Thai", "Dưỡng")
 
     __CHANG_SHENG_OFFSET = {
-        "甲": 1,
-        "丙": 10,
-        "戊": 10,
-        "庚": 7,
-        "壬": 4,
-        "乙": 6,
-        "丁": 9,
-        "己": 9,
-        "辛": 0,
-        "癸": 3
+        "Giáp": 1, "Ất": 6, "Bính": 10, "Đinh": 9, "Mậu": 10,
+        "Kỷ": 9, "Canh": 7, "Tân": 0, "Nhâm": 4, "Quý": 3
     }
+
 
     def __init__(self, lunar):
         self.__sect = 2
@@ -46,50 +39,50 @@ class EightChar:
 
     def getYear(self):
         """
-        获取年柱
-        :return: 年柱
+        Get year pillar
+        :return: Year pillar
         """
         return self.__lunar.getYearInGanZhiExact()
 
     def getYearGan(self):
         """
-        获取年干
-        :return: 天干
+        Get year heavenly stem
+        :return: Heavenly stem
         """
         return self.__lunar.getYearGanExact()
 
     def getYearZhi(self):
         """
-        获取年支
-        :return: 地支
+        Get year earthly branch
+        :return: Earthly branch
         """
         return self.__lunar.getYearZhiExact()
 
     def getYearHideGan(self):
         """
-        获取年柱地支藏干，由于藏干分主气、余气、杂气，所以返回结果可能为1到3个元素
-        :return: 天干
+        Get hidden stems in year pillar's earthly branch, may contain 1-3 elements (primary, secondary, tertiary)
+        :return: Heavenly stems
         """
         return LunarUtil.ZHI_HIDE_GAN.get(self.getYearZhi())
 
     def getYearWuXing(self):
         """
-        获取年柱五行
-        :return: 五行
+        Get year pillar's five elements
+        :return: Five elements
         """
         return LunarUtil.WU_XING_GAN.get(self.getYearGan()) + LunarUtil.WU_XING_ZHI.get(self.getYearZhi())
 
     def getYearNaYin(self):
         """
-        获取年柱纳音
-        :return: 纳音
+        Get year pillar's Na Yin (element)
+        :return: Na Yin
         """
         return LunarUtil.NAYIN.get(self.getYear())
 
     def getYearShiShenGan(self):
         """
-        获取年柱天干十神
-        :return: 十神
+        Get year pillar's heavenly stem Shi Shen (10 Spirits)
+        :return: Shi Shen
         """
         return LunarUtil.SHI_SHEN.get(self.getDayGan() + self.getYearGan())
 
@@ -102,8 +95,8 @@ class EightChar:
 
     def getYearShiShenZhi(self):
         """
-        获取年柱地支十神，由于藏干分主气、余气、杂气，所以返回结果可能为1到3个元素
-        :return: 十神
+        Get year pillar's earthly branch Shi Shen (10 Spirits), may contain 1-3 elements
+        :return: Shi Shen
         """
         return self.__getShiShenZhi(self.getYearZhi())
 
@@ -123,204 +116,204 @@ class EightChar:
 
     def getYearDiShi(self):
         """
-        获取年柱地势（长生十二神）
-        :return: 地势
+        Get year pillar's Di Shi (12 Growth Stages)
+        :return: Di Shi
         """
         return self.__getDiShi(self.__lunar.getYearZhiIndexExact())
 
     def getMonth(self):
         """
-        获取月柱
-        :return: 月柱
+        Get month pillar
+        :return: Month pillar
         """
         return self.__lunar.getMonthInGanZhiExact()
 
     def getMonthGan(self):
         """
-        获取月干
-        :return: 天干
+        Get month heavenly stem
+        :return: Heavenly stem
         """
         return self.__lunar.getMonthGanExact()
 
     def getMonthZhi(self):
         """
-        获取月支
-        :return: 地支
+        Get month earthly branch
+        :return: Earthly branch
         """
         return self.__lunar.getMonthZhiExact()
 
     def getMonthHideGan(self):
         """
-        获取月柱地支藏干，由于藏干分主气、余气、杂气，所以返回结果可能为1到3个元素
-        :return: 天干
+        Get hidden stems in month pillar's earthly branch, may contain 1-3 elements (primary, secondary, tertiary)
+        :return: Heavenly stems
         """
         return LunarUtil.ZHI_HIDE_GAN.get(self.getMonthZhi())
 
     def getMonthWuXing(self):
         """
-        获取月柱五行
-        :return: 五行
+        Get month pillar's five elements
+        :return: Five elements
         """
         return LunarUtil.WU_XING_GAN.get(self.getMonthGan()) + LunarUtil.WU_XING_ZHI.get(self.getMonthZhi())
 
     def getMonthNaYin(self):
         """
-        获取月柱纳音
-        :return: 纳音
+        Get month pillar's Na Yin (element)
+        :return: Na Yin
         """
         return LunarUtil.NAYIN.get(self.getMonth())
 
     def getMonthShiShenGan(self):
         """
-        获取月柱天干十神
-        :return: 十神
+        Get month pillar's heavenly stem Shi Shen (10 Spirits)
+        :return: Shi Shen
         """
         return LunarUtil.SHI_SHEN.get(self.getDayGan() + self.getMonthGan())
 
     def getMonthShiShenZhi(self):
         """
-        获取月柱地支十神，由于藏干分主气、余气、杂气，所以返回结果可能为1到3个元素
-        :return: 十神
+        Get month pillar's earthly branch Shi Shen (10 Spirits), may contain 1-3 elements
+        :return: Shi Shen
         """
         return self.__getShiShenZhi(self.getMonthZhi())
 
     def getMonthDiShi(self):
         """
-        获取月柱地势（长生十二神）
-        :return: 地势
+        Get month pillar's Di Shi (12 Growth Stages)
+        :return: Di Shi
         """
         return self.__getDiShi(self.__lunar.getMonthZhiIndexExact())
 
     def getDay(self):
         """
-        获取日柱
-        :return: 日柱
+        Get day pillar
+        :return: Day pillar
         """
         return self.__lunar.getDayInGanZhiExact2() if 2 == self.__sect else self.__lunar.getDayInGanZhiExact()
 
     def getDayGan(self):
         """
-        获取日干
-        :return: 天干
+        Get day heavenly stem
+        :return: Heavenly stem
         """
         return self.__lunar.getDayGanExact2() if 2 == self.__sect else self.__lunar.getDayGanExact()
 
     def getDayZhi(self):
         """
-        获取日支
-        :return: 地支
+        Get day earthly branch
+        :return: Earthly branch
         """
         return self.__lunar.getDayZhiExact2() if 2 == self.__sect else self.__lunar.getDayZhiExact()
 
     def getDayHideGan(self):
         """
-        获取日柱地支藏干，由于藏干分主气、余气、杂气，所以返回结果可能为1到3个元素
-        :return: 天干
+        Get hidden stems in day pillar's earthly branch, may contain 1-3 elements (primary, secondary, tertiary)
+        :return: Heavenly stems
         """
         return LunarUtil.ZHI_HIDE_GAN.get(self.getDayZhi())
 
     def getDayWuXing(self):
         """
-        获取日柱五行
-        :return: 五行
+        Get day pillar's five elements
+        :return: Five elements
         """
         return LunarUtil.WU_XING_GAN.get(self.getDayGan()) + LunarUtil.WU_XING_ZHI.get(self.getDayZhi())
 
     def getDayNaYin(self):
         """
-        获取日柱纳音
-        :return: 纳音
+        Get day pillar's Na Yin (element)
+        :return: Na Yin
         """
         return LunarUtil.NAYIN.get(self.getDay())
 
     def getDayShiShenGan(self):
         """
-        获取日柱天干十神，也称日元、日干
-        :return: 十神
+        Get day pillar's heavenly stem Shi Shen (10 Spirits), also known as Day Master, Day Stem
+        :return: Shi Shen (Nhật Chủ)
         """
-        return "日主"
+        return "Nhật Chủ"
 
     def getDayShiShenZhi(self):
         """
-        获取日柱地支十神，由于藏干分主气、余气、杂气，所以返回结果可能为1到3个元素
-        :return: 十神
+        Get day pillar's earthly branch Shi Shen (10 Spirits), may contain 1-3 elements
+        :return: Shi Shen
         """
         return self.__getShiShenZhi(self.getDayZhi())
 
     def getDayDiShi(self):
         """
-        获取日柱地势（长生十二神）
-        :return: 地势
+        Get day pillar's Di Shi (12 Growth Stages)
+        :return: Di Shi
         """
         return self.__getDiShi(self.getDayZhiIndex())
 
     def getTime(self):
         """
-        获取时柱
-        :return: 时柱
+        Get time pillar
+        :return: Time pillar
         """
         return self.__lunar.getTimeInGanZhi()
 
     def getTimeGan(self):
         """
-        获取时干
-        :return: 天干
+        Get time heavenly stem
+        :return: Heavenly stem
         """
         return self.__lunar.getTimeGan()
 
     def getTimeZhi(self):
         """
-        获取时支
-        :return: 地支
+        Get time earthly branch
+        :return: Earthly branch
         """
         return self.__lunar.getTimeZhi()
 
     def getTimeHideGan(self):
         """
-        获取时柱地支藏干，由于藏干分主气、余气、杂气，所以返回结果可能为1到3个元素
-        :return: 天干
+        Get hidden stems in time pillar's earthly branch, may contain 1-3 elements (primary, secondary, tertiary)
+        :return: Heavenly stems
         """
         return LunarUtil.ZHI_HIDE_GAN.get(self.getTimeZhi())
 
     def getTimeWuXing(self):
         """
-        获取时柱五行
-        :return: 五行
+        Get time pillar's five elements
+        :return: Five elements
         """
         return LunarUtil.WU_XING_GAN.get(self.getTimeGan()) + LunarUtil.WU_XING_ZHI.get(self.getTimeZhi())
 
     def getTimeNaYin(self):
         """
-        获取时柱纳音
-        :return: 纳音
+        Get time pillar's Na Yin (element)
+        :return: Na Yin
         """
         return LunarUtil.NAYIN.get(self.getTime())
 
     def getTimeShiShenGan(self):
         """
-        获取时柱天干十神
-        :return: 十神
+        Get time pillar's heavenly stem Shi Shen (10 Spirits)
+        :return: Shi Shen
         """
         return LunarUtil.SHI_SHEN.get(self.getDayGan() + self.getTimeGan())
 
     def getTimeShiShenZhi(self):
         """
-        获取时柱地支十神，由于藏干分主气、余气、杂气，所以返回结果可能为1到3个元素
-        :return: 十神
+        Get time pillar's earthly branch Shi Shen (10 Spirits), may contain 1-3 elements
+        :return: Shi Shen
         """
         return self.__getShiShenZhi(self.getTimeZhi())
 
     def getTimeDiShi(self):
         """
-        获取时柱地势（长生十二神）
-        :return: 地势
+        Get time pillar's Di Shi (12 Growth Stages)
+        :return: Di Shi
         """
         return self.__getDiShi(self.__lunar.getTimeZhiIndex())
 
     def getTaiYuan(self):
         """
-        获取胎元
-        :return: 胎元
+        Get Tai Yuan (Fetal Origin)
+        :return: Tai Yuan
         """
         gan_index = self.__lunar.getMonthGanIndexExact() + 1
         if gan_index >= 10:
@@ -328,35 +321,35 @@ class EightChar:
         zhi_index = self.__lunar.getMonthZhiIndexExact() + 3
         if zhi_index >= 12:
             zhi_index -= 12
-        return LunarUtil.GAN[gan_index + 1] + LunarUtil.ZHI[zhi_index + 1]
+        return f"{LunarUtil.GAN[gan_index + 1]} {LunarUtil.ZHI[zhi_index + 1]}"
 
     def getTaiYuanNaYin(self):
         """
-        获取胎元纳音
-        :return: 纳音
+        Get Tai Yuan's Na Yin (element)
+        :return: Na Yin
         """
         return LunarUtil.NAYIN.get(self.getTaiYuan())
 
     def getTaiXi(self):
         """
-        获取胎息
-        :return: 胎息
+        Get Tai Xi (Fetal Breath)
+        :return: Tai Xi
         """
         gan_index = self.__lunar.getDayGanIndexExact2() if 2 == self.__sect else self.__lunar.getDayGanIndexExact()
         zhi_index = self.__lunar.getDayZhiIndexExact2() if 2 == self.__sect else self.__lunar.getDayZhiIndexExact()
-        return LunarUtil.HE_GAN_5[gan_index] + LunarUtil.HE_ZHI_6[zhi_index]
+        return f"{LunarUtil.HE_GAN_5[gan_index]} {LunarUtil.HE_ZHI_6[zhi_index]}"
 
     def getTaiXiNaYin(self):
         """
-        获取胎息纳音
-        :return: 纳音
+        Get Tai Xi's Na Yin (element)
+        :return: Na Yin
         """
         return LunarUtil.NAYIN.get(self.getTaiXi())
 
     def getMingGong(self):
         """
-        获取命宫
-        :return: 命宫
+        Get Ming Gong (Destiny Palace)
+        :return: Ming Gong
         """
         month_zhi_index = 0
         time_zhi_index = 0
@@ -380,19 +373,19 @@ class EightChar:
         gan_index = (self.__lunar.getYearGanIndexExact() + 1) * 2 + offset
         while gan_index > 10:
             gan_index -= 10
-        return LunarUtil.GAN[gan_index] + EightChar.MONTH_ZHI[offset]
+        return f"{LunarUtil.GAN[gan_index]} {EightChar.MONTH_ZHI[offset]}"
 
     def getMingGongNaYin(self):
         """
-        获取命宫纳音
-        :return: 纳音
+        Get Ming Gong's Na Yin (element)
+        :return: Na Yin
         """
         return LunarUtil.NAYIN.get(self.getMingGong())
 
     def getShenGong(self):
         """
-        获取身宫
-        :return: 身宫
+        Get Shen Gong (Body Palace)
+        :return: Shen Gong
         """
         month_zhi_index = 0
         time_zhi_index = 0
@@ -414,12 +407,12 @@ class EightChar:
         gan_index = (self.__lunar.getYearGanIndexExact() + 1) * 2 + offset
         while gan_index > 10:
             gan_index -= 10
-        return LunarUtil.GAN[gan_index] + EightChar.MONTH_ZHI[offset]
+        return f"{LunarUtil.GAN[gan_index]} {EightChar.MONTH_ZHI[offset]}"
 
     def getShenGongNaYin(self):
         """
-        获取身宫纳音
-        :return: 纳音
+        Get Shen Gong's Na Yin (element)
+        :return: Na Yin
         """
         return LunarUtil.NAYIN.get(self.getShenGong())
 
@@ -428,66 +421,66 @@ class EightChar:
 
     def getYun(self, gender, sect=1):
         """
-        获取运
-        :param gender: 性别：1男，0女
-        :param sect 流派：1按天数和时辰数计算，3天1年，1天4个月，1时辰10天；2按分钟数计算
-        :return: 运
+        Get Fortune (Yun)
+        :param gender: Gender: 1 male, 0 female
+        :param sect School: 1 by days and hours (3 days = 1 year, 1 day = 4 months, 1 hour = 10 days); 2 by minutes
+        :return: Yun (Fortune)
         """
         from .eightchar import Yun
         return Yun(self, gender, sect)
 
     def getYearXun(self):
         """
-        获取年柱所在旬
-        :return: 旬
+        Get year pillar's Xun (cycle)
+        :return: Xun
         """
         return self.__lunar.getYearXunExact()
 
     def getYearXunKong(self):
         """
-        获取年柱旬空(空亡)
-        :return: 旬空(空亡)
+        Get year pillar's XunKong (Void)
+        :return: XunKong (Void)
         """
         return self.__lunar.getYearXunKongExact()
 
     def getMonthXun(self):
         """
-        获取月柱所在旬
-        :return: 旬
+        Get month pillar's Xun (cycle)
+        :return: Xun
         """
         return self.__lunar.getMonthXunExact()
 
     def getMonthXunKong(self):
         """
-        获取月柱旬空(空亡)
-        :return: 旬空(空亡)
+        Get month pillar's XunKong (Void)
+        :return: XunKong (Void)
         """
         return self.__lunar.getMonthXunKongExact()
 
     def getDayXun(self):
         """
-        获取日柱所在旬
-        :return: 旬
+        Get day pillar's Xun (cycle)
+        :return: Xun
         """
         return self.__lunar.getDayXunExact2() if 2 == self.__sect else self.__lunar.getDayXunExact()
 
     def getDayXunKong(self):
         """
-        获取日柱旬空(空亡)
-        :return: 旬空(空亡)
+        Get day pillar's XunKong (Void)
+        :return: XunKong (Void)
         """
         return self.__lunar.getDayXunKongExact2() if 2 == self.__sect else self.__lunar.getDayXunKongExact()
 
     def getTimeXun(self):
         """
-        获取时柱所在旬
-        :return: 旬
+        Get time pillar's Xun (cycle)
+        :return: Xun
         """
         return self.__lunar.getTimeXun()
 
     def getTimeXunKong(self):
         """
-        获取时柱旬空(空亡)
-        :return: 旬空(空亡)
+        Get time pillar's XunKong (Void)
+        :return: XunKong (Void)
         """
         return self.__lunar.getTimeXunKong()

@@ -3,7 +3,7 @@
 
 class FotoFestival:
     """
-    佛历因果犯忌
+    Buddhist calendar festival (cause and taboo)
     """
 
     def __init__(self, name, result=None, every_month=False, remark=None):
