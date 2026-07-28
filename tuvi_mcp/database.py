@@ -83,8 +83,35 @@ def list_saved_horoscopes() -> list:
         return [dict(row) for row in rows]
 
 
+def _enrich_with_cach_cuc(record: dict) -> dict:
+    """Attach evaluated 51-Cách-Cục list to a saved horoscope record.
+
+    The DB row stores birth inputs only; we rebuild the chart from those inputs
+    and run the declarative evaluator so the persisted record surfaces the same
+    pattern-recognition surface as `generate_horoscope`. Lazy import avoids
+    pulling tuvi_calculator when no read occurs.
+    """
+    if not record:
+        return record
+    from .tuvi_calculator import get_horoscope_chart
+    chart = get_horoscope_chart(
+        name=record["name"],
+        day=record["day"],
+        month=record["month"],
+        year=record["year"],
+        hour_val=record["hour"],
+        gender_val=record["gender"],
+        is_solar=bool(record["is_solar"]),
+    )
+    if isinstance(chart, dict) and "error" not in chart:
+        record["cach_cuc"] = chart.get("cach_cuc", [])
+    else:
+        record["cach_cuc"] = []
+    return record
+
+
 def get_saved_horoscope_by_id(horoscope_id: int) -> dict:
-    """Retrieve a saved horoscope by its unique id."""
+    """Retrieve a saved horoscope by its unique id, with evaluated cách cục list."""
     with get_connection() as conn:
         row = conn.execute(
             """
@@ -94,11 +121,11 @@ def get_saved_horoscope_by_id(horoscope_id: int) -> dict:
         """,
             (horoscope_id,),
         ).fetchone()
-        return dict(row) if row else None
+        return _enrich_with_cach_cuc(dict(row)) if row else None
 
 
 def get_saved_horoscope_by_name(name: str) -> dict:
-    """Retrieve the latest saved horoscope matching a name."""
+    """Retrieve the latest saved horoscope matching a name, with evaluated cách cục list."""
     with get_connection() as conn:
         row = conn.execute(
             """
@@ -110,7 +137,7 @@ def get_saved_horoscope_by_name(name: str) -> dict:
         """,
             (name,),
         ).fetchone()
-        return dict(row) if row else None
+        return _enrich_with_cach_cuc(dict(row)) if row else None
 
 
 def delete_saved_horoscope_by_id(horoscope_id: int) -> bool:

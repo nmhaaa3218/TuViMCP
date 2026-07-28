@@ -308,33 +308,17 @@ def test_input_validation():
     assert res_hour["error_code"] == "INVALID_INPUT_PARAMETER"
     assert "hour_val" in res_hour["suggestions"]
 
-
-def test_cach_cuc_evaluation():
-    # 1. Test chart known to match specific cách cục (e.g. 10/10/2000 12:00)
-    chart = tuvi_calculator.get_horoscope_chart("Test Cach Cuc", 10, 10, 2000, "12:00", "Nam", True)
-    assert "cach_cuc" in chart
-    assert isinstance(chart["cach_cuc"], list)
-    assert len(chart["cach_cuc"]) > 0
-    first_match = chart["cach_cuc"][0]
-    required_keys = ["id", "name", "category", "description", "reason", "co_ca", "binh_chu", "uu_khuyet_diem"]
-    for key in required_keys:
-        assert key in first_match
-
-    # 2. Test Thạch Trung Ẩn Ngọc Cách chart (21/8/2003 Nam giờ Thân)
-    chart_thach_trung = tuvi_calculator.get_horoscope_chart("Test Thach Trung", 21, 8, 2003, "Thân", "Nam", True)
-    matched_ids = [c["id"] for c in chart_thach_trung.get("cach_cuc", [])]
-    assert 24 in matched_ids  # ID 24 is Thạch Trung Ẩn Ngọc Cách
-
-    # 3. Test empty chart input safety
-    from tuvi_mcp.cach_cuc_evaluator import evaluate_cach_cuc
-    assert evaluate_cach_cuc({}) == []
-    assert evaluate_cach_cuc({"dia_ban": []}) == []
-
-
-
     # 4. Test invalid transit period
     res_transit = tuvi_calculator.get_van_han_analysis(
-        name="Test Transit", day=15, month=5, year=2024, hour_val="12:00", gender_val="Nam", is_solar=True, current_year=2500, current_month=15
+        name="Test Transit",
+        day=15,
+        month=5,
+        year=2024,
+        hour_val="12:00",
+        gender_val="Nam",
+        is_solar=True,
+        current_year=2500,
+        current_month=15,
     )
     assert "error" in res_transit
     assert res_transit["error_code"] == "INVALID_INPUT_PARAMETER"
@@ -346,6 +330,118 @@ def test_cach_cuc_evaluation():
     conv_err = convert_calendar(day=35, month=13, year=1700)
     assert "error" in conv_err
     assert conv_err["error_code"] == "INVALID_INPUT_PARAMETER"
+
+
+def test_cach_cuc_evaluation():
+    # 1. Schema validation on a generic chart — content can be empty, but
+    # `cach_cuc` key must exist and yield a list with required keys when
+    # populated. The 10/10/2000 chart is known to trigger several rules.
+    chart = tuvi_calculator.get_horoscope_chart("Test Cach Cuc", 10, 10, 2000, "12:00", "Nam", True)
+    assert "cach_cuc" in chart
+    assert isinstance(chart["cach_cuc"], list)
+    if chart["cach_cuc"]:
+        first_match = chart["cach_cuc"][0]
+        required_keys = ["id", "name", "category", "description", "reason", "co_ca", "binh_chu", "uu_khuyet_diem"]
+        for key in required_keys:
+            assert key in first_match
+
+    # 2. Pinned chart-rule match: Thạch Trung Ẩn Ngọc Cách (ID 24)
+    #    for a 21/8/2003 Nam, giờ Thân chart.
+    chart_thach_trung = tuvi_calculator.get_horoscope_chart("Test Thach Trung", 21, 8, 2003, "Thân", "Nam", True)
+    matched_ids = [c["id"] for c in chart_thach_trung.get("cach_cuc", [])]
+    assert 24 in matched_ids
+
+    # 3. Empty chart input safety
+    from tuvi_mcp.cach_cuc_evaluator import evaluate_cach_cuc
+    assert evaluate_cach_cuc({}) == []
+    assert evaluate_cach_cuc({"dia_ban": []}) == []
+
+    # 4. Real-chart regression tests for the evaluator fixes:
+    #    Rule 18 (Minh Châu Xuất Hải Cách) requires `cung_quan`/`cung_tai`
+    #    lookups that broke under case-sensitive `==`. 13/5/1989 Tuất Nữ is
+    #    a known chart that triggers rule 18, giving an end-to-end smoke.
+    chart_rule18 = tuvi_calculator.get_horoscope_chart(
+        "Test Rule 18", 13, 5, 1989, "Tuất", "Nữ", True
+    )
+    ids_rule18 = [r["id"] for r in chart_rule18.get("cach_cuc", [])]
+    assert 18 in ids_rule18, "Rule 18 must surface for known chart 13/5/1989 Tuất Nữ"
+
+    # 5. Pinned synthetic chart for rule 51 (Khoa Minh Lộc Ám Cách).
+    #    Verifies the canonical Lục Hợp map and `cung_menh` matching.
+    #    Mệnh at Hợi (12) → Lục Hợp cung = Dần (3). Placing Hóa Khoa at
+    #    Mệnh and Lộc Tồn at Dần must satisfy both rule conditions.
+    rule_51_chart = {
+        "thien_ban": {"can_nam": "Giáp"},
+        "dia_ban": [
+            {
+                "cung_so": 12, "cung_ten": "Mậu Hợi", "cung_chu": "Mệnh",
+                "sao": [{"id": 7, "name": "Hóa khoa", "attribute": "Đắc địa"}],
+            },
+            {
+                "cung_so": 3, "cung_ten": "Quý Dần", "cung_chu": "",
+                "sao": [{"id": 8, "name": "Lộc tồn", "attribute": None}],
+            },
+        ],
+    }
+    rule_51_matches = [r["id"] for r in evaluate_cach_cuc(rule_51_chart)]
+    assert 51 in rule_51_matches, (
+        "Rule 51 (Khoa Minh Lộc Ám) must fire when Mệnh has Hóa Khoa "
+        "and Lục Hợp cung has Lộc Tồn"
+    )
+
+
+def test_cach_cuc_lookup_helpers():
+    from tuvi_mcp.cach_cuc_evaluator import get_cung_by_chu, has_star
+
+    dia_ban = [
+        {"cung_so": 1, "cung_ten": "Kỷ Sửu", "cung_chu": "Mệnh", "sao": []},
+        {"cung_so": 2, "cung_ten": "Canh Tý", "cung_chu": "Quan lộc", "sao": []},
+        {"cung_so": 3, "cung_ten": "Tân Hợi", "cung_chu": "Tài bạch", "sao": []},
+        {"cung_so": 4, "cung_ten": "Nhâm Tuất", "cung_chu": "Điền trạch", "sao": []},
+    ]
+
+    # Case-insensitive lookup must resolve canonical capitalizations.
+    assert get_cung_by_chu(dia_ban, "Mệnh")["cung_so"] == 1
+    assert get_cung_by_chu(dia_ban, "Quan Lộc")["cung_so"] == 2
+    assert get_cung_by_chu(dia_ban, "Tài Bạch")["cung_so"] == 3
+    assert get_cung_by_chu(dia_ban, "Điền Trạch")["cung_so"] == 4
+    assert get_cung_by_chu(dia_ban, "Không tồn tại") is None
+
+    # has_star attribute filter: name-only True; mismatch False; match True.
+    cung = {"sao": [{"name": "Thái Dương", "attribute": "Miếu địa"}]}
+    assert has_star(cung, "Thái Dương") is True
+    assert has_star(cung, "Thái Dương", "Hãm địa") is False
+    assert has_star(cung, "Thái Dương", "Miếu địa") is True
+
+
+def test_saved_horoscope_includes_cach_cuc():
+    # Save a fresh record; fetch by ID; assert cach_cuc attached.
+    from tuvi_mcp import database as db
+    db.init_db()
+    rid = db.save_horoscope(
+        name="Cach Cuc Saved",
+        day=21,
+        month=8,
+        year=2003,
+        hour=9,  # Thân
+        gender="Nam",
+        is_solar=True,
+        notes="cach_cuc enrichment test",
+    )
+    try:
+        saved = db.get_saved_horoscope_by_id(rid)
+        assert saved is not None
+        assert "cach_cuc" in saved
+        assert isinstance(saved["cach_cuc"], list)
+        matched_ids = [c["id"] for c in saved["cach_cuc"]]
+        assert 24 in matched_ids, "Thạch Trung Ẩn Ngọc (24) must surface through saved path"
+
+        saved_by_name = db.get_saved_horoscope_by_name("Cach Cuc Saved")
+        assert saved_by_name is not None
+        assert "cach_cuc" in saved_by_name
+        assert [c["id"] for c in saved_by_name["cach_cuc"]] == matched_ids
+    finally:
+        db.delete_saved_horoscope_by_id(rid)
 
 
 def test_auspicious_info():

@@ -6,20 +6,25 @@ Data-driven Cách Cục Evaluator for Tử Vi Đẩu Số.
 Evaluates rules declaratively defined in tuvi_mcp/data/cach_cuc.json.
 """
 
-import os
 import json
+import os
 
-_CACH_CUC_DATA = None
+_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+_CACH_CUC_PATH = os.path.join(_DATA_DIR, "cach_cuc.json")
+
+with open(_CACH_CUC_PATH, "r", encoding="utf-8") as _f:
+    CACH_CUC_RULES: list = json.load(_f)
+del _f
 
 
 def load_cach_cuc_rules() -> list:
-    """Load declarative cách cục rules from JSON file."""
-    global _CACH_CUC_DATA
-    if _CACH_CUC_DATA is None:
-        json_path = os.path.join(os.path.dirname(__file__), "data", "cach_cuc.json")
-        with open(json_path, "r", encoding="utf-8") as f:
-            _CACH_CUC_DATA = json.load(f)
-    return _CACH_CUC_DATA
+    """Return the eagerly-loaded declarative cách cục rules.
+
+    Kept as a thin accessor for backward compatibility. The dataset is loaded
+    once at module import time so any malformed/missing data fails loudly on
+    server startup (or test collection) rather than on the first chart call.
+    """
+    return CACH_CUC_RULES
 
 
 def get_cung_chi(cung: dict) -> str:
@@ -31,9 +36,14 @@ def get_cung_chi(cung: dict) -> str:
 
 
 def get_cung_by_chu(dia_ban: list, cung_chu: str) -> dict:
-    """Find a house by its domain name (e.g., 'Mệnh', 'Quan Lộc', 'Tài Bạch', 'Thiên Di', 'Điền Trạch')."""
+    """Find a house by its domain name (e.g., 'Mệnh', 'Quan Lộc', 'Tài Bạch', 'Thiên Di', 'Điền Trạch').
+
+    Lookup is case-insensitive to tolerate serializer casing variance
+    (chart emits e.g. 'Quan lộc' / 'Tài bạch' / 'Điền trạch' lowercased b/t).
+    """
+    target = cung_chu.strip().lower()
     for c in dia_ban:
-        if c.get("cung_chu") == cung_chu:
+        if c.get("cung_chu", "").strip().lower() == target:
             return c
     return None
 
@@ -62,7 +72,12 @@ def get_tam_phuong_tu_chinh(dia_ban: list, cung_so: int) -> list:
     opp = (c_base + 6) % 12 + 1
     tri1 = (c_base + 4) % 12 + 1
     tri2 = (c_base + 8) % 12 + 1
-    res = [get_cung_by_so(dia_ban, cung_so), get_cung_by_so(dia_ban, opp), get_cung_by_so(dia_ban, tri1), get_cung_by_so(dia_ban, tri2)]
+    res = [
+        get_cung_by_so(dia_ban, cung_so),
+        get_cung_by_so(dia_ban, opp),
+        get_cung_by_so(dia_ban, tri1),
+        get_cung_by_so(dia_ban, tri2),
+    ]
     return [c for c in res if c is not None]
 
 
@@ -150,41 +165,24 @@ def evaluate_single_condition(cond: dict, dia_ban: list, thien_ban: dict) -> boo
         if not match_house_condition(cung_menh, cond["cung_menh"]):
             return False
 
-    if "tam_phuong_tu_chinh" in cond:
-        tp_rule = cond["tam_phuong_tu_chinh"]
+    # Tam Phương star-count predicates share identical semantics with different
+    # condition keys. Dispatch over the canonical set instead of repeating the
+    # same min-count check seven times.
+    for tp_key in (
+        "tam_phuong_tu_chinh",
+        "tam_phuong_tu_chinh_aux",
+        "tam_phuong_tu_chinh_loc",
+        "tam_phuong_sat",
+        "tam_phuong_loc",
+        "tam_phuong_ma",
+        "tam_phuong_tuong",
+    ):
+        if tp_key not in cond:
+            continue
+        tp_rule = cond[tp_key]
         st_req = tp_rule.get("stars_required", [])
         min_cnt = tp_rule.get("min_count", len(st_req))
         if count_stars_in_houses(tam_phuong, st_req) < min_cnt:
-            return False
-
-    if "tam_phuong_tu_chinh_aux" in cond:
-        tp_rule = cond["tam_phuong_tu_chinh_aux"]
-        if count_stars_in_houses(tam_phuong, tp_rule["stars_required"]) < tp_rule["min_count"]:
-            return False
-
-    if "tam_phuong_tu_chinh_loc" in cond:
-        tp_rule = cond["tam_phuong_tu_chinh_loc"]
-        if count_stars_in_houses(tam_phuong, tp_rule["stars_required"]) < tp_rule["min_count"]:
-            return False
-
-    if "tam_phuong_sat" in cond:
-        tp_rule = cond["tam_phuong_sat"]
-        if count_stars_in_houses(tam_phuong, tp_rule["stars_required"]) < tp_rule["min_count"]:
-            return False
-
-    if "tam_phuong_loc" in cond:
-        tp_rule = cond["tam_phuong_loc"]
-        if count_stars_in_houses(tam_phuong, tp_rule["stars_required"]) < tp_rule["min_count"]:
-            return False
-
-    if "tam_phuong_ma" in cond:
-        tp_rule = cond["tam_phuong_ma"]
-        if count_stars_in_houses(tam_phuong, tp_rule["stars_required"]) < tp_rule["min_count"]:
-            return False
-
-    if "tam_phuong_tuong" in cond:
-        tp_rule = cond["tam_phuong_tuong"]
-        if count_stars_in_houses(tam_phuong, tp_rule["stars_required"]) < tp_rule["min_count"]:
             return False
 
     if "giap_cung" in cond:
@@ -251,7 +249,7 @@ def evaluate_cach_cuc(chart_data: dict) -> list:
     if not dia_ban:
         return []
 
-    rules = load_cach_cuc_rules()
+    rules = CACH_CUC_RULES
     matched_results = []
 
     for rule_item in rules:
