@@ -24,11 +24,47 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 - **Horoscope Generation:** Converts Solar or Lunar birth dates and times into a full Tử Vi chart (Thiên Bàn and Địa Bàn with 12 houses and over 100 stars).
 - **51 Cách Cục Evaluation Engine:** Automatically recognizes all 51 traditional astrological formations (51 Cách Cục Trung Châu Phái) during chart generation, returning matched patterns with descriptions, poems (Cổ Ca), commentary (Bình Chú), and pros/cons (Ưu/Khuyết điểm).
 - **High-Quality Image Rendering:** Generates beautiful, print-ready chart images with element-based colored text (Green for Wood, Red for Fire, Yellow for Earth, Gray for Metal, Blue for Water), custom badge boxes for Tuần & Triệt, and geometric connecting lines highlighting the Mệnh and Thân relationship.
-- **Vận Hạn (Transit Analysis):** Computes transit stars (Lưu tinh) and maps the active 10-year period (Đại Hạn), yearly period (Tiểu Hạn), and monthly period (Nguyệt Hạn) for any target year and month (e.g., 2026).
+- **Vận Hạn (Transit Analysis):** Computes transit stars (Lưu tinh) and maps the active 10-year period (Đại Hạn), yearly period (Tiểu Hạn), monthly period (Nguyệt Hạn), and daily period (Nhật Hạn) for any target year, month, and day (e.g., 2026).
 - **Auspicious Date & Time Checker:** Evaluates Hoàng Đạo/Hắc Đạo, 12 Trực, 28 Tú, Tiết Khí, travel directions, and auspicious hours for any calendar date.
 - **Local Persistence (Python Library):** Includes built-in SQLite database utilities (`tuvi_mcp.database`) for Python library consumers to save, retrieve, list, and delete horoscope profiles. (MCP tools are stateless and do not require a database.)
 - **Flexible Hour Mapping:** Automatically maps calendar hours (e.g., "14:30") or string names (e.g., "Ngọ", "Tý") to the correct Earthly Branch hour index.
 - **Local Inlining (Independent):** Includes the core `ansaotuvi` calculation logic internally with custom Tuần/Triệt double-cung fixes.
+
+### Python Library API
+
+Beyond the MCP server, `tuvi-mcp-server` ships a typed, ergonomic Python API for direct use in scripts, notebooks, or web backends:
+
+```python
+from tuvi_mcp import Horoscope, BirthInfo, Gender, Calendar
+
+# Construct a horoscope handle from birth details (flexible hour / gender / calendar inputs)
+h = Horoscope.from_birth(
+    name="Nguyễn Văn A",
+    year=1995, month=6, day=10,
+    hour="14:30",          # also accepts "Ngọ", 14, or 7 (branch index)
+    gender="Nam",          # also accepts "male", 1, True, or Gender.MALE
+    calendar="solar",      # also accepts Calendar.SOLAR
+)
+
+# Base birth chart
+chart = h.chart()
+print(chart.thien_ban["can_nam"], chart.thien_ban["chi_nam"])
+print(len(chart.dia_ban), "cungs")
+
+# Vận Hạn for a target Lunar year/month/day
+van_han = h.transit(year=2026, month=5, day=15)
+print(van_han["target_period"]["current_year_can_chi"])
+print(van_han["nhat_han"])
+
+# Auspicious day evaluation
+auspicious = h.auspicious(day=27, month=7, year=2026)
+
+# Render chart as PNG
+path = h.render_chart(chart, year=2026)
+```
+
+The same library is what the MCP tools wrap, so behavior is identical whether you call `Horoscope.from_birth(...).chart()` or invoke the `generate_horoscope` tool from an MCP client.
+
 
 ### Known Limitations & Assumptions
 - **Timezone Assumption:** Calculations default to the Vietnamese local timezone (GMT+7). Birth details outside this timezone must be converted beforehand.
