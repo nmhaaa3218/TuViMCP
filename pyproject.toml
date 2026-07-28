@@ -26,9 +26,9 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
 ]
 dependencies = [
-    "mcp>=1.27.2",
+    "mcp>=1.27.2,<2.0.0",
     "pillow>=10.0.0",
-]
+] 
 
 [project.urls]
 Homepage = "https://github.com/nmhaaa3218/TuViMCP"
