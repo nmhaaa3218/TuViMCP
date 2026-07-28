@@ -284,7 +284,7 @@ def validate_birth_parameters(
     return None
 
 
-def validate_transit_period(current_year: int = None, current_month: int = 1) -> dict:
+def validate_transit_period(current_year: int = None, current_month: int = 1, current_day: int = None) -> dict:
     """Validate target transit period parameters."""
     errors = []
     suggestions = {}
@@ -298,6 +298,11 @@ def validate_transit_period(current_year: int = None, current_month: int = 1) ->
         if not isinstance(current_month, int) or isinstance(current_month, bool) or current_month < 1 or current_month > 12:
             errors.append(f"Invalid current_month '{current_month}'. Month must be an integer from 1 to 12.")
             suggestions["current_month"] = "Provide an integer Lunar month between 1 and 12."
+
+    if current_day is not None:
+        if not isinstance(current_day, int) or isinstance(current_day, bool) or current_day < 1 or current_day > 30:
+            errors.append(f"Invalid current_day '{current_day}'. Day must be an integer from 1 to 30.")
+            suggestions["current_day"] = "Provide an integer Lunar day between 1 and 30."
 
     if errors:
         return {
@@ -538,12 +543,13 @@ def get_van_han_analysis(
     is_solar: bool,
     current_year: int,
     current_month: int = 1,
+    current_day: int = None,
 ) -> dict:
-    """Analyze yearly transit stars and active cungs (Đại Hạn, Tiểu Hạn, Nguyệt Hạn) for current year/month."""
+    """Analyze transit stars & active cungs (Đại Hạn, Tiểu Hạn, Nguyệt Hạn, Nhật Hạn) for a target Lunar period."""
     validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar)
     if validation_err:
         return validation_err
-    transit_err = validate_transit_period(current_year, current_month)
+    transit_err = validate_transit_period(current_year, current_month, current_day)
     if transit_err:
         return transit_err
     hour = parse_hour(hour_val)
@@ -602,6 +608,16 @@ def get_van_han_analysis(
                 active_nguyet_han_cung = cung
                 break
 
+    # 4. Identify active Nhật Hạn cung (optional)
+    active_nhat_han_cung = None
+    if active_nguyet_han_cung and current_day is not None:
+        # From Nguyệt Hạn cung, count clockwise (current_day - 1) steps
+        nhat_so = ((active_nguyet_han_cung["cung_so"] - 1 + current_day - 1) % 12) + 1
+        for cung in chart["dia_ban"]:
+            if cung["cung_so"] == nhat_so:
+                active_nhat_han_cung = cung
+                break
+
     # Calculate transit stars
     transits = calculate_transit_stars(current_year)
 
@@ -642,6 +658,7 @@ def get_van_han_analysis(
         "dai_han": enrich_cung(active_dai_han_cung),
         "tieu_han": enrich_cung(active_tieu_han_cung),
         "nguyet_han": enrich_cung(active_nguyet_han_cung),
+        "nhat_han": enrich_cung(active_nhat_han_cung) if current_day is not None else None,
     }
 
 

@@ -127,14 +127,16 @@ def get_van_han(
     is_solar: bool = True,
     current_year: int = None,
     current_month: int = 1,
+    current_day: int = None,
 ) -> dict:
     """
-    Calculate transit stars (sao lưu) and active houses (Đại Hạn, Tiểu Hạn, Nguyệt Hạn)
+    Calculate transit stars (sao lưu) and active houses (Đại Hạn, Tiểu Hạn, Nguyệt Hạn, Nhật Hạn)
     for the target Lunar period.
 
     ### Purpose and Comparison
     Use this tool to perform transit/vận hạn luck analysis (inspecting star shifts, Đại Hạn,
-    Tiểu Hạn, and monthly Nguyệt Hạn transits) for a specific target Lunar year and month.
+    Tiểu Hạn, monthly Nguyệt Hạn transits, and daily Nhật Hạn) for a specific target Lunar
+    year, month, and optionally day.
     - Contrast with `generate_horoscope`: Use `get_van_han` specifically for inspecting
       luck/predictions during a specific target timeframe. Use `generate_horoscope` to get
       the static, base birth chart.
@@ -145,10 +147,11 @@ def get_van_han(
     - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
 
     ### Prerequisites & Calendar Conversions
-    - **CRITICAL**: The parameters `current_year` and `current_month` represent the **Lunar** year
-      and Lunar month. If the user asks to inspect a specific Solar period (e.g., 'October 2026'
-      or 'May 15th, 2026'), you **MUST** first use the `convert_calendar` tool to find the
-      corresponding Lunar month/year before calling this tool.
+    - **CRITICAL**: The parameters `current_year`, `current_month`, and (if provided) `current_day`
+      represent the **Lunar** year, Lunar month, and Lunar day. If the user asks to inspect a
+      specific Solar period (e.g., 'October 2026' or 'May 15th, 2026'), you **MUST** first use
+      the `convert_calendar` tool to find the corresponding Lunar month/year/day before calling
+      this tool.
 
     ### Parameter Guidelines & Interactions
     - `name`: Name of the person.
@@ -160,6 +163,8 @@ def get_van_han(
     - `is_solar`: True if birth date is Solar (Dương lịch), False if Lunar (Âm lịch).
     - `current_year`: Target Lunar year to inspect (defaults to current system year, e.g., 2026).
     - `current_month`: Target Lunar month to inspect (1-12, default 1).
+    - `current_day`: Target Lunar day to inspect (1-30, optional). When provided, also returns
+      `nhat_han` — the daily transit house derived from Nguyệt Hạn.
 
     ### Output Schema and Error Conditions
     - **Returns**: A dictionary containing:
@@ -170,6 +175,9 @@ def get_van_han(
         current coordinates/cung indexes.
       - `dai_han`: Details of the active 10-year major cycle house.
       - `tieu_han`: Details of the active 1-year minor cycle house.
+      - `nguyet_han`: Details of the active monthly cycle house.
+      - `nhat_han`: (only if `current_day` is provided) Details of the active daily house,
+        derived from Nguyệt Hạn.
     - **Errors**: Returns an error dictionary `{"error": "error_message"}` if birth details are
       invalid or calculation fails.
     """
@@ -187,6 +195,7 @@ def get_van_han(
             is_solar=is_solar,
             current_year=current_year,
             current_month=current_month,
+            current_day=current_day,
         )
     except Exception as e:
         return {"error": str(e)}

@@ -112,6 +112,56 @@ def test_van_han_transit_analysis():
     assert van_han["tieu_han"] is not None
     assert van_han["nguyet_han"] is not None
 
+    # 4. Nhật Hạn is None when current_day is not provided
+    assert van_han["nhat_han"] is None
+
+
+def test_nhat_han_daily_transit():
+    base_params = dict(
+        name="Nguyễn Văn A",
+        day=10,
+        month=6,
+        year=1995,
+        hour_val="14:30",
+        gender_val="Nam",
+        is_solar=True,
+        current_year=2026,
+        current_month=5,
+    )
+
+    # 1. Without current_day → nhat_han is None
+    van_han = tuvi_calculator.get_van_han_analysis(**base_params)
+    assert van_han["nhat_han"] is None
+
+    # 2. With current_day=1 → Nhật Hạn = Nguyệt Hạn
+    van_han = tuvi_calculator.get_van_han_analysis(**base_params, current_day=1)
+    assert van_han["nhat_han"] is not None
+    assert van_han["nhat_han"]["cung_so"] == van_han["nguyet_han"]["cung_so"]
+    assert "transit_stars" in van_han["nhat_han"]
+
+    # 3. With current_day=2 → Nhật Hạn = next cung clockwise
+    van_han_d2 = tuvi_calculator.get_van_han_analysis(**base_params, current_day=2)
+    expected_so = (van_han["nguyet_han"]["cung_so"] % 12) + 1
+    assert van_han_d2["nhat_han"]["cung_so"] == expected_so
+
+    # 4. With current_day=13 → same as day 1 (wraps after 12)
+    van_han_d13 = tuvi_calculator.get_van_han_analysis(**base_params, current_day=13)
+    assert van_han_d13["nhat_han"]["cung_so"] == van_han["nguyet_han"]["cung_so"]
+
+    # 5. With current_day=12 → 11 steps from Nguyệt Hạn
+    van_han_d12 = tuvi_calculator.get_van_han_analysis(**base_params, current_day=12)
+    expected_so_12 = ((van_han["nguyet_han"]["cung_so"] - 1 + 11) % 12) + 1
+    assert van_han_d12["nhat_han"]["cung_so"] == expected_so_12
+    assert van_han_d12["nhat_han"] != van_han["nguyet_han"]
+
+    # 6. Input validation: day 0 → error
+    van_han = tuvi_calculator.get_van_han_analysis(**base_params, current_day=0)
+    assert "error" in van_han
+
+    # 7. Input validation: day 31 → error (max is 30)
+    van_han = tuvi_calculator.get_van_han_analysis(**base_params, current_day=31)
+    assert "error" in van_han
+
 
 def test_database_operations():
     # Database is initialized on import because TUVI_DB_PATH is set
