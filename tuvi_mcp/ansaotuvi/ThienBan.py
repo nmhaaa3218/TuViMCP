@@ -15,7 +15,7 @@ from .AmDuong import (
     thienCan,
     timCuc,
 )
-from .Lich_HND import jdFromDate
+from ..lunar_calendar.util.VnCalendarUtil import jdFromDate
 
 
 class lapThienBan(object):

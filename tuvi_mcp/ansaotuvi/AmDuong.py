@@ -3,7 +3,27 @@
 (c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 """
 
-from .Lich_HND import L2S, S2L, jdFromDate
+from ..lunar_calendar.util.VnCalendarUtil import (
+    jdFromDate,
+    lunar_to_solar_vn as _lunar_to_solar_vn,
+    solar_to_lunar_vn as _solar_to_lunar_vn,
+)
+
+
+def S2L(dd, mm, yy, timeZone=7):
+    """Backwards-compatible wrapper around `solar_to_lunar_vn`.
+
+    Accepts the legacy `timeZone` keyword/positional used throughout the
+    ansaotuvi chart code and forwards to `solar_to_lunar_vn(time_zone=...)`.
+    """
+    return _solar_to_lunar_vn(dd, mm, yy, time_zone=float(timeZone))
+
+
+def L2S(lunarD, lunarM, lunarY, lunarLeap, timeZone=7):
+    """Backwards-compatible wrapper around `lunar_to_solar_vn`."""
+    return _lunar_to_solar_vn(
+        lunarD, lunarM, lunarY, int(lunarLeap), time_zone=float(timeZone),
+    )
 
 thienCan = [
     {

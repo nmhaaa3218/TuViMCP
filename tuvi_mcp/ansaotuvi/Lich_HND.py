@@ -1,8 +1,30 @@
 # -*- coding: utf-8 -*-
 """
+LEGACY MODULE — DO NOT USE IN NEW CODE.
+
 (c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 Original astronomical algorithms (c) 2006 Ho Ngoc Duc.
-Based on the book "Astronomical Algorithms" by Jean Meeus, 1998
+Based on the book "Astronomical Algorithms" by Jean Meeus, 1998.
+
+The conversion functions (`S2L`, `L2S`) and leap-month helpers
+(`getLunarMonth11`, `getLeapMonthOffset`) were duplicated into
+`tuvi_mcp.lunar_calendar.util.VnCalendarUtil` in v1.4.9 as the single
+source of truth. The chart path (`AmDuong`, `ThienBan`) and the MCP tool
+path (`tuvi_calculator`) now import from `VnCalendarUtil` via thin
+backwards-compatible wrappers.
+
+This file is kept only for any external importer that may still reference
+its symbols. New code MUST use `VnCalendarUtil` directly.
+
+Functions kept here (all deprecated, do not import in new code):
+    - jdFromDate, jdToDate       — Julian day conversions (also in VnCalendarUtil)
+    - NewMoon                    — raw new-moon Julian day (not exposed by VnCalendarUtil)
+    - SunLongitude               — raw sun ecliptic longitude (not exposed by VnCalendarUtil)
+    - getSunLongitude_OLD, getSunLongitude — solar-term index (use VnCalendarUtil.getSunLongitude)
+    - getNewMoonDay              — k-th new moon in timezone (also in VnCalendarUtil)
+    - getLunarMonth11            — (use VnCalendarUtil.getLunarMonth11)
+    - getLeapMonthOffset         — (use VnCalendarUtil.getLeapMonthOffset)
+    - S2L, L2S                   — (use VnCalendarUtil.solar_to_lunar_vn / lunar_to_solar_vn)
 """
 
 import math

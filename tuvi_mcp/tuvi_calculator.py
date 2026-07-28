@@ -649,9 +649,8 @@ def convert_solar_to_lunar(day: int, month: int, year: int, timezone: int = 7) -
     """
     Convert a Solar date (Dương lịch) to the corresponding Lunar date (Âm lịch).
 
-    Routed through `lunar_calendar.util.VnCalendarUtil` (Ho Ngọc Đức / Meeus
-    UTC+7 astronomical engine) to eliminate the prior dual conversion stack
-    divergence. The ansaotuvi path is preserved as a fallback only.
+    Routed through `lunar_calendar.util.VnCalendarUtil` (the unified
+    astronomical engine — Ho Ngọc Đức / Meeus, UTC+7).
     """
     from .lunar_calendar.util.VnCalendarUtil import solar_to_lunar_vn
 
@@ -676,8 +675,11 @@ def convert_lunar_to_solar(day: int, month: int, year: int, is_leap: bool = Fals
     engine). Leap-month validation uses the engine's own helpers before
     delegating the conversion.
     """
-    from .lunar_calendar.util.VnCalendarUtil import lunar_to_solar_vn
-    from .ansaotuvi.Lich_HND import getLeapMonthOffset, getLunarMonth11
+    from .lunar_calendar.util.VnCalendarUtil import (
+        getLeapMonthOffset,
+        getLunarMonth11,
+        lunar_to_solar_vn,
+    )
 
     try:
         if is_leap:

@@ -89,6 +89,23 @@ days, weekend swaps, etc.) is intentionally not implemented here. A future
 contribution should encode the official Vietnamese government decision text,
 not translate from any Chinese source.
 
+## Conversion engine accuracy
+
+The astronomical engine in `VnCalendarUtil` is the Ho Ngọc Đức / Meeus
+implementation, UTC+7, epoch `2415020.75933`. Both the MCP tool path
+(`tuvi_calculator.convert_*`) and the Tử Vi chart path (`AmDuong` / `ThienBan`)
+import from this single source of truth.
+
+| Range | Status |
+|---|---|
+| 1901 – 2100 | Round-trip solar↔lunar identity verified. Leap-month boundaries verified against Vietnamese authoritative sources (saptet.com, Wikipedia, xemlicham.com). |
+| 2026 tháng 6 nhuận | **Documented divergence**: saptet.com + bachhoaxanh.com say leap exists; baomoi.com + 24h.com.vn say no. Algorithm reports no leap (Chinese-aligned). See `tests/test_conversion_range.py::test_2026_leap_month_algorithm_output` and the `xfail` companion test. |
+| Pre-1901 | Engine has known inconsistency at the exact year-1900 boundary (solar 1/1/1900 → lunar 1/12/1899 → solar 31/1/1900). Stable from 1901 onward. See `tests/test_conversion_range.py::test_1900_year_boundary_documented_drift`. |
+| Pre-1900 | Not verified against authoritative Vietnamese historical almanacs. Modern Vietnamese calendar dates from ~1009 AD (Lý dynasty). Out of scope. |
+
+The engine uses UTC+7 (Vietnam modern standard since 1967). Pre-1967 dates
+falling in the UTC+8 era may diverge from historical Vietnamese almanacs.
+
 ## Reference-pattern adoption (library-only)
 
 The following ergonomic helpers were added (mirroring `pyvnlunar` but adapted
@@ -145,6 +162,8 @@ pytest tests/test_native_only.py
 pytest tests/test_vn_holidays.py
 pytest tests/test_roundtrip_and_ref_patterns.py
 pytest tests/test_eightchar_relabel.py
+pytest tests/test_conversion_range.py
+pytest tests/test_solar_next.py
 ```
 
 `test_native_only.py` is a structural guard: it scans the default surface for
