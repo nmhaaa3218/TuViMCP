@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://img.shields.io/pypi/v/tuvi-mcp-server)](https://pypi.org/project/tuvi-mcp-server/)
 
 [![TuViMCP MCP server](https://glama.ai/mcp/servers/nmhaaa3218/TuViMCP/badges/card.svg)](https://glama.ai/mcp/servers/nmhaaa3218/TuViMCP)
 
@@ -21,9 +22,11 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 
 ### Features
 - **Horoscope Generation:** Converts Solar or Lunar birth dates and times into a full Tử Vi chart (Thiên Bàn and Địa Bàn with 12 houses and over 100 stars).
+- **51 Cách Cục Evaluation Engine:** Automatically recognizes all 51 traditional astrological formations (51 Cách Cục Trung Châu Phái) during chart generation, returning matched patterns with descriptions, poems (Cổ Ca), commentary (Bình Chú), and pros/cons (Ưu/Khuyết điểm).
 - **High-Quality Image Rendering:** Generates beautiful, print-ready chart images with element-based colored text (Green for Wood, Red for Fire, Yellow for Earth, Gray for Metal, Blue for Water), custom badge boxes for Tuần & Triệt, and geometric connecting lines highlighting the Mệnh and Thân relationship.
 - **Vận Hạn (Transit Analysis):** Computes transit stars (Lưu tinh) and maps the active 10-year period (Đại Hạn), yearly period (Tiểu Hạn), and monthly period (Nguyệt Hạn) for any target year and month (e.g., 2026).
-- **Local Persistence (Python Library):** Includes built-in SQLite database utilities (`tuvi_mcp.database`) for Python library consumers to save, retrieve, list, and delete horoscope profiles.
+- **Auspicious Date & Time Checker:** Evaluates Hoàng Đạo/Hắc Đạo, 12 Trực, 28 Tú, Tiết Khí, travel directions, and auspicious hours for any calendar date.
+- **Local Persistence (Python Library):** Includes built-in SQLite database utilities (`tuvi_mcp.database`) for Python library consumers to save, retrieve, list, and delete horoscope profiles. (MCP tools are stateless and do not require a database.)
 - **Flexible Hour Mapping:** Automatically maps calendar hours (e.g., "14:30") or string names (e.g., "Ngọ", "Tý") to the correct Earthly Branch hour index.
 - **Local Inlining (Independent):** Includes the core `ansaotuvi` calculation logic internally with custom Tuần/Triệt double-cung fixes.
 
@@ -133,6 +136,17 @@ Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calend
   - Converted date parameters: `day`, `month`, `year` of target calendar, plus a `leap` boolean (specifically indicating if the Lunar month is a leap month).
   - Returns `{"error": "error_message"}` if date arguments fail validation.
 
+#### 4. `get_auspicious_info`
+Evaluates auspicious days, hours, 12 Trực, 28 Tú, Tiết Khí, and travel directions for a given date.
+* **Purpose & Comparison:** Use this tool to check good/bad days for weddings, store openings, construction, travel, or any activity requiring auspicious timing. Use `generate_horoscope` for a full birth chart instead.
+* **Side Effects:** None (read-only calculation).
+* **Arguments:**
+  - `day` (integer, optional): Day of month. Defaults to today.
+  - `month` (integer, optional): Month of year. Defaults to current month.
+  - `year` (integer, optional): Year (4 digits). Defaults to current year.
+  - `is_solar` (boolean, optional): `True` for Solar date (default), `False` for Lunar date.
+* **Return Value:** A dictionary with keys: `duong_lich`, `am_lich`, `can_chi_ngay`, `ngay_hoang_dao`, `truc_ngay`, `nhi_thap_bat_tu`, `huong_xuat_hanh`, `gio_hoang_dao`, `tiet_khi_hien_tai`, `tiet_khi_tiep_theo`.
+
 ### Example Tool Call & JSON Outputs
 
 To illustrate the structured responses, here is an example of what the server outputs when calling the core tools.
@@ -156,7 +170,15 @@ When calling `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1
     "ten_cuc": "Thổ ngũ Cục",
     "menh_chu": "Cự môn",
     "than_chu": "Thiên tướng",
-    "ban_menh": "SƠN ÐẦU HỎA"
+    "ban_menh": "SƠN ÐẦU HỎA",
+    "cach_cuc": [
+      {
+        "ma": "CC-01",
+        "ten": "Thạch Trung Ẩn Ngọc",
+        "danh_gia": "Cách",
+        "mo_ta": "..."
+      }
+    ]
   },
   "dia_ban": [
     {
@@ -268,11 +290,15 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 
 * **Lập lá số Tử Vi:** Hỗ trợ chuyển đổi ngày giờ sinh Dương lịch hoặc Âm lịch thành lá số Tử Vi đầy đủ, bao gồm Thiên Bàn, Địa Bàn, 12 cung và hơn 100 sao.
 
+* **51 Cách Cục Evaluation Engine:** Tự động nhận diện toàn bộ 51 cách cục Trung Châu Phái trong quá trình lập lá số, trả về các cách cục khớp kèm Cổ Ca, Bình Chú, và Ưu/Khuyết điểm.
+
 * **Vẽ lá số chất lượng cao:** Xuất ảnh lá số sắc nét tỷ lệ chuẩn phù hợp in ấn, tự động tô màu chữ theo ngũ hành của sao (Mộc: Xanh lá, Hỏa: Đỏ, Thổ: Vàng cam, Kim: Xám, Thủy: Xanh dương), vẽ nhãn bao nổi bật cho cung bị Tuần/Triệt, vẽ các đường nối hình học làm nổi bật tam hợp chiếu mệnh thân.
 
 * **Xem Vận Hạn:** Tính toán các sao lưu động như Lưu Thái Tuế, Lưu Lộc Tồn, v.v., đồng thời xác định các cung hạn đang kích hoạt gồm Đại Hạn 10 năm, Tiểu Hạn theo năm và Nguyệt Hạn theo tháng cho bất kỳ năm/tháng cần xem nào, ví dụ năm 2026.
 
-* **Lưu trữ cục bộ (Dành cho Python Library):** Cung cấp sẵn module cơ sở dữ liệu SQLite cục bộ (`tuvi_mcp.database`) hỗ trợ lưu, truy xuất, liệt kê và xóa thông tin lá số khi tích hợp trực tiếp bằng mã Python.
+* **Xem Ngày Tốt / Giờ Hoàng Đạo:** Đánh giá Hoàng Đạo/Hắc Đạo, 12 Trực, 28 Tú, Tiết Khí, hướng xuất hành và giờ tốt cho bất kỳ ngày tháng nào.
+
+* **Lưu trữ cục bộ (Dành cho Python Library):** Cung cấp sẵn module cơ sở dữ liệu SQLite cục bộ (`tuvi_mcp.database`) hỗ trợ lưu, truy xuất, liệt kê và xóa thông tin lá số khi tích hợp trực tiếp bằng mã Python. (Các MCP tool không dùng cơ sở dữ liệu.)
 
 * **Tự động quy đổi giờ sinh:** Có thể tự động chuyển đổi giờ theo đồng hồ, ví dụ `"14:30"`, hoặc tên giờ truyền thống, ví dụ `"Ngọ"`, `"Tý"`, sang đúng chỉ số Địa Chi tương ứng.
 
@@ -392,6 +418,19 @@ Chuyển đổi ngày qua lại giữa Dương lịch và Âm lịch.
 
 ---
 
+#### 4. `get_auspicious_info`
+
+Đánh giá ngày tốt, giờ Hoàng Đạo, 12 Trực, 28 Tú, Tiết Khí và hướng xuất hành cho một ngày bất kỳ.
+
+* **Tham số:**
+  * `day` (integer, tùy chọn): Ngày trong tháng. Mặc định là hôm nay.
+  * `month` (integer, tùy chọn): Tháng. Mặc định là tháng hiện tại.
+  * `year` (integer, tùy chọn): Năm (4 chữ số). Mặc định là năm hiện tại.
+  * `is_solar` (boolean, tùy chọn): `True` nếu dùng Dương lịch (mặc định), `False` nếu dùng Âm lịch.
+* **Đầu ra:** Dictionary chứa: `duong_lich`, `am_lich`, `can_chi_ngay`, `ngay_hoang_dao`, `truc_ngay`, `nhi_thap_bat_tu`, `huong_xuat_hanh`, `gio_hoang_dao`, `tiet_khi_hien_tai`, `tiet_khi_tiep_theo`.
+
+---
+
 ### Ví dụ gọi Tool & Đầu ra JSON mẫu
 
 Dưới đây là cấu trúc dữ liệu JSON thực tế do máy chủ MCP trả về để minh họa tính rõ ràng và gọn gàng của định dạng đầu ra.
@@ -415,7 +454,15 @@ Khi gọi `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995
     "ten_cuc": "Thổ ngũ Cục",
     "menh_chu": "Cự môn",
     "than_chu": "Thiên tướng",
-    "ban_menh": "SƠN ÐẦU HỎA"
+    "ban_menh": "SƠN ÐẦU HỎA",
+    "cach_cuc": [
+      {
+        "ma": "CC-01",
+        "ten": "Thạch Trung Ẩn Ngọc",
+        "danh_gia": "Cách",
+        "mo_ta": "..."
+      }
+    ]
   },
   "dia_ban": [
     {
