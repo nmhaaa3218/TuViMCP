@@ -2,7 +2,7 @@
 from datetime import datetime
 from math import ceil
 
-from .util import SolarUtil, LunarUtil, HolidayUtil
+from .util import SolarUtil, LunarUtil
 
 
 class Solar:
@@ -306,10 +306,10 @@ class Solar:
 
     def next(self, days, only_work_day=False):
         """
-        Get solar date pushed forward by days, use negative for backward
-        :param days: Days
-        :param only_work_day: Whether only work days
-        :return: Solar date
+        Get solar date pushed forward by days, use negative for backward.
+        NOTE: only_work_day=True falls back to weekend-skip behavior because the
+        legacy PRC statutory schedule (HolidayUtil) was removed in v1.4.9.
+        A Vietnamese government-schedule implementation is TODO.
         """
         if not only_work_day:
             return self.nextDay(days)
@@ -321,15 +321,8 @@ class Solar:
                 add = -1
             while rest > 0:
                 solar = solar.next(add)
-                work = True
-                holiday = HolidayUtil.getHoliday(solar.getYear(), solar.getMonth(), solar.getDay())
-                if holiday is None:
-                    week = solar.getWeek()
-                    if 0 == week or 6 == week:
-                        work = False
-                else:
-                    work = holiday.isWork()
-                if work:
+                week = solar.getWeek()
+                if 0 != week and 6 != week:
                     rest -= 1
         return solar
 

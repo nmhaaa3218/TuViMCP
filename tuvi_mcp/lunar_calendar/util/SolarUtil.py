@@ -13,10 +13,9 @@ class SolarUtil:
     # Days per month
     DAYS_OF_MONTH = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
-    # Zodiac signs
-    XING_ZUO = ("Bạch Dương", "Kim Ngưu", "Song Tử", "Cự Giải", "Sư Tử", "Xử Nữ", "Thiên Bình", "Bọ Cạp", "Nhân Mã", "Ma Kết", "Bảo Bình", "Song Ngư")
-
-    # Date festivals (Vietnamese solar calendar holidays)
+    # Date festivals (Vietnamese solar calendar holidays).
+    # NOTE: Western zodiac and US Thanksgiving removed in v1.4.9; canonical
+    # holiday registry lives in `vn_holidays.py` (VnHolidayRegistry).
     FESTIVAL = {
         "1-1": "Tết Dương Lịch",
         "2-14": "Lễ Tình Nhân (Valentine)",
@@ -32,11 +31,11 @@ class SolarUtil:
     }
 
 
-    # Nth weekday of month festivals
+    # Nth weekday of month festivals (kept: Ngày của Mẹ, Ngày của Cha).
+    # Lễ Tạ Ơn (US Thanksgiving) removed in v1.4.9.
     WEEK_FESTIVAL = {
         "5-2-0": "Ngày của Mẹ",
         "6-3-0": "Ngày của Cha",
-        "11-4-4": "Lễ Tạ Ơn"
     }
 
     # Unofficial date festivals

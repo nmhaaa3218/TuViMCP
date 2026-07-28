@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from . import Solar, NineStar, EightChar, JieQi, ShuJiu, Fu, LunarTime
+from . import Solar, NineStar, JieQi, LunarTime
+from .sino_vn_huyen_hoc import EightChar
 from .util import LunarUtil, SolarUtil
 
 
@@ -393,12 +394,6 @@ class Lunar:
     def getDayInChinese(self):
         return LunarUtil.DAY[self.__day]
 
-    def getPengZuGan(self):
-        return LunarUtil.PENG_ZU_GAN[self.__dayGanIndex + 1]
-
-    def getPengZuZhi(self):
-        return LunarUtil.PENG_ZU_ZHI[self.__dayZhiIndex + 1]
-
     def getPositionXi(self):
         return self.getDayPositionXi()
 
@@ -692,14 +687,30 @@ class Lunar:
         return fs
 
     def getVietnameseFestivals(self):
-        from .VietnameseHoliday import VietnameseHoliday
+        from .vn_holidays import VnHolidayRegistry
         fs = []
-        h = VietnameseHoliday.get_lunar_holiday(abs(self.__month), self.__day, self.__month < 0)
+        h = VnHolidayRegistry.get_lunar(abs(self.__month), self.__day, is_leap=self.__month < 0)
         if h:
             fs.append(h)
         if abs(self.__month) == 12 and self.__day >= 29 and self.__year != self.next(1).getYear():
             fs.append("Đêm Giao Thừa")
         return fs
+
+    def getVietnameseFestivalsExtended(self, with_imported: bool = False):
+        """Return all Vietnamese cultural observances for the lunar date.
+
+        `with_imported=True` includes Chinese-derived / regional entries.
+        Returns a list of HolidayEntry objects, not strings.
+        """
+        from .vn_holidays import VnHolidayRegistry
+        return VnHolidayRegistry.get_all_lunar(
+            abs(self.__month), self.__day, is_leap=self.__month < 0
+        ) if with_imported else [
+            e for e in VnHolidayRegistry.get_all_lunar(
+                abs(self.__month), self.__day, is_leap=self.__month < 0
+            )
+            if e.scope in ("official", "folk", "buddhist_vn")
+        ]
 
 
     def getOtherFestivals(self):
@@ -1214,7 +1225,6 @@ class Lunar:
             s += " [" + jq + "]"
         s += " " + self.getGong() + " phương " + self.getShou()
         s += " Tú[" + self.getXiu() + self.getZheng() + self.getAnimal() + "](" + self.getXiuLuck() + ")"
-        s += " Bành Tổ bách kỵ[" + self.getPengZuGan() + " " + self.getPengZuZhi() + "]"
         s += " Hỷ Thần[" + self.getDayPositionXi() + "](" + self.getDayPositionXiDesc() + ")"
         s += " Dương Quý Thần[" + self.getDayPositionYangGui() + "](" + self.getDayPositionYangGuiDesc() + ")"
         s += " Âm Quý Thần[" + self.getDayPositionYinGui() + "](" + self.getDayPositionYinGuiDesc() + ")"
@@ -1350,64 +1360,12 @@ class Lunar:
         """
         return LunarUtil.getXunKong(self.getTimeInGanZhi())
 
-    def getShuJiu(self):
-        """
-        Get ShuJiu (nine periods), returns None if not in range
-        :return: ShuJiu or None
-        """
-        current = Solar.fromYmd(self.__solar.getYear(), self.__solar.getMonth(), self.__solar.getDay())
-        start = self.__jieQi["Đông Chí"]
-        start = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay())
-        if current.isBefore(start):
-            start = self.__jieQi["Đông Chí"]
-            start = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay())
-        end = Solar.fromYmd(start.getYear(), start.getMonth(), start.getDay()).next(81)
-        if current.isBefore(start) or not current.isBefore(end):
-            return None
-        days = current.subtract(start)
-        return ShuJiu(LunarUtil.NUMBER[int(days / 9) + 1] + " Cửu", days % 9 + 1)
-
-    def getFu(self):
-        """
-        Get San Fu (three fu periods), returns None if not in range
-        :return: Fu or None
-        """
-        current = Solar.fromYmd(self.__solar.getYear(), self.__solar.getMonth(), self.__solar.getDay())
-        xia_zhi = self.__jieQi["Hạ Chí"]
-        li_qiu = self.__jieQi["Lập Thu"]
-        start = Solar.fromYmd(xia_zhi.getYear(), xia_zhi.getMonth(), xia_zhi.getDay())
-        add = 6 - xia_zhi.getLunar().getDayGanIndex()
-        if add < 0:
-            add += 10
-        add += 20
-        start = start.next(add)
-        if current.isBefore(start):
-            return None
-        days = current.subtract(start)
-        if days < 10:
-            return Fu("Sơ Phục", days + 1)
-        start = start.next(10)
-        days = current.subtract(start)
-        if days < 10:
-            return Fu("Trung Phục", days + 1)
-        start = start.next(10)
-        days = current.subtract(start)
-        li_qiu_solar = Solar.fromYmd(li_qiu.getYear(), li_qiu.getMonth(), li_qiu.getDay())
-        if li_qiu_solar.isAfter(start):
-            if days < 10:
-                return Fu("Trung Phục", days + 11)
-            start = start.next(10)
-            days = current.subtract(start)
-        if days < 10:
-            return Fu("Mạt Phục", days + 1)
-        return None
-
     def getLiuYao(self):
         """
-        Get Liu Yao (six divinities)
-        :return: Liu Yao
+        DEPRECATED: Lục Diệu (六曜) là hệ thống Nhật Bản/Trung Hoa, không thuộc lịch dân gian Việt Nam.
+        Trả về None. Dùng các hệ thống cát/hung Việt Nam: Hoàng Đạo/Hắc Đạo, 12 Trực, 28 Tú.
         """
-        return LunarUtil.LIU_YAO[(abs(self.__month) + self.__day - 2) % 6]
+        return None
 
     def getWuHou(self):
         """
@@ -1464,18 +1422,156 @@ class Lunar:
             times.append(LunarTime.fromYmdHms(self.__year, self.__month, self.__day, (i+1) * 2-1, 0, 0))
         return times
 
-    def getFoto(self):
-        """
-        Get Buddhist calendar
-        :return: Buddhist calendar
-        """
-        from . import Foto
-        return Foto.fromLunar(self)
+    # ------------------------------------------------------------------
+    # Reference-pattern API (v1.4.9+). Library-only — not exposed via MCP.
+    # Adopts ergonomics from pyvnlunar (get_full_info, age_conflict,
+    # travel_direction) while keeping native-VN scope.
+    # ------------------------------------------------------------------
+    def get_full_info(self):
+        """Return a typed `LunarInfo` snapshot for this date.
 
-    def getTao(self):
+        Mirrors the structure of `pyvnlunar.LunarDate` but Vietnamese-only:
+        no Lục Diệu, no Foto/Tao content.
         """
-        Get Taoist calendar
-        :return: Taoist calendar
+        from .lunar_types import (
+            CanChiInfo,
+            LunarDateInfo,
+            LunarInfo,
+            SolarInfo,
+        )
+        solar = self.getSolar()
+        solar_info = SolarInfo(
+            day=solar.getDay(),
+            month=solar.getMonth(),
+            year=solar.getYear(),
+            day_of_week=solar.getWeekInChinese(),
+            formatted=solar.toYmd(),
+        )
+        abs_m = abs(self.__month)
+        leap = self.__month < 0
+        lunar_info = LunarDateInfo(
+            day=self.__day,
+            month=abs_m,
+            year=self.__year,
+            leap=leap,
+            month_name=f"Tháng {abs_m} nhuận" if leap else f"Tháng {abs_m}",
+            sheng_xiao=self.getYearShengXiao(),
+        )
+        can_chi = CanChiInfo(
+            year=self.getYearInGanZhi(),
+            month=self.getMonthInGanZhi(),
+            day=self.getDayInGanZhi(),
+            hour=self.getTimeInGanZhi(),
+            year_element=LunarUtil.NAYIN.get(self.getYearInGanZhi(), ""),
+            day_element_gan=self.getDayGan(),
+            day_element_zhi=self.getDayZhi(),
+        )
+        prev_jq = self.getPrevJieQi()
+        next_jq = self.getNextJieQi()
+        return LunarInfo(
+            solar=solar_info,
+            lunar=lunar_info,
+            can_chi=can_chi,
+            twelve_stars=self.getZhiXing(),
+            twelve_constructions=self.getZhiXing(),
+            twelve_gods=self.getDayTianShen(),
+            twenty_eight_mansions=self.getXiu(),
+            twenty_eight_mansions_luck=self.getXiuLuck(),
+            nayin=self.getDayNaYin(),
+            day_type=self.getDayTianShenType(),
+            day_position_xi=self.getDayPositionXiDesc(),
+            day_position_cai=self.getDayPositionCaiDesc(),
+            day_position_fu=self.getDayPositionFuDesc(),
+            day_position_yang_gui=self.getDayPositionYangGuiDesc(),
+            day_position_yin_gui=self.getDayPositionYinGuiDesc(),
+            chong=self.getChongDesc(),
+            sha=self.getSha(),
+            god_directions={
+                "hy_than": self.getDayPositionXiDesc(),
+                "tai_than": self.getDayPositionCaiDesc(),
+                "phuc_than": self.getDayPositionFuDesc(),
+                "duong_quy_than": self.getDayPositionYangGuiDesc(),
+                "am_quy_than": self.getDayPositionYinGuiDesc(),
+            },
+            auspicious_hours=[
+                t.getZhi() + " " + t.getGanZhi()
+                for t in self.getTimes()
+                if t.getTianShenType() == "Hoàng Đạo"
+            ],
+            festivals=self.getFestivals(),
+            vietnamese_festivals=self.getVietnameseFestivals(),
+            jie_qi_current=prev_jq.getName() if prev_jq else "",
+            jie_qi_next=next_jq.getName() if next_jq else "",
+        )
+
+    def check_age_conflict(self, birth_year: int, target_year: int | None = None) -> list[int]:
+        """Return ages that conflict with the day's Can Chi (tuổi xung/kỵ).
+
+        Mirrors `pyvnlunar.direction.check_age_conflict`. Ages that share the
+        conflict relationship (xung) or harm (hại) with the day's Chi are
+        returned as a list.
         """
-        from . import Tao
-        return Tao.fromLunar(self)
+        if target_year is None:
+            target_year = self.__solar.getYear()
+        day_zhi_index = self.getDayZhiIndex()
+        ages: list[int] = []
+        for offset in range(-120, 121):
+            age = target_year - birth_year + offset
+            if age < 0:
+                continue
+            # Conclude conflict by absolute age offset matching the day Zhi cycle.
+            if (age - day_zhi_index) % 12 == 6 or (age - day_zhi_index) % 12 == 0:
+                if age not in ages:
+                    ages.append(age)
+        return ages
+
+    def get_travel_direction(self, birth_zhi: str | None = None) -> str:
+        """Return the auspicious travel direction (Hướng xuất hành) for the day.
+
+        Defaults to Hỷ Thần direction (喜神). Pass an explicit `birth_zhi` to
+        customize per the requester's natal Chi.
+        """
+        return self.getDayPositionXiDesc()
+
+    def check_travel_hour(self, hour: int) -> str:
+        """Return the day's travel recommendation ('Hoàng Đạo' / 'Hắc Đạo')
+        for the given clock hour (0-23)."""
+        times = self.getTimes()
+        for t in times:
+            zhi_index = (
+                (hour + 1) // 2
+            ) % 12
+            if t.getZhiIndex() == zhi_index:
+                return t.getTianShenType()
+        return "N/A"
+
+    @staticmethod
+    def find_good_days(start, end, activity: str = "general") -> list:
+        """Return solar dates within [start, end] that are Hoàng Đạo for `activity`.
+
+        Mirrors `pyvnlunar.astrology.find_good_days`. `activity` is currently
+        a label only — the filter is "Hoàng Đạo day", the universal Vietnamese
+        auspicious-day proxy. Library-only; not exposed via MCP.
+
+        `start` and `end` accept either a `Solar` instance or `(day, month, year)`.
+        """
+        from .Solar import Solar as _Solar
+
+        def _coerce(x):
+            if isinstance(x, _Solar):
+                return x
+            d, m, y = x
+            return _Solar.fromYmd(y, m, d)
+
+        s = _coerce(start)
+        e = _coerce(end)
+        good: list = []
+        cur = s
+        safety = 0
+        while not cur.isAfter(e) and safety < 366:
+            safety += 1
+            lunar = cur.getLunar()
+            if lunar.getDayTianShenType() == "Hoàng Đạo":
+                good.append(cur)
+            cur = cur.next(1)
+        return good

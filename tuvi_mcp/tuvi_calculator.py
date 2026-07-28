@@ -648,12 +648,15 @@ def get_van_han_analysis(
 def convert_solar_to_lunar(day: int, month: int, year: int, timezone: int = 7) -> dict:
     """
     Convert a Solar date (Dương lịch) to the corresponding Lunar date (Âm lịch).
-    Returns a dictionary containing lunar day, month, year, leap status, and a formatted string.
+
+    Routed through `lunar_calendar.util.VnCalendarUtil` (Ho Ngọc Đức / Meeus
+    UTC+7 astronomical engine) to eliminate the prior dual conversion stack
+    divergence. The ansaotuvi path is preserved as a fallback only.
     """
-    from .ansaotuvi.Lich_HND import S2L
+    from .lunar_calendar.util.VnCalendarUtil import solar_to_lunar_vn
 
     try:
-        res = S2L(day, month, year, timeZone=timezone)
+        res = solar_to_lunar_vn(day, month, year, time_zone=float(timezone))
         return {
             "lunar_day": res[0],
             "lunar_month": res[1],
@@ -668,12 +671,15 @@ def convert_solar_to_lunar(day: int, month: int, year: int, timezone: int = 7) -
 def convert_lunar_to_solar(day: int, month: int, year: int, is_leap: bool = False, timezone: int = 7) -> dict:
     """
     Convert a Lunar date (Âm lịch) to the corresponding Solar date (Dương lịch).
-    Returns a dictionary containing solar day, month, year, and a formatted string.
+
+    Routed through `lunar_calendar.util.VnCalendarUtil` (UTC+7 astronomical
+    engine). Leap-month validation uses the engine's own helpers before
+    delegating the conversion.
     """
-    from .ansaotuvi.Lich_HND import L2S, getLeapMonthOffset, getLunarMonth11
+    from .lunar_calendar.util.VnCalendarUtil import lunar_to_solar_vn
+    from .ansaotuvi.Lich_HND import getLeapMonthOffset, getLunarMonth11
 
     try:
-        # Validate leap month parameters
         if is_leap:
             if month < 11:
                 a11 = getLunarMonth11(year - 1, timezone)
@@ -698,7 +704,7 @@ def convert_lunar_to_solar(day: int, month: int, year: int, is_leap: bool = Fals
                 }
 
         leap_val = 1 if is_leap else 0
-        res = L2S(day, month, year, leap_val, tZ=timezone)
+        res = lunar_to_solar_vn(day, month, year, leap_val, time_zone=float(timezone))
         if res == [0, 0, 0]:
             return {"error": "Invalid lunar date or invalid leap month configuration."}
         return {

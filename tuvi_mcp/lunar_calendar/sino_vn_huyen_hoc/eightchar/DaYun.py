@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import XiaoYun, LiuNian
-from ..util import LunarUtil
+from ...util import LunarUtil
 
 
 class DaYun:

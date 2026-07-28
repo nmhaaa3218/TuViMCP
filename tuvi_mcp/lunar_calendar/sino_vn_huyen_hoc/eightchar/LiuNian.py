@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
-from ..util import LunarUtil
+from . import LiuYue
+from ...util import LunarUtil
 
 
-class XiaoYun:
+class LiuNian:
     """
-    Xiao Yun (Yearly Fortune)
+    Liu Nian (Yearly Cycle)
     """
 
-    def __init__(self, da_yun, index, forward):
+    def __init__(self, da_yun, index):
         self.__daYun = da_yun
         self.__lunar = da_yun.getLunar()
         self.__index = index
         self.__year = da_yun.getStartYear() + index
         self.__age = da_yun.getStartAge() + index
-        self.__forward = forward
 
     def getIndex(self):
         return self.__index
@@ -29,15 +29,10 @@ class XiaoYun:
         Get GanZhi (Heavenly Stem & Earthly Branch)
         :return: GanZhi
         """
-        offset = LunarUtil.getJiaZiIndex(self.__lunar.getTimeInGanZhi())
-        add = self.__index + 1
+        offset = LunarUtil.getJiaZiIndex(self.__lunar.getJieQiTable()["Lập Xuân"].getLunar().getYearInGanZhiExact()) + self.__index
         if self.__daYun.getIndex() > 0:
-            add += self.__daYun.getStartAge() - 1
-        offset += add if self.__forward else -add
-        size = len(LunarUtil.JIA_ZI)
-        while offset < 0:
-            offset += size
-        offset %= size
+            offset += self.__daYun.getStartAge() - 1
+        offset %= len(LunarUtil.JIA_ZI)
         return LunarUtil.JIA_ZI[offset]
 
     def getXun(self):
@@ -53,3 +48,14 @@ class XiaoYun:
         :return: XunKong (Void)
         """
         return LunarUtil.getXunKong(self.getGanZhi())
+
+    def getLiuYue(self):
+        """
+        Get Liu Yue (Monthly Cycle)
+        :return: Liu Yue
+        """
+        n = 12
+        liu_yue = []
+        for i in range(0, n):
+            liu_yue.append(LiuYue(self, i))
+        return liu_yue

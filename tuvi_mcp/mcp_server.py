@@ -201,12 +201,12 @@ def get_auspicious_info(
 ) -> dict:
     """
     Evaluate Auspicious Days (Ngày Hoàng Đạo / Hắc Đạo), Auspicious Hours (Giờ Hoàng Đạo / Hắc Đạo),
-    12 Trực, 28 Tú (Nhị Thập Bát Tú), Lục Diệu, Tiết Khí, and Auspicious Directions (Thần Hướng).
+    12 Trực, 28 Tú (Nhị Thập Bát Tú), Tiết Khí, and Auspicious Directions (Thần Hướng).
 
     ### Purpose and Use Cases
     Use this tool when users ask to check good/bad days, auspicious hours for specific activities
     (wedding, opening a store, starting construction, signing contracts, travel/auspicious direction),
-    12 Trực, 28 Tú, Lục Diệu, or Tiết Khí for a given calendar date.
+    12 Trực, 28 Tú, or Tiết Khí for a given calendar date.
 
     ### Parameters
     - `day`: Day of month (1-31). Defaults to current day if omitted.
@@ -221,7 +221,7 @@ def get_auspicious_info(
     - `ngay_hoang_dao` (Sao Hoàng Đạo/Hắc Đạo, Cát/Hung)
     - `truc_ngay` (Tên Trực, Cát/Hung, Lời khuyên cổ truyền)
     - `nhi_thap_bat_tu` (Tên Sao, Động vật, Cát/Hung)
-    - `luc_dieu` (Tốc Hỷ, Đại An, Lưu Niên...)
+    - `luc_dieu` (deprecated since v1.4.9; Lục Diệu = hệ thống Nhật Bản/Trung Hoa)
     - `huong_xuat_hanh` (Hỷ Thần, Tài Thần, Phúc Thần, Dương/Âm Quý Thần)
     - `gio_hoang_dao` (12 Giờ Canh Chi, Khung giờ, Sao Hoàng Đạo/Hắc Đạo, Cát/Hung)
     """
@@ -261,7 +261,7 @@ def convert_calendar(
     - **Auth/Rate Limits**: Runs entirely locally. No authentication or external rate limits apply.
 
     ### Prerequisites
-    - The date to convert must represent a valid Gregorian or Chinese Lunar date within
+    - The date to convert must represent a valid Gregorian or Vietnamese Lunar date within
       calendar ranges (typically 1900-2100).
 
     ### Parameter Guidelines & Interactions

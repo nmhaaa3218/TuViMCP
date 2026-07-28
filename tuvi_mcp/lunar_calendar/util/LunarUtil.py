@@ -7,10 +7,8 @@ class LunarUtil:
     """
 
     BASE_MONTH_ZHI_INDEX = 2
-    BASE_MONTH_ZHI_INDEX = 2
     XUN = ("Giáp Tý", "Giáp Tuất", "Giáp Thân", "Giáp Ngọ", "Giáp Thìn", "Giáp Dần")
     XUN_KONG = ("Tuất Hợi", "Thân Dậu", "Ngọ Mùi", "Thìn Tỵ", "Dần Mão", "Tý Sửu")
-    LIU_YAO = ("Tiên Thắng", "Hữu Dẫn", "Tiên Bại", "Phật Diệt", "Đại An", "Xích Khẩu")
     HOU = ("Sơ Hậu", "Nhị Hậu", "Tam Hậu")
     WU_HOU = ("Giun Đất Kết Kén", "Hươu Đực Rụng Sừng", "Suối Nước Bắt Đầu Chảy", "Chim Nhạn Bay Về Bắc", "Chim Khách Bắt Đầu Làm Tổ", "Chim Trĩ Bắt Đầu Kêu", "Gà Bắt Đầu Ấp Trứng", "Chim Dữ Tung Hoành", "Sông Hồ Đóng Băng Dày", "Gió Đông Tan Giá", "Côn Trùng Bắt Đầu Cựa Quậy", "Cá Nổi Lên Phá Băng", "Rái Cá Bày Cá Cúng Tổ", "Chim Nhạn Bay Về Phương Bắc", "Cây Cỏ Đâm Chồi", "Đào Bắt Đầu Nở Hoa", "Hoàng Anh Bắt Đầu Hót", "Chim Ưng Hóa Chim Bồ Câu", "Chim Yến Trở Về", "Sấm Bắt Đầu Nổ", "Chớp Xuất Hiện", "Cây Ngô Đồng Nở Hoa", "Chuột Đồng Hóa Chim Cút", "Cầu Vồng Xuất Hiện", "Bèo Bắt Đầu Mọc", "Chim Cu Vỗ Cánh", "Chim Sẻ Đậu Trên Cây Dâu", "Ếch Bắt Đầu Kêu", "Giun Đất Chui Ra", "Dưa Hấu Bắt Đầu Mọc", "Rau Đắng Tươi Tốt", "Cỏ Mềm Chết Héo", "Lúa Mì Chín", "Bọ Ngựa Nở", "Chim Cu Bắt Đầu Kêu", "Chim Nhại Dừng Hót", "Hươu Đực Rụng Sừng", "Ve Bắt Đầu Kêu", "Bán Hạ Bắt Đầu Mọc", "Gió Ấm Thổi Đến", "Dế Vào Ở Tường", "Chim Ưng Bắt Đầu Học Bay", "Đom Đóm Phát Sáng", "Đất Ẩm Nóng Bức", "Mưa Lớn Thời Tiết", "Gió Mát Thổi Đến", "Sương Móc Xuất Hiện", "Ve Sầu Kêu Vì Lạnh", "Chim Ưng Bắt Đầu Săn Mồi", "Trời Đất Bắt Đầu Lạnh", "Lúa Bắt Đầu Chín", "Chim Nhạn Bay Về", "Chim Yến Bay Đi", "Chim Muông Tích Trữ Lương Thực", "Sấm Bắt Đầu Im", "Côn Trùng Thu Mình Vào Hang", "Nước Bắt Đầu Cạn", "Chim Nhạn Là Khách", "Chim Sẻ Vào Nước Thành Hến", "Cúc Nở Hoa Vàng", "Sói Bày Mồi Cúng Tổ", "Cây Cỏ Vàng Rụng", "Côn Trùng Cúi Đầu Vào Đông", "Nước Bắt Đầu Đóng Băng", "Đất Bắt Đầu Đóng Băng", "Trĩ Vào Nước Thành Trai", "Cầu Vồng Ẩn Không Thấy", "Khí Trời Lên Cao Khí Đất Xuống", "Đóng Kín Thành Mùa Đông", "Chim Hạt Chẽo Không Kêu", "Hổ Bắt Đầu Giao Phối", "Cây Lệ Chi Mọc Chồi")
     GAN = ("", "Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý")
@@ -110,8 +108,10 @@ class LunarUtil:
         "Tý": "Quý"
     }
 
-    PENG_ZU_GAN = ("", "Giáp: Không mở kho, tài vật tổn hao", "Ất: Không trồng cây, nghìn cây không lớn", "Bính: Không sửa bếp, tất gặp tai ương", "Đinh: Không cạo đầu, đầu tất sinh nhọt", "Mậu: Không nhận ruộng, chủ ruộng bất tường", "Kỷ: Không phá khế ước, hai bên cùng thua", "Canh: Không làm việc tơ lụa, khung cửi vô dụng", "Tân: Không làm tương, chủ nhân không nếm", "Nhâm: Không tưới nước, càng khó phòng thủ", "Quý: Không kiện tụng, lý yếu địch mạnh")
-    PENG_ZU_ZHI = ("", "Tý: Không xem bói, tự chuốc họa vào thân", "Sửu: Không đội mũ thắt đai, chủ không trở về quê", "Dần: Không cúng tế, thần quỷ không nhận", "Mão: Không đào giếng, nước giếng không sạch", "Thìn: Không khóc lóc, tất có tang nặng", "Tỵ: Không đi xa, tài vật bị chôn giấu", "Ngọ: Không lợp mái, chủ nhà phải thay đổi", "Mùi: Không uống thuốc, độc khí vào ruột", "Thân: Không đặt giường, tà quỷ vào phòng", "Dậu: Không tiếp khách, say rượu mất lý trí", "Tuất: Không ăn thịt chó, làm quái lên giường", "Hợi: Không cưới hỏi, bất lợi cho chú rể")
+    # Peng Zu (Bành Tổ) taboos removed in v1.4.9 — Chinese almanac tradition,
+    # not part of native Vietnamese folk religion. See vn_holidays.py scope doc.
+    PENG_ZU_GAN = ()
+    PENG_ZU_ZHI = ()
     NUMBER = ("0", "Một", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười Một", "Mười Hai")
     MONTH = ("", "Giêng", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười Một", "Chạp")
     SEASON = ("", "Mạnh Xuân", "Trọng Xuân", "Quý Xuân", "Mạnh Hạ", "Trọng Hạ", "Quý Hạ", "Mạnh Thu", "Trọng Thu", "Quý Thu", "Mạnh Đông", "Trọng Đông", "Quý Đông")

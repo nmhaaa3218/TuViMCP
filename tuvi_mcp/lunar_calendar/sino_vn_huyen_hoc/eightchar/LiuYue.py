@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ..util import LunarUtil
+from ...util import LunarUtil
 
 
 class LiuYue:

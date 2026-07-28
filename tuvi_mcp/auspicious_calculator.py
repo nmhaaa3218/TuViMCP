@@ -122,31 +122,15 @@ DIRECTION_MAP = {
     "坎": "Chính Bắc",
 }
 
-# Lục Diệu
-LIU_YAO_MAP = {
-    "先胜": "Tốc Hỷ (Tin vui đến nhanh, đi xa có lộc)",
-    "大安": "Đại An (Mọi việc yên ổn, bình an, hanh thông)",
-    "留连": "Lưu Niên (Mọi việc dây dưa, mưu sự chậm trễ)",
-    "友引": "Lưu Niên (Mọi việc dây dưa, mưu sự chậm trễ)",
-    "流连": "Lưu Niên (Mọi việc dây dưa, mưu sự chậm trễ)",
-    "先负": "Tiểu Cát (Gặp may mắn nhỏ, quý nhân phù trợ)",
-    "速喜": "Tốc Hỷ (Tin vui đến nhanh, đi xa có lộc)",
-    "赤口": "Xích Khẩu (Dễ sinh khẩu thiệt, mâu thuẫn, phòng thị phi)",
-    "小吉": "Tiểu Cát (Gặp may mắn nhỏ, quý nhân phù trợ)",
-    "空亡": "Không Vong (Tránh mưu đại sự, phòng hao tốn)",
-    "佛灭": "Không Vong (Tránh mưu đại sự, phòng hao tốn)",
-    # Vietnamese localized keys
-    "Tiên Thắng": "Tốc Hỷ (Tin vui đến nhanh, đi xa có lộc)",
-    "Hữu Dẫn": "Lưu Niên (Mọi việc dây dưa, mưu sự chậm trễ)",
-    "Tiên Bại": "Tiểu Cát (Gặp may mắn nhỏ, quý nhân phù trợ)",
-    "Phật Diệt": "Không Vong (Tránh mưu đại sự, phòng hao tốn)",
-    "Đại An": "Đại An (Mọi việc yên ổn, bình an, hanh thông)",
-    "Xích Khẩu": "Xích Khẩu (Dễ sinh khẩu thiệt, mâu thuẫn, phòng thị phi)",
-    "Tốc Hỷ": "Tốc Hỷ (Tin vui đến nhanh, đi xa có lộc)",
-    "Lưu Niên": "Lưu Niên (Mọi việc dây dưa, mưu sự chậm trễ)",
-    "Tiểu Cát": "Tiểu Cát (Gặp may mắn nhỏ, quý nhân phù trợ)",
-    "Không Vong": "Không Vong (Tránh mưu đại sự, phòng hao tốn)",
-}
+# Lục Diệu (六曜) was removed in v1.4.9 — Japanese/Chinese almanac system,
+# not part of native Vietnamese folk religion. The legacy Vietnamese label
+# remap was also broken (incorrect 六曜 → Vietnamese mapping). The MCP
+# `luc_dieu` field now returns a deprecation notice for backwards compat.
+LIU_YAO_DEPRECATED = (
+    "Lục Diệu (六曜) — hệ thống Nhật Bản/Trung Hoa, không thuộc lịch dân gian "
+    "Việt Nam. Đã loại bỏ trong v1.4.9. Dùng Hoàng Đạo/Hắc Đạo, 12 Trực, "
+    "28 Tú, hoặc các hệ thống cát/hung Việt Nam khác."
+)
 
 # Tiết khí (24 Solar Terms)
 JIE_QI_MAP = {
@@ -229,7 +213,11 @@ def translate_direction(zh_dir: str) -> str:
 def get_auspicious_details(day: int, month: int, year: int, is_solar: bool = True) -> dict:
     """
     Evaluates Auspicious Days, Auspicious Hours (Hoàng Đạo / Hắc Đạo), 12 Trực, 28 Tú,
-    Directions, Lục Diệu, and Tiết Khí for a given date in Vietnamese.
+    Directions, and Tiết Khí for a given date in Vietnamese.
+
+    NOTE: `luc_dieu` field preserved in the response schema for backwards compat
+    but is deprecated since v1.4.9 — Lục Diệu (六曜) is Japanese/Chinese, not
+    Vietnamese folk religion.
     """
     try:
         from . import tuvi_calculator
@@ -276,9 +264,8 @@ def get_auspicious_details(day: int, month: int, year: int, is_solar: bool = Tru
         raw_xiu = lunar.getXiu()
         xiu_info = XIU_MAP.get(raw_xiu, {"ten": raw_xiu, "dong_vat": "", "danh_gia": "N/A"})
 
-        # Lục Diệu
-        raw_liu_yao = lunar.getLiuYao()
-        luc_dieu = LIU_YAO_MAP.get(raw_liu_yao, raw_liu_yao)
+        # Lục Diệu (đã loại bỏ trong v1.4.9)
+        luc_dieu = LIU_YAO_DEPRECATED
 
         # Tiết khí
         prev_jq = lunar.getPrevJieQi()
@@ -347,7 +334,5 @@ def get_auspicious_details(day: int, month: int, year: int, is_solar: bool = Tru
             "gio_hoang_dao": gio_hoang_dao,
         }
     except Exception as e:
-        import traceback
-        traceback.print_exc()
         return {"error": str(e)}
 

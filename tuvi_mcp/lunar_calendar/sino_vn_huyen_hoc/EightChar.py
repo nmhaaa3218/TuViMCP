@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
-from .util import LunarUtil
+from ..util import LunarUtil
 
 
 class EightChar:
     """
-    Eight Characters (Ba Zi)
+    Eight Characters (Bát Tự / 四柱八字)
+
+    NOTE: This class implements the Sino-Vietnamese Tứ Trụ / Bát Tự metaphysical
+    system. While widely practiced in Vietnam as a Tử Vi supplement, its
+    theoretical foundation is Chinese Đông Á metaphysics, not native
+    Vietnamese folk religion (tín ngưỡng dân gian).
+
+    See `tuvi_mcp.lunar_calendar.sino_vn_huyen_hoc` package docstring for
+    categorization rationale.
     """
 
     MONTH_ZHI = ("", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi", "Tý", "Sửu")

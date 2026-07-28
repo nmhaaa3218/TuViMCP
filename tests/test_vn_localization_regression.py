@@ -5,7 +5,8 @@ introduced by switching GanZhi strings from "甲子" → "Giáp Tý".
 """
 import pytest
 
-from tuvi_mcp.lunar_calendar import Solar, Lunar, EightChar
+from tuvi_mcp.lunar_calendar import Solar, Lunar
+from tuvi_mcp.lunar_calendar.sino_vn_huyen_hoc import EightChar
 from tuvi_mcp.lunar_calendar.util.LunarUtil import LunarUtil
 
 
@@ -237,10 +238,10 @@ def test_festival_table_no_chinese_specific_entries():
 
 def test_ong_tao_is_12_23_not_12_24():
     """VN Ông Táo chầu trời is 12/23 lunar, NOT 12/24 (Chinese calendar differs)."""
-    from tuvi_mcp.lunar_calendar.VietnameseHoliday import VietnameseHoliday
-    assert VietnameseHoliday.get_lunar_holiday(12, 23) is not None
-    assert "12-23" in VietnameseHoliday.LUNAR_HOLIDAYS
-    assert "12-24" not in VietnameseHoliday.LUNAR_HOLIDAYS
+    from tuvi_mcp.lunar_calendar.vn_holidays import VnHolidayRegistry
+    keys = {f"{e.lunar[0]}-{e.lunar[1]}" for e in VnHolidayRegistry.LUNAR if e.lunar}
+    assert "12-23" in keys
+    assert "12-24" not in keys
 
 
 # ----------------------------- NAYIN spacing round-trip -----------------------------

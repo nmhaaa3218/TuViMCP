@@ -362,7 +362,7 @@ def test_auspicious_info():
     assert res["ngay_hoang_dao"]["ten_sao"] == "Kim Quỹ"
     assert res["truc_ngay"]["ten"] == "Trực Nguy"
     assert res["nhi_thap_bat_tu"]["ten"] == "Sao Tâm"
-    assert "Tốc Hỷ" in res["luc_dieu"]
+    assert "Lục Diệu" in res["luc_dieu"] and "loại bỏ" in res["luc_dieu"]
     assert "Đại Thử" in res["tiet_khi_hien_tai"] or "Lập Thu" in res["tiet_khi_hien_tai"]
     assert "Lập Thu" in res["tiet_khi_tiep_theo"] or "Xử Thử" in res["tiet_khi_tiep_theo"]
     assert res["huong_xuat_hanh"]["hy_than"] == "Chính Nam"
