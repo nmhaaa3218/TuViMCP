@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.1] - 2026-07-28
+
+### Added
+- **Nhật Hạn (daily transit) support**: `get_van_han_analysis` and the `get_van_han` MCP tool now accept an optional `current_day` parameter (1-30). When provided, the result includes a `nhat_han` entry identifying the active daily cycle cung, derived clockwise from the active Nguyệt Hạn cung. Day 1 collapses to Nguyệt Hạn; day 13 wraps back to it. (ee49ea2)
+- **Daily transit input validation**: `current_day` is now rejected with `INVALID_INPUT_PARAMETER` if it falls outside 1-30, matching the upper bound of a lunar month. (ee49ea2)
+- **Regression tests** for Nhật Hạn — null without `current_day`, equivalence with Nguyệt Hạn on day 1, clockwise progression on day 2, wrap-around at day 13, off-by-one at day 12, and validation errors at day 0 and 31. (ee49ea2)
+
+---
+
 ## [0.3.0] - 2026-07-28
 
 ### Fixed

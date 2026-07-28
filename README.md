@@ -24,7 +24,7 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 - **Horoscope Generation:** Converts Solar or Lunar birth dates and times into a full Tử Vi chart (Thiên Bàn and Địa Bàn with 12 houses and over 100 stars).
 - **51 Cách Cục Evaluation Engine:** Automatically recognizes all 51 traditional astrological formations (51 Cách Cục Trung Châu Phái) during chart generation, returning matched patterns with descriptions, poems (Cổ Ca), commentary (Bình Chú), and pros/cons (Ưu/Khuyết điểm).
 - **High-Quality Image Rendering:** Generates beautiful, print-ready chart images with element-based colored text (Green for Wood, Red for Fire, Yellow for Earth, Gray for Metal, Blue for Water), custom badge boxes for Tuần & Triệt, and geometric connecting lines highlighting the Mệnh and Thân relationship.
-- **Vận Hạn (Transit Analysis):** Computes transit stars (Lưu tinh) and maps the active 10-year period (Đại Hạn), yearly period (Tiểu Hạn), and monthly period (Nguyệt Hạn) for any target year and month (e.g., 2026).
+- **Vận Hạn (Transit Analysis):** Computes transit stars (Lưu tinh) and maps the active 10-year period (Đại Hạn), yearly period (Tiểu Hạn), monthly period (Nguyệt Hạn), and daily period (Nhật Hạn) for any target year, month, and day (e.g., 2026).
 - **Auspicious Date & Time Checker:** Evaluates Hoàng Đạo/Hắc Đạo, 12 Trực, 28 Tú, Tiết Khí, travel directions, and auspicious hours for any calendar date.
 - **Local Persistence (Python Library):** Includes built-in SQLite database utilities (`tuvi_mcp.database`) for Python library consumers to save, retrieve, list, and delete horoscope profiles. (MCP tools are stateless and do not require a database.)
 - **Flexible Hour Mapping:** Automatically maps calendar hours (e.g., "14:30") or string names (e.g., "Ngọ", "Tý") to the correct Earthly Branch hour index.
@@ -111,7 +111,7 @@ Generates a full Tử Vi chart from raw birth details, with optional high-qualit
   - Returns `{"error": "error_message"}` if calculations fail.
 
 #### 2. `get_van_han`
-Calculates yearly transit stars and active houses (major, yearly, and monthly periods) for a target period.
+Calculates yearly transit stars and active houses (major, yearly, monthly, and daily periods) for a target period.
 * **Purpose & Comparison:** Use this tool to perform predictive transit analysis for a specific target timeframe.
 * **Side Effects:** None (read-only calculation).
 * **Calendar Prerequisites:** **CRITICAL:** `current_year` and `current_month` represent the **Lunar** year and month. If inspecting a Solar timeframe (e.g. 'October 2026'), you **MUST** convert it using `convert_calendar` first.
@@ -294,7 +294,7 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 
 * **Vẽ lá số chất lượng cao:** Xuất ảnh lá số sắc nét tỷ lệ chuẩn phù hợp in ấn, tự động tô màu chữ theo ngũ hành của sao (Mộc: Xanh lá, Hỏa: Đỏ, Thổ: Vàng cam, Kim: Xám, Thủy: Xanh dương), vẽ nhãn bao nổi bật cho cung bị Tuần/Triệt, vẽ các đường nối hình học làm nổi bật tam hợp chiếu mệnh thân.
 
-* **Xem Vận Hạn:** Tính toán các sao lưu động như Lưu Thái Tuế, Lưu Lộc Tồn, v.v., đồng thời xác định các cung hạn đang kích hoạt gồm Đại Hạn 10 năm, Tiểu Hạn theo năm và Nguyệt Hạn theo tháng cho bất kỳ năm/tháng cần xem nào, ví dụ năm 2026.
+* **Xem Vận Hạn:** Tính toán các sao lưu động như Lưu Thái Tuế, Lưu Lộc Tồn, v.v., đồng thời xác định các cung hạn đang kích hoạt gồm Đại Hạn 10 năm, Tiểu Hạn theo năm, Nguyệt Hạn theo tháng và Nhật Hạn theo ngày cho bất kỳ năm/tháng/ngày cần xem nào, ví dụ năm 2026.
 
 * **Xem Ngày Tốt / Giờ Hoàng Đạo:** Đánh giá Hoàng Đạo/Hắc Đạo, 12 Trực, 28 Tú, Tiết Khí, hướng xuất hành và giờ tốt cho bất kỳ ngày tháng nào.
 
@@ -392,7 +392,7 @@ Tạo lá số Tử Vi đầy đủ từ thông tin ngày giờ sinh, hỗ trợ
 
 #### 2. `get_van_han`
 
-Tính toán sao lưu động và xác định các cung hạn đang kích hoạt, bao gồm Đại Hạn, Tiểu Hạn và Nguyệt Hạn cho tháng/năm cần xem.
+Tính toán sao lưu động và xác định các cung hạn đang kích hoạt, bao gồm Đại Hạn, Tiểu Hạn, Nguyệt Hạn và Nhật Hạn cho ngày/tháng/năm cần xem.
 
 * **Tham số:**
   * `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`: giống như trong `generate_horoscope`.
