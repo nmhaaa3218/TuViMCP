@@ -10,8 +10,8 @@ from datetime import datetime
 
 from mcp.server.fastmcp import FastMCP, Image
 
-from . import auspicious_calculator, tuvi_calculator
-from .image_generator import generate_laso_image
+from . import _calendar, _chart, _input, _transit, auspicious
+from ._rendering import generate_laso_image
 
 mcp = FastMCP("TuViMCP")
 
@@ -78,7 +78,7 @@ def generate_horoscope(
     """
     try:
         # Calculate standard chart
-        chart_data = tuvi_calculator.get_horoscope_chart(
+        chart_data = _chart.get_horoscope_chart(
             name=name, day=day, month=month, year=year, hour_val=hour_val, gender_val=gender_val, is_solar=is_solar
         )
 
@@ -92,7 +92,7 @@ def generate_horoscope(
             current_year = datetime.now().year
 
         # Calculate transit details
-        van_han = tuvi_calculator.get_van_han_analysis(
+        van_han = _transit.get_van_han_analysis(
             name=name,
             day=day,
             month=month,
@@ -185,7 +185,7 @@ def get_van_han(
         if current_year is None:
             current_year = datetime.now().year
 
-        return tuvi_calculator.get_van_han_analysis(
+        return _transit.get_van_han_analysis(
             name=name,
             day=day,
             month=month,
@@ -241,7 +241,7 @@ def get_auspicious_info(
     if year is None:
         year = now.year
 
-    return auspicious_calculator.get_auspicious_details(day, month, year, is_solar=is_solar)
+    return auspicious.get_auspicious_details(day, month, year, is_solar=is_solar)
 
 
 @mcp.tool()
@@ -291,14 +291,14 @@ def convert_calendar(
       fail calendar validation.
     """
     try:
-        val_err = tuvi_calculator.validate_calendar_convert(day, month, year, timezone=timezone)
+        val_err = _input.validate_calendar_convert(day, month, year, timezone=timezone)
         if val_err:
             return val_err
 
         if from_solar:
-            return tuvi_calculator.convert_solar_to_lunar(day, month, year, timezone=timezone)
+            return _calendar.convert_solar_to_lunar(day, month, year, timezone=timezone)
         else:
-            return tuvi_calculator.convert_lunar_to_solar(day, month, year, is_leap=lunar_leap, timezone=timezone)
+            return _calendar.convert_lunar_to_solar(day, month, year, is_leap=lunar_leap, timezone=timezone)
     except Exception as e:
         return {"error": str(e)}
 

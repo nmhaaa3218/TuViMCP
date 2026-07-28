@@ -21,11 +21,10 @@ from datetime import datetime
 from enum import Enum, IntEnum
 from typing import Any
 
-from .auspicious_calculator import get_auspicious_details as _get_auspicious_details
-from .image_generator import generate_laso_image
-from .tuvi_calculator import (
-    get_horoscope_chart as _get_horoscope_chart,
-)
+from ._chart import get_horoscope_chart as _get_horoscope_chart
+from ._rendering import generate_laso_image
+from ._transit import get_van_han_analysis as _get_van_han_analysis
+from .auspicious import get_auspicious_details as _get_auspicious_details
 from .tuvi_calculator import (
     get_van_han_analysis as _get_van_han_analysis,
 )
@@ -84,7 +83,7 @@ class BirthInfo:
             - str "14:30", "11h15", "9pm" (clock time)
             - str "Tý", "Ngọ", ... (Earthly Branch name)
         """
-        from .tuvi_calculator import parse_solar_hour
+        from ._input import parse_solar_hour
 
         return parse_solar_hour(hour_val) if parse_solar_hour(hour_val) is not None else int(hour_val) % 24
 
@@ -194,7 +193,11 @@ class Horoscope:
             is_solar=self._birth.calendar is Calendar.SOLAR,
         )
         if isinstance(raw, dict) and "error" in raw:
-            return raw  # type: ignore[return-value]
+            return HoroscopeResult(
+                thien_ban=raw,
+                dia_ban=[],
+                cach_cuc=[],
+            )
         return HoroscopeResult(
             thien_ban=raw.get("thien_ban", {}),
             dia_ban=raw.get("dia_ban", []),
@@ -283,24 +286,19 @@ def _coerce_calendar(value: Any) -> Calendar:
 
 def _coerce_hour(value: Any) -> int:
     """Convert flexible hour input to integer 0-23."""
-    from .tuvi_calculator import parse_solar_hour
+    from ._input import parse_hour, parse_solar_hour
 
     if isinstance(value, bool):
         raise ValueError("hour must be int or str")
     if isinstance(value, (int, float)):
-        # If it's a direct branch index 1-12, map to solar hour midpoint
         if 1 <= value <= 12 and int(value) == value:
             branch_to_hour = {1: 0, 2: 1, 3: 3, 4: 5, 5: 7, 6: 9, 7: 11, 8: 13, 9: 15, 10: 17, 11: 19, 12: 21}
             return branch_to_hour[int(value)]
         return int(value) % 24
     if isinstance(value, str):
-        # Try parse_solar_hour first (string branch names return None)
         solar_h = parse_solar_hour(value)
         if solar_h is not None:
             return solar_h
-        # Try branch name
-        from .tuvi_calculator import parse_hour
-
         branch = parse_hour(value)
         branch_to_hour = {1: 0, 2: 1, 3: 3, 4: 5, 5: 7, 6: 9, 7: 11, 8: 13, 9: 15, 10: 17, 11: 19, 12: 21}
         return branch_to_hour[branch]

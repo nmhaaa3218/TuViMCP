@@ -5,14 +5,14 @@
 Public calendar conversion API.
 
 Re-exports the Solar <-> Lunar conversion functions from the internal
-`tuvi_calculator` module under a stable, semantic name.
+`tuvi_mcp._calendar` module under a stable, semantic name.
 """
 
-from .tuvi_calculator import (
+from ._calendar import (
     convert_lunar_to_solar,
     convert_solar_to_lunar,
-    validate_calendar_convert,
 )
+from ._input import validate_calendar_convert
 
 __all__ = [
     "convert_lunar_to_solar",

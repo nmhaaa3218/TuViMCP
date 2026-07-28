@@ -22,3 +22,4 @@ from .vn_holidays import HolidayEntry, HolidayScope, VnHolidayRegistry
 # Native Vietnamese Aliases
 LichAm = Lunar
 LichDuong = Solar
+
