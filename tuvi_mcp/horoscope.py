@@ -25,9 +25,6 @@ from ._chart import get_horoscope_chart as _get_horoscope_chart
 from ._rendering import generate_laso_image
 from ._transit import get_van_han_analysis as _get_van_han_analysis
 from .auspicious import get_auspicious_details as _get_auspicious_details
-from .tuvi_calculator import (
-    get_van_han_analysis as _get_van_han_analysis,
-)
 
 
 class Gender(IntEnum):

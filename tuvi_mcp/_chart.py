@@ -11,6 +11,9 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta
 
+from ._engine.App import lapDiaBan
+from ._engine.DiaBan import diaBan as DiaBanClass
+from ._engine.ThienBan import lapThienBan
 from ._input import (
     BRANCH_NAMES,
     LUC_HOP_MAP,
@@ -20,10 +23,6 @@ from ._input import (
     validate_birth_parameters,
 )
 from ._rules import evaluate_cach_cuc
-from ._engine.AmDuong import dichCung, thienCan, timThienMa
-from ._engine.App import lapDiaBan
-from ._engine.DiaBan import diaBan as DiaBanClass
-from ._engine.ThienBan import lapThienBan
 
 SAO_ATTRIBUTE_MAP = {"M": "Miếu địa", "V": "Vượng địa", "Đ": "Đắc địa", "B": "Bình hòa", "H": "Hãm địa"}
 
