@@ -41,7 +41,7 @@ test = [
 ]
 
 [project.scripts]
-tuvi-mcp = "tuvi_mcp.mcp_server:main"
+tuvi-mcp = "tuvi_mcp.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
