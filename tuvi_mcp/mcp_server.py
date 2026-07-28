@@ -221,7 +221,6 @@ def get_auspicious_info(
     - `ngay_hoang_dao` (Sao Hoàng Đạo/Hắc Đạo, Cát/Hung)
     - `truc_ngay` (Tên Trực, Cát/Hung, Lời khuyên cổ truyền)
     - `nhi_thap_bat_tu` (Tên Sao, Động vật, Cát/Hung)
-    - `luc_dieu` (deprecated since v1.4.9; Lục Diệu = hệ thống Nhật Bản/Trung Hoa)
     - `huong_xuat_hanh` (Hỷ Thần, Tài Thần, Phúc Thần, Dương/Âm Quý Thần)
     - `gio_hoang_dao` (12 Giờ Canh Chi, Khung giờ, Sao Hoàng Đạo/Hắc Đạo, Cát/Hung)
     """
