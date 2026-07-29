@@ -7,10 +7,10 @@ Buddhist. Chinese-derived / regional observances accessible via
 `with_imported=True`.
 """
 
-import pytest
-from tuvi_mcp.lunar_calendar import Solar, Lunar
 from tuvi_mcp.lunar_calendar.VietnameseHoliday import VietnameseHoliday
 from tuvi_mcp.lunar_calendar.vn_holidays import VnHolidayRegistry
+
+from tuvi_mcp.lunar_calendar import Lunar
 
 
 def test_vietnamese_lunar_holidays():

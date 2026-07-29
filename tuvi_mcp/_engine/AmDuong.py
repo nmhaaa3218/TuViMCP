@@ -5,7 +5,11 @@
 
 from .._lunar_calendar.util.VnCalendarUtil import (
     jdFromDate,
+)
+from .._lunar_calendar.util.VnCalendarUtil import (
     lunar_to_solar_vn as _lunar_to_solar_vn,
+)
+from .._lunar_calendar.util.VnCalendarUtil import (
     solar_to_lunar_vn as _solar_to_lunar_vn,
 )
 

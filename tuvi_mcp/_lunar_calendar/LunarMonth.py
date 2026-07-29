@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from . import Solar, LunarYear, NineStar
+from . import LunarYear, NineStar, Solar
 from .util import LunarUtil
 
 

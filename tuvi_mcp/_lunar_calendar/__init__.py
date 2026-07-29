@@ -2,6 +2,7 @@
 __version__ = '1.4.9'
 
 # Order matters: Solar must be importable before Lunar (circular ref).
+# ruff: noqa: I001  (intentional, do not alphabetize)
 from .Holiday import Holiday
 from .JieQi import JieQi
 from .NineStar import NineStar
@@ -22,4 +23,3 @@ from .vn_holidays import HolidayEntry, HolidayScope, VnHolidayRegistry
 # Native Vietnamese Aliases
 LichAm = Lunar
 LichDuong = Solar
-

@@ -11,7 +11,7 @@ Hùng Vương, etc.).
 
 Imported directly:
 
-    from tuvi_mcp.lunar_calendar.sino_vn_huyen_hoc import EightChar
+    from tuvi_mcp._lunar_calendar.sino_vn_huyen_hoc import EightChar
 
 Background:
     - "Tứ Trụ" (four pillars) here = 4 pillars of destiny: year/month/day/hour

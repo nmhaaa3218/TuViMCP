@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from . import Solar, NineStar, JieQi, LunarTime
+from . import JieQi, LunarTime, NineStar, Solar
 from .sino_vn_huyen_hoc import EightChar
 from .util import LunarUtil, SolarUtil
 

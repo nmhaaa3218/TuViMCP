@@ -4,6 +4,7 @@
 """
 import time
 
+from .._lunar_calendar.util.VnCalendarUtil import jdFromDate
 from .AmDuong import (
     canChiNgay,
     diaChi,
@@ -15,7 +16,6 @@ from .AmDuong import (
     thienCan,
     timCuc,
 )
-from .._lunar_calendar.util.VnCalendarUtil import jdFromDate
 
 
 class lapThienBan(object):

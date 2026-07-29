@@ -52,8 +52,9 @@ def test_eightchar_subclasses_resolve():
 
 def test_lunar_get_eight_char_works_through_new_path():
     """Lunar.getEightChar still returns a usable EightChar instance."""
-    from tuvi_mcp.lunar_calendar import Solar
     from tuvi_mcp.lunar_calendar.sino_vn_huyen_hoc import EightChar
+
+    from tuvi_mcp.lunar_calendar import Solar
 
     lunar = Solar.fromYmd(2026, 6, 14).getLunar()
     ec = lunar.getEightChar()

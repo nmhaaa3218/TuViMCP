@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import threading
 from math import floor
-from . import Solar, NineStar
-from .util import ShouXingUtil, LunarUtil
+
+from . import NineStar, Solar
+from .util import LunarUtil, ShouXingUtil
 
 
 class LunarYear:
@@ -51,7 +52,7 @@ class LunarYear:
         return y
 
     def compute(self):
-        from . import Lunar, Solar, LunarMonth
+        from . import Lunar, LunarMonth, Solar
         # Solar terms
         jq = []
         # New moon (first day of each month)

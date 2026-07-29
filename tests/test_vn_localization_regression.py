@@ -3,11 +3,11 @@
 Regression tests for Việt hoá spacing bugs (B1-B4) and edge cases
 introduced by switching GanZhi strings from "甲子" → "Giáp Tý".
 """
-import pytest
 
-from tuvi_mcp.lunar_calendar import Solar, Lunar
 from tuvi_mcp.lunar_calendar.sino_vn_huyen_hoc import EightChar
 from tuvi_mcp.lunar_calendar.util.LunarUtil import LunarUtil
+
+from tuvi_mcp.lunar_calendar import Lunar, Solar
 
 
 # ----------------------------- B1 -----------------------------
@@ -266,6 +266,7 @@ def test_jia_zi_index_round_trip_all_60():
 def test_song_tai_yi_translated():
     """NineStar.SONG_TAI_YI must contain Vietnamese descriptions (not empty, not Chinese)."""
     import re
+
     from tuvi_mcp.lunar_calendar.NineStar import NineStar
     cjk = re.compile(r"[\u4e00-\u9fff]")
     for i, verse in enumerate(NineStar.SONG_TAI_YI):
@@ -303,7 +304,7 @@ def test_lunitime_xun_returns_correct_values():
     l = Solar.fromYmdHms(2026, 7, 27, 10, 0, 0).getLunar()
     lt = LunarTime(l.getYear(), l.getMonth(), l.getDay(), 10, 0, 0)
     xun = lt.getXun()
-    assert xun, f"getXun empty"
+    assert xun, "getXun empty"
     # The hour is 10 (Tỵ), day is Nhâm Dần → should NOT be Giáp Tý
     assert xun != "Giáp Tý" or "Giáp Tý" in xun  # at minimum not always wrong
 

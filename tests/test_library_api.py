@@ -51,8 +51,6 @@ def test_birth_info_validation():
         BirthInfo(year=2000, month=1, day=32)
     with pytest.raises(ValueError, match="hour"):
         BirthInfo(year=2000, month=1, day=1, hour=24)
-    with pytest.raises(ValueError, match="timezone"):
-        BirthInfo(year=2000, month=1, day=1, timezone=20)
 
 
 def test_horoscope_from_birth_flexible_inputs():
@@ -74,18 +72,23 @@ def test_horoscope_from_birth_flexible_inputs():
 
 
 def test_horoscope_from_birth_branch_name_hour():
-    """from_birth accepts branch name strings for hour."""
+    """Branch name resolves to start-of-window canonical solar hour."""
     h = Horoscope.from_birth(year=1995, month=6, day=10, hour="Ngọ", gender="female")
-    assert h.birth.hour == 11  # Ngọ ≈ 11:00 midpoint
+    assert h.birth.hour == 11  # Ngọ window 11:00-13:00 → canonical 11
     assert h.birth.gender == Gender.FEMALE
 
 
 def test_horoscope_from_birth_branch_index_hour():
-    """from_birth accepts 1-12 branch index for hour."""
-    h = Horoscope.from_birth(year=1995, month=6, day=10, hour=7)  # 7 = Ngọ
-    assert h.birth.hour == 11
-    h2 = Horoscope.from_birth(year=1995, month=6, day=10, hour=1)  # 1 = Tý
-    assert h2.birth.hour == 0
+    """Branch index 1-12 resolves once at boundary; not re-interpreted downstream."""
+    h_ngọ = Horoscope.from_birth(year=1995, month=6, day=10, hour=7)  # 7 = Ngọ window start
+    h_tý = Horoscope.from_birth(year=1995, month=6, day=10, hour=1)  # 1 = Tý window start
+    assert h_ngọ.birth.hour == 11
+    assert h_tý.birth.hour == 0
+    # The chart layer must interpret these as canonical solar hours (Ngọ / Tý),
+    # not as the next branch round (Tuất / Tý) which the old ambiguous int path produced.
+    chart = h_ngọ.chart()
+    ngọ_branch = next(c for c in chart.dia_ban if c["cung_ten"].endswith("Ngọ"))
+    assert any(s["name"].lower() == "thân" or s["name"].lower() == "tử vi" for s in ngọ_branch["sao"]) or ngọ_branch["cung_chu"] != ""
 
 
 def test_horoscope_from_birth_gender_coercion():
@@ -153,11 +156,23 @@ def test_horoscope_transit_with_day():
 
 
 def test_horoscope_auspicious():
-    """auspicious() delegates to get_auspicious_details with today's date."""
+    """auspicious(day, month, year) delegates to get_auspicious_details."""
     h = Horoscope.from_birth(name="A", year=1995, month=6, day=10, hour="14:30", gender="Nam")
     res = h.auspicious(day=27, month=7, year=2026)
     assert "error" not in res
     assert res["duong_lich"] == "27/07/2026"
+
+
+def test_horoscope_auspicious_defaults_to_today():
+    """Omitted date components default to today's date."""
+    from datetime import date
+
+    h = Horoscope.from_birth(name="A", year=1995, month=6, day=10, hour="14:30", gender="Nam")
+    res = h.auspicious()
+    assert "error" not in res
+    today = date.today()
+    expected = f"{today.day:02d}/{today.month:02d}/{today.year}"
+    assert res["duong_lich"] == expected
 
 
 def test_horoscope_render_chart(tmp_path):

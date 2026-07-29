@@ -3,14 +3,24 @@
 (c) 2026 nmhaaa3218 <manh.ha.3218@gmail.com>
 
 Data-driven Cách Cục Evaluator for Tử Vi Đẩu Số.
-Evaluates rules declaratively defined in tuvi_mcp/data/cach_cuc.json.
+Evaluates rules declaratively defined in ``tuvi_mcp/_data/cach_cuc.json``.
+
+The JSON dataset is shipped as Python package data so the wheel is self-contained;
+see ``pyproject.toml`` ``[tool.setuptools.package-data]``.
 """
 
 import json
 import os
 
-_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_data")
 _CACH_CUC_PATH = os.path.join(_DATA_DIR, "cach_cuc.json")
+
+if not os.path.isfile(_CACH_CUC_PATH):
+    raise FileNotFoundError(
+        f"Cách Cục rules dataset missing at {_CACH_CUC_PATH!r}. "
+        "The wheel may have been packaged without package data; check "
+        "``pyproject.toml`` ``[tool.setuptools.package-data]``."
+    )
 
 with open(_CACH_CUC_PATH, "r", encoding="utf-8") as _f:
     CACH_CUC_RULES: list = json.load(_f)

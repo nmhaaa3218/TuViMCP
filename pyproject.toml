@@ -47,6 +47,14 @@ tuvi-mcp = "tuvi_mcp.__main__:main"
 where = ["."]
 include = ["tuvi_mcp*"]
 
+# Ship non-code assets (declarative Cách Cục rule dataset, etc.) alongside
+# the Python package so wheel installs carry them.
+[tool.setuptools.package-data]
+"tuvi_mcp._data" = ["*.json"]
+
+
+
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
@@ -61,6 +69,14 @@ exclude = [
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+# Package ``__init__`` modules re-export public symbols through ``__all__``;
+# ruff flags the bare ``from .X import Y`` lines as unused (F401), which is
+# the canonical Python re-export pattern.
+"**/__init__.py" = ["F401"]
+
+
 
 [tool.ruff.format]
 quote-style = "double"

@@ -2,7 +2,7 @@
 from datetime import datetime
 from math import ceil
 
-from .util import SolarUtil, LunarUtil
+from .util import LunarUtil, SolarUtil
 
 
 class Solar:

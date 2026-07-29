@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from math import sin, cos, floor
+from math import cos, floor, sin
 
 
 class ShouXingUtil:
