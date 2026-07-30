@@ -136,7 +136,7 @@ def test_horoscope_chart_to_dict():
 
 
 def test_horoscope_transit():
-    """transit(year, month) returns full Vận Hạn dict."""
+    """transit(year, month) returns TransitResult."""
     h = Horoscope.from_birth(name="A", year=1995, month=6, day=10, hour="14:30", gender="Nam")
     res = h.transit(year=2026, month=5)
     assert res["target_period"]["current_year"] == 2026

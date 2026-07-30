@@ -8,7 +8,7 @@ Use this tool to perform predictive transit analysis (Vận Hạn) for a specifi
 
 ## Calendar Prerequisites
 
-**Critical:** `current_year` and `current_month` represent the **Lunar** year and month. If inspecting a Solar timeframe (e.g. "October 2026"), you **must** convert it using `convert_calendar` first.
+**Critical:** `current_year`, `current_month`, and (if provided) `current_day` represent the **Lunar** year, month, and day. If inspecting a Solar timeframe (e.g. "October 2026"), you **must** convert it using `convert_calendar` first.
 
 ## Arguments
 
@@ -23,6 +23,7 @@ Use this tool to perform predictive transit analysis (Vận Hạn) for a specifi
 | `is_solar` | boolean | true | True for Solar, False for Lunar |
 | `current_year` | integer | current year | Target Lunar year |
 | `current_month` | integer | 1 | Target Lunar month (1-12) |
+| `current_day` | integer | None | Target Lunar day (1-30, optional — enables Nhật Hạn) |
 
 ## Return Value
 

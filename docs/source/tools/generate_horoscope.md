@@ -29,6 +29,7 @@ If `generate_image` is `False`:
 - Returns raw JSON with keys:
   - `thien_ban` — demographics, natal pillars, element, destiny
   - `dia_ban` — 12 houses with stars
+  - `cach_cuc` — recognized astrological formations (with `id`, `name`, `category`, `description`, `reason`, `co_ca`, `binh_chu`, `uu_khuyet_diem`)
 
 On error: `{"error": "message"}`
 
@@ -45,12 +46,12 @@ On error: `{"error": "message"}`
     "hanh_cuc": 5,
     "ten_cuc": "Thổ ngũ Cục",
     "menh_chu": "Cự môn",
-    "than_chu": "Thiên tướng",
-    "ban_menh": "SƠN ÐẦU HỎA",
-    "cach_cuc": [
-      {"ma": "CC-01", "ten": "Thạch Trung Ẩn Ngọc", "danh_gia": "Cách"}
-    ]
+    "than_chu": "Thiên cơ",
+    "ban_menh": "SƠN ÐẦU HỎA"
   },
+  "cach_cuc": [
+    {"id": 5, "name": "Đan Trì Quế Trì Cách", "category": "Cát Cục"}
+  ],
   "dia_ban": [
     {
       "cung_so": 1,

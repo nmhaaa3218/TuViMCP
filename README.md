@@ -68,6 +68,8 @@ path = h.render_chart(chart, year=2026)
 The same library is what the MCP tools wrap, so behavior is identical whether you call `Horoscope.from_birth(...).chart()` or invoke the `generate_horoscope` tool from an MCP client.
 
 ```python
+from tuvi_mcp import AuspiciousResult, TransitResult
+
 # All results support attribute access + to_dict() for JSON serialization
 chart = h.chart()
 print(chart.thien_ban["can_nam"], chart.thien_ban["chi_nam"])
@@ -81,7 +83,8 @@ auspicious: AuspiciousResult = h.auspicious(day=27, month=7, year=2026)
 from tuvi_mcp.database import init_db, save_horoscope, list_saved_horoscopes, get_saved_horoscope_by_name
 
 init_db()  # one-time setup
-save_horoscope("My Chart", chart.to_dict())
+id_ = save_horoscope("My Chart", 10, 6, 1995, 14, "Nam", True)
+print(f"saved as id {id_}")
 profiles = list_saved_horoscopes()
 print(profiles)  # [{"id": 1, "name": "My Chart", ...}]
 ```
@@ -167,15 +170,16 @@ Generates a full Tử Vi chart from raw birth details, with optional high-qualit
   - Returns `{"error": "error_message"}` if calculations fail.
 
 #### 2. `get_van_han`
-Calculates yearly transit stars and active houses (major, yearly, and monthly periods) for a target period.
+Calculates yearly transit stars and active houses (major, yearly, monthly, and daily periods) for a target period.
 * **Purpose & Comparison:** Use this tool to perform predictive transit analysis for a specific target timeframe.
 * **Side Effects:** None (read-only calculation).
-* **Calendar Prerequisites:** **CRITICAL:** `current_year` and `current_month` represent the **Lunar** year and month. If inspecting a Solar timeframe (e.g. 'October 2026'), you **MUST** convert it using `convert_calendar` first.
+* **Calendar Prerequisites:** **CRITICAL:** `current_year`, `current_month`, and (if provided) `current_day` represent the **Lunar** year, month, and day. If inspecting a Solar timeframe (e.g. 'October 2026'), you **MUST** convert it using `convert_calendar` first.
 * **Arguments:**
   - `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar` (same as birth parameters above).
   - `current_year` (integer): Target Lunar year to inspect (default: current year).
   - `current_month` (integer): Target Lunar month to inspect (1-12, default: 1).
-* **Return Value:** A dictionary with keys `person_details` (Can-Chi), `target_period` (resolved age and target), `transit_stars`, `dai_han`, and `tieu_han`. Returns `{"error": "error_message"}` if input details are invalid.
+  - `current_day` (integer, optional): Target Lunar day to inspect (1-30, enables Nhật Hạn).
+* **Return Value:** A dictionary with keys `person_details` (Can-Chi), `target_period` (resolved age and target), `transit_stars`, `dai_han`, `tieu_han`, `nguyet_han`, and (if `current_day` given) `nhat_han`. Returns `{"error": "error_message"}` if input details are invalid.
 
 #### 3. `convert_calendar`
 Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calendars.
@@ -209,7 +213,7 @@ To illustrate the structured responses, here is an example of what the server ou
 
 #### 1. Horoscope Generation Output Summary (`generate_horoscope`)
 
-When calling `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995, hour_val="14:30", gender_val="Nam", is_solar=true)`, the server outputs a structured JSON response containing `thien_ban` (person information) and `dia_ban` (the list of 12 houses and their stars).
+When calling `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995, hour_val="14:30", gender_val="Nam", is_solar=true)`, the server outputs a structured JSON response containing `thien_ban` (person information), `dia_ban` (the list of 12 houses and their stars), and `cach_cuc` (recognized astrological formations).
 
 **Response Snippet:**
 ```json
@@ -225,17 +229,17 @@ When calling `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1
     "hanh_cuc": 5,
     "ten_cuc": "Thổ ngũ Cục",
     "menh_chu": "Cự môn",
-    "than_chu": "Thiên tướng",
-    "ban_menh": "SƠN ÐẦU HỎA",
-    "cach_cuc": [
-      {
-        "ma": "CC-01",
-        "ten": "Thạch Trung Ẩn Ngọc",
-        "danh_gia": "Cách",
-        "mo_ta": "..."
-      }
-    ]
+    "than_chu": "Thiên cơ",
+    "ban_menh": "SƠN ÐẦU HỎA"
   },
+  "cach_cuc": [
+    {
+      "id": 5,
+      "name": "Đan Trì Quế Trì Cách",
+      "category": "Cát Cục",
+      "description": "Thái Dương cư Thìn Tỵ Ngọ (Đan Trì) hoặc Thái Âm cư Dậu Tuất Hợi (Quế Trì)."
+    }
+  ],
   "dia_ban": [
     {
       "cung_so": 1,
@@ -448,12 +452,13 @@ Tạo lá số Tử Vi đầy đủ từ thông tin ngày giờ sinh, hỗ trợ
 
 #### 2. `get_van_han`
 
-Tính toán sao lưu động và xác định các cung hạn đang kích hoạt, bao gồm Đại Hạn, Tiểu Hạn và Nguyệt Hạn cho tháng/năm cần xem.
+Tính toán sao lưu động và xác định các cung hạn đang kích hoạt, bao gồm Đại Hạn, Tiểu Hạn, Nguyệt Hạn và Nhật Hạn cho tháng/năm cần xem.
 
 * **Tham số:**
   * `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`: giống như trong `generate_horoscope`.
-  * `current_year` (integer): Năm cần xem hạn. Mặc định là năm hiện tại.
+  * `current_year` (integer): Năm âm lịch cần xem hạn. Mặc định là năm hiện tại.
   * `current_month` (integer): Tháng âm lịch cần xem hạn, từ 1 đến 12. Mặc định là 1.
+  * `current_day` (integer, tùy chọn): Ngày âm lịch cần xem hạn (1-30). Nếu cung cấp, sẽ tính thêm Nhật Hạn.
 
 ---
 
@@ -493,7 +498,7 @@ Dưới đây là cấu trúc dữ liệu JSON thực tế do máy chủ MCP tr�
 
 #### 1. Kết quả Lập Lá Số (`generate_horoscope`)
 
-Khi gọi `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995, hour_val="14:30", gender_val="Nam", is_solar=true)`, đầu ra trả về đối tượng JSON gồm thông tin Thiên Bàn (`thien_ban`) và danh sách 12 cung Địa Bàn (`dia_ban`).
+Khi gọi `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995, hour_val="14:30", gender_val="Nam", is_solar=true)`, đầu ra trả về đối tượng JSON gồm thông tin Thiên Bàn (`thien_ban`), danh sách 12 cung Địa Bàn (`dia_ban`), và các cách cục (`cach_cuc`).
 
 **Đoạn trích đầu ra:**
 ```json
@@ -509,17 +514,17 @@ Khi gọi `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995
     "hanh_cuc": 5,
     "ten_cuc": "Thổ ngũ Cục",
     "menh_chu": "Cự môn",
-    "than_chu": "Thiên tướng",
-    "ban_menh": "SƠN ÐẦU HỎA",
-    "cach_cuc": [
-      {
-        "ma": "CC-01",
-        "ten": "Thạch Trung Ẩn Ngọc",
-        "danh_gia": "Cách",
-        "mo_ta": "..."
-      }
-    ]
+    "than_chu": "Thiên cơ",
+    "ban_menh": "SƠN ÐẦU HỎA"
   },
+  "cach_cuc": [
+    {
+      "id": 5,
+      "name": "Đan Trì Quế Trì Cách",
+      "category": "Cát Cục",
+      "description": "Thái Dương cư Thìn Tỵ Ngọ (Đan Trì) hoặc Thái Âm cư Dậu Tuất Hợi (Quế Trì)."
+    }
+  ],
   "dia_ban": [
     {
       "cung_so": 1,

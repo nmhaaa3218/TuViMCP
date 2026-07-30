@@ -396,7 +396,7 @@ class Horoscope:
         year: int | None = None,
         month: int = 1,
         day: int | None = None,
-    ) -> dict:
+    ) -> TransitResult:
         """Calculate transit (Vận Hạn) analysis for a target Lunar period.
 
         Args:
@@ -406,7 +406,7 @@ class Horoscope:
                  ``nhat_han`` in addition to ``nguyet_han``.
 
         Returns:
-            dict with keys: ``person_details``, ``target_period``,
+            TransitResult with fields: ``person_details``, ``target_period``,
             ``transit_stars``, ``dai_han``, ``tieu_han``, ``nguyet_han``,
             and (if ``day`` given) ``nhat_han``.
         """
@@ -441,10 +441,16 @@ class Horoscope:
         day: int | None = None,
         month: int | None = None,
         year: int | None = None,
-    ) -> dict:
+    ) -> AuspiciousResult:
         """Evaluate auspicious details for a given calendar date.
 
         Any omitted component defaults to today's date.
+
+        Returns:
+            AuspiciousResult with fields: ``duong_lich``, ``am_lich``,
+            ``can_chi_ngay``, ``ngay_hoang_dao``, ``truc_ngay``,
+            ``nhi_thap_bat_tu``, ``huong_xuat_hanh``, ``gio_hoang_dao``,
+            ``tiet_khi_hien_tai``, ``tiet_khi_tiep_theo``.
         """
         today = date.today()
         raw = _get_auspicious_details(
