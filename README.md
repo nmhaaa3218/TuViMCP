@@ -3,6 +3,7 @@
 [![CI](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://img.shields.io/pypi/v/tuvi-mcp-server)](https://pypi.org/project/tuvi-mcp-server/)
+[![Documentation Status](https://readthedocs.org/projects/tuvi-mcp-server/badge/?version=latest)](https://tuvi-mcp-server.readthedocs.io/en/latest/)
 
 [![TuViMCP MCP server](https://glama.ai/mcp/servers/nmhaaa3218/TuViMCP/badges/card.svg)](https://glama.ai/mcp/servers/nmhaaa3218/TuViMCP)
 
@@ -15,6 +16,7 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 ## English Documentation
 
 ### Quick Links
+- [Full Documentation](https://tuvi-mcp-server.readthedocs.io/en/latest/)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Changelog / Release History](CHANGELOG.md)
 - [Example JSON Outputs & Scripts](examples/)

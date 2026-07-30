@@ -33,11 +33,19 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/nmhaaa3218/TuViMCP"
 Repository = "https://github.com/nmhaaa3218/TuViMCP"
+Documentation = "https://tuvi-mcp-server.readthedocs.io/"
 "Bug Tracker" = "https://github.com/nmhaaa3218/TuViMCP/issues"
 
 [project.optional-dependencies]
 test = [
     "pytest>=8.0.0",
+]
+docs = [
+    "sphinx>=7.2",
+    "furo>=2024",
+    "myst-parser>=2.0",
+    "sphinx-autodoc-typehints>=2.0",
+    "linkify-it-py>=2.0",
 ]
 
 [project.scripts]
@@ -51,9 +59,6 @@ include = ["tuvi_mcp*"]
 # the Python package so wheel installs carry them.
 [tool.setuptools.package-data]
 "tuvi_mcp._data" = ["*.json"]
-
-
-
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -76,10 +81,6 @@ ignore = []
 # the canonical Python re-export pattern.
 "**/__init__.py" = ["F401"]
 
-
-
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-
-

@@ -69,7 +69,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+docs/**/_build/
 
 # PyBuilder
 .pybuilder/
@@ -192,3 +192,4 @@ __pycache__/
 
 PLAN.md
 
+docs/source/api/_autosummary/
