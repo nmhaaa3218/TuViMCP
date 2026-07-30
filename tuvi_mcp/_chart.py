@@ -58,14 +58,14 @@ def serialize_sao(sao_dict: dict) -> dict:
     }
 
 
-def build_raw_chart(day: int, month: int, year: int, hour: int, gender: int, is_solar: bool, name: str = "Khách"):
+def build_raw_chart(day: int, month: int, year: int, hour: int, gender: int, is_solar: bool, name: str = "Khách", timezone: float = 7.0):
     """Internal calculation of DiaBan and ThienBan."""
-    db = lapDiaBan(DiaBanClass, day, month, year, hour, gender, is_solar, 7)
-    tb = lapThienBan(day, month, year, hour, gender, name, db, is_solar, 7)
+    db = lapDiaBan(DiaBanClass, day, month, year, hour, gender, is_solar, timezone)
+    tb = lapThienBan(day, month, year, hour, gender, name, db, is_solar, timezone)
     return db, tb
 
 
-def adjust_date_for_late_ty(day: int, month: int, year: int, hour_val, is_solar: bool):
+def adjust_date_for_late_ty(day: int, month: int, year: int, hour_val, is_solar: bool, timezone: float = 7.0):
     """If birth hour is 23 (late Tý hour), roll calculation date forward by +1 day.
 
     Returns: (calc_day, calc_month, calc_year, orig_solar_str, is_late_ty)
@@ -79,7 +79,7 @@ def adjust_date_for_late_ty(day: int, month: int, year: int, hour_val, is_solar:
     else:
         from ._calendar import convert_lunar_to_solar  # local import to avoid cycle
 
-        solar_res = convert_lunar_to_solar(day, month, year, False, 7)
+        solar_res = convert_lunar_to_solar(day, month, year, False, timezone)
         if "error" not in solar_res:
             orig_solar_str = f"{solar_res['solar_day']}/{solar_res['solar_month']}/{solar_res['solar_year']}"
         else:
@@ -96,12 +96,12 @@ def adjust_date_for_late_ty(day: int, month: int, year: int, hour_val, is_solar:
             try:
                 from ._calendar import convert_lunar_to_solar, convert_solar_to_lunar
 
-                solar_res = convert_lunar_to_solar(day, month, year, False, 7)
+                solar_res = convert_lunar_to_solar(day, month, year, False, timezone)
                 if "error" not in solar_res:
                     dt = datetime(
                         solar_res["solar_year"], solar_res["solar_month"], solar_res["solar_day"]
                     ) + timedelta(days=1)
-                    lunar_res = convert_solar_to_lunar(dt.day, dt.month, dt.year, 7)
+                    lunar_res = convert_solar_to_lunar(dt.day, dt.month, dt.year, timezone)
                     if "error" not in lunar_res:
                         calc_day, calc_month, calc_year = (
                             lunar_res["lunar_day"],
@@ -115,7 +115,7 @@ def adjust_date_for_late_ty(day: int, month: int, year: int, hour_val, is_solar:
 
 
 def get_horoscope_chart(
-    name: str, day: int, month: int, year: int, hour_val, gender_val, is_solar: bool = True
+    name: str, day: int, month: int, year: int, hour_val, gender_val, is_solar: bool = True, timezone: float = 7.0
 ) -> dict:
     """Standardized entry point to calculate and return full horoscope JSON."""
     validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar)
@@ -125,10 +125,10 @@ def get_horoscope_chart(
     gender = parse_gender(gender_val)
 
     calc_day, calc_month, calc_year, orig_solar_str, is_late_ty = adjust_date_for_late_ty(
-        day, month, year, hour_val, is_solar
+        day, month, year, hour_val, is_solar, timezone
     )
 
-    db, tb = build_raw_chart(calc_day, calc_month, calc_year, hour, gender, is_solar, name)
+    db, tb = build_raw_chart(calc_day, calc_month, calc_year, hour, gender, is_solar, name, timezone)
 
     cungs = []
     for i in range(1, 13):

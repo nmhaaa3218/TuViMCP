@@ -67,6 +67,7 @@ def get_van_han_analysis(
     current_year: int,
     current_month: int = 1,
     current_day: int | None = None,
+    timezone: float = 7.0,
 ) -> dict:
     """Analyze transit stars & active cungs (Đại Hạn, Tiểu Hạn, Nguyệt Hạn, Nhật Hạn) for a target Lunar period."""
     validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar)
@@ -78,11 +79,11 @@ def get_van_han_analysis(
     hour = parse_hour(hour_val)
     gender = parse_gender(gender_val)
 
-    calc_day, calc_month, calc_year, _, _ = adjust_date_for_late_ty(day, month, year, hour_val, is_solar)
+    calc_day, calc_month, calc_year, _, _ = adjust_date_for_late_ty(day, month, year, hour_val, is_solar, timezone)
 
     # Calculate birth details first
-    _, tb = build_raw_chart(calc_day, calc_month, calc_year, hour, gender, is_solar, name)
-    chart = get_horoscope_chart(name, day, month, year, hour_val, gender_val, is_solar)
+    _, tb = build_raw_chart(calc_day, calc_month, calc_year, hour, gender, is_solar, name, timezone)
+    chart = get_horoscope_chart(name, day, month, year, hour_val, gender_val, is_solar, timezone)
 
     from ._input import BRANCH_NAMES
 

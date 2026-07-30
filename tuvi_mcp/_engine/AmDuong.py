@@ -319,7 +319,7 @@ def ngayThangNamCanChi(nn, tt, nnnn, duongLich=True, timeZone=7):
     Không tính đến can ngày vì phải chuyển đổi qua lịch Julius.
 
     Hàm tìm can ngày là hàm canChiNgay(nn, tt, nnnn, duongLich=True,\
-                                    timeZone=7, thangNhuan=False)
+                                    timeZone=timeZone, thangNhuan=False)
 
     Args:
         nn (int): Ngày

@@ -275,33 +275,61 @@ def translate_direction(zh_dir: str) -> str:
     return DIRECTION_MAP.get(zh_dir.strip(), zh_dir)
 
 
-def get_auspicious_details(day: int, month: int, year: int, is_solar: bool = True) -> dict:
+def get_auspicious_details(day: int, month: int, year: int, is_solar: bool = True, timezone: float = 7.0) -> dict:
     """
     Evaluates Auspicious Days, Auspicious Hours (Hoàng Đạo / Hắc Đạo), 12 Trực, 28 Tú,
     Directions, and Tiết Khí for a given date in Vietnamese.
 
+    The ``timezone`` parameter (default 7 for ICT / Vietnam) controls the boundary
+    rounding for the Solar↔Lunar date mapping — i.e. which civil-calendar date the
+    lunar day falls on. Derived metadata (can chi of day, tiết-khí, trực,
+    hoàng đạo names) is computed from the Solar date via the OO layer, which is
+    internally anchored at UTC+7 for those J2000-epoch table lookups; those exact
+    timestamps may slightly differ for non-7 tz near a tiết-khí boundary. The
+    calendar date strings (``duong_lich``, ``am_lich``) DO honor ``timezone``.
+
     """
     try:
         from . import _input
+        from ._lunar_calendar.util.VnCalendarUtil import (
+            lunar_to_solar_vn,
+            solar_to_lunar_vn,
+        )
 
-        val_err = _input.validate_calendar_convert(day, abs(month), year)
+        # Coerce here so library API mirrors the MCP tool surface (accepts
+        # ``int``, ``"h"``, ``"h:30"``). MCP layer also coerces; we re-do
+        # defensively so direct library callers behave the same.
+        tz, tz_err = _input.coerce_timezone(timezone, default=7.0)
+        if tz_err is not None:
+            return tz_err
+
+        val_err = _input.validate_calendar_convert(day, abs(month), year, timezone=tz)
         if val_err:
             return val_err
 
+        # Boundary-aware solar <-> lunar date via VnCalendarUtil (honors ``timezone``).
         if is_solar:
             solar = Solar.fromYmd(year, month, day)
             lunar = solar.getLunar()
+            ld, lm, ly, leap_flag = solar_to_lunar_vn(day, month, year, time_zone=tz)
+            lunar_month_signed = -lm if leap_flag else lm
         else:
-            lunar = Lunar.fromYmd(year, month, day)
-            solar = lunar.getSolar()
+            abs_m = abs(month)
+            leap_flag = 1 if month < 0 else 0
+            sd, sm, sy = lunar_to_solar_vn(day, abs_m, year, leap_flag, time_zone=tz)
+            if sd == 0 and sm == 0 and sy == 0:
+                return {"error": f"Invalid lunar date {day}/{month}/{year}."}
+            solar = Solar.fromYmd(sy, sm, sd)
+            lunar = solar.getLunar()
+            ld, lm, ly = day, abs_m, year
+            lunar_month_signed = month
 
-        # Basic dates
+        # Basic dates (display the tz-aware lunar date string)
         solar_str = f"{solar.getDay():02d}/{solar.getMonth():02d}/{solar.getYear()}"
         lunar_year_gz = format_gan_zhi(lunar.getYearInGanZhi())
         lunar_sx = SHENGXIAO_MAP.get(lunar.getYearShengXiao(), lunar.getYearShengXiao())
-        abs_m = abs(lunar.getMonth())
-        leap_str = " (Nhuận)" if (hasattr(lunar, "isLeap") and lunar.isLeap()) or lunar.getMonth() < 0 else ""
-        lunar_str = f"{lunar.getDay():02d}/{abs_m:02d}{leap_str}/{lunar.getYear()} ({lunar_year_gz} - Năm {lunar_sx})"
+        leap_str = " (Nhuận)" if (lunar_month_signed < 0) or (hasattr(lunar, "isLeap") and lunar.isLeap()) else ""
+        lunar_str = f"{ld:02d}/{lm:02d}{leap_str}/{ly} ({lunar_year_gz} - Năm {lunar_sx})"
 
         day_gz = format_gan_zhi(lunar.getDayInGanZhi())
         day_sx = SHENGXIAO_MAP.get(lunar.getDayShengXiao(), lunar.getDayShengXiao())

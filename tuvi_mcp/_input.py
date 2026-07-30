@@ -327,6 +327,62 @@ def validate_transit_period(
     return None
 
 
+_TZ_STR_RE = re.compile(r"^([+-])?(\d{1,2})(?::30)?$")
+
+
+def coerce_timezone(value, default: float = 7.0) -> tuple[float | None, dict | None]:
+    """Normalize a timezone argument to a float offset in hours.
+
+    Accepts:
+        - ``int``          → ``float(N)``
+        - ``float``        → only if integer-valued (e.g. ``7.0``); fractions rejected
+        - ``str`` matching ``^([+-])?(\\d{1,2})(?::30)?$`` → ``±N.0`` or ``±N.5``
+        - ``None``         → returns ``default``
+
+    Any other input is rejected with a structured error dict. Range guard:
+    ``-12 <= offset <= 14``.
+
+    Returns:
+        ``(offset, None)`` on success; ``(None, error_dict)`` on validation failure.
+    """
+    if value is None:
+        return default, None
+    if isinstance(value, bool):
+        return None, _tz_error("Timezone must be int or 'h:30' string.", value)
+    if isinstance(value, int):
+        offset = float(value)
+    elif isinstance(value, float):
+        if not value.is_integer():
+            return None, _tz_error("Fractional float not allowed. Use 'h:30' form.", value)
+        offset = value
+    elif isinstance(value, str):
+        m = _TZ_STR_RE.match(value.strip())
+        if not m:
+            return None, _tz_error("Timezone string must be integer hour or 'h:30'.", value)
+        sign = -1.0 if m.group(1) == "-" else 1.0
+        hours = int(m.group(2))
+        stripped = value.strip()
+        minutes = 0.5 if stripped.endswith(":30") else 0.0
+        offset = sign * (hours + minutes)
+    else:
+        return None, _tz_error("Timezone must be int or 'h:30' string.", value)
+
+    if offset < -12 or offset > 14:
+        return None, _tz_error("Timezone offset must be between -12 and 14.", offset)
+    return offset, None
+
+
+def _tz_error(msg: str, value) -> dict:
+    return {
+        "error": "Input validation failed",
+        "error_code": "INVALID_INPUT_PARAMETER",
+        "details": [f"Invalid timezone '{value}'. {msg}"],
+        "suggestions": {
+            "timezone": "Provide an integer hour (e.g. 7 for ICT) or 'h:30' string (e.g. '7:30')."
+        },
+    }
+
+
 def validate_calendar_convert(
     day: int, month: int, year: int, from_solar: bool = True, lunar_leap: bool = False, timezone: int = 7
 ) -> dict | None:
@@ -389,6 +445,7 @@ __all__ = [
     "parse_gender",
     "parse_hour",
     "parse_solar_hour",
+    "coerce_timezone",
     "validate_birth_parameters",
     "validate_calendar_convert",
     "validate_transit_period",

@@ -7,14 +7,21 @@ FastMCP server definition. CLI is in `__main__.py`.
 """
 
 from datetime import datetime
+from typing import Union
 
 from mcp.server.fastmcp import FastMCP, Image
 
 from . import _calendar, _chart, _input, _transit
 from ._auspicious import get_auspicious_details as _get_auspicious_details
+from ._input import coerce_timezone
 from ._rendering import generate_laso_image
 
 mcp = FastMCP("TuViMCP")
+
+
+def _resolve_tz(value):
+    """Coerce a user-supplied timezone to (offset, error_dict)."""
+    return coerce_timezone(value, default=7.0)
 
 
 @mcp.tool(structured_output=False)
@@ -28,6 +35,7 @@ def generate_horoscope(
     is_solar: bool = True,
     current_year: int = None,
     generate_image: bool = True,
+    timezone: Union[int, str, None] = None,
 ):
     """
     Generate a full Tu Vi (Vietnamese horoscope) chart from raw birth details,
@@ -52,7 +60,9 @@ def generate_horoscope(
     - `month`: Month of birth (1-12).
     - `year`: Year of birth (e.g., 1995).
     - `hour_val`: Hour of birth. Accepts string formats like "14:30", "Ngọ" (Earthly Branch name),
-      or numeric branch index (1-12, where 1=Tý, 12=Hợi) (default: "12:00").
+      or numeric branch index (1-12, where 1=Tý, 12=Hợi) (default: "12:00"). Interpreted as the
+      LOCAL CIVIL TIME at the birthplace — do not convert to Vietnam time unless that is the
+      intended civil-tz reference (see `timezone` below).
     - `gender_val`: Gender of the subject. Accepts "Nam", "Nữ", "male", "female"
       (case-insensitive, default: "Nam").
     - `is_solar`: Set to `True` (default) if the birth date is Solar (Dương lịch). Set to `False`
@@ -61,6 +71,11 @@ def generate_horoscope(
       e.g., 2026).
     - `generate_image`: Set to `True` (default) to render and return a visual PNG chart along
       with raw data. Set to `False` to return only raw data.
+    - `timezone`: Numeric UTC offset for the civil timezone at the birthplace (default 7 for
+      ICT/Vietnam). Accepts an integer (e.g. `7`, `-5`) or an `h:30` string (e.g. `"7:30"`,
+      `"-5:30"`). Other minutes values (e.g. `"7:15"`) and out-of-range values are rejected.
+      Only the boundary-rounding of astronomical events (lunar day, tiết-khí, Đông chí) is
+      affected — the civil hour branch (chi giờ) is always derived from `hour_val`.
 
     ### Output Schema and Error Conditions
     - **If `generate_image` is `True`**: Returns a list `[Image, chart_data]` where `Image` is a
@@ -75,12 +90,17 @@ def generate_horoscope(
         `quan_he_hinh_hoc` (static 100% geometric relationships: `xung_chieu`, `tam_hop`, `nhi_hop`, `giap_cung`),
         and optional transit/Hạn keys.
     - **Errors**: Returns an error dictionary `{"error": "error_message"}` if calculations fail
-      (e.g. invalid date formats, out-of-range birth years).
+      (e.g. invalid date formats, out-of-range birth years, invalid timezone).
     """
+    tz, err = _resolve_tz(timezone)
+    if err is not None:
+        return err
+
     try:
-        # Calculate standard chart
         chart_data = _chart.get_horoscope_chart(
-            name=name, day=day, month=month, year=year, hour_val=hour_val, gender_val=gender_val, is_solar=is_solar
+            name=name, day=day, month=month, year=year,
+            hour_val=hour_val, gender_val=gender_val, is_solar=is_solar,
+            timezone=tz,
         )
 
         if "error" in chart_data:
@@ -92,7 +112,6 @@ def generate_horoscope(
         if current_year is None:
             current_year = datetime.now().year
 
-        # Calculate transit details
         van_han = _transit.get_van_han_analysis(
             name=name,
             day=day,
@@ -102,9 +121,9 @@ def generate_horoscope(
             gender_val=gender_val,
             is_solar=is_solar,
             current_year=current_year,
+            timezone=tz,
         )
 
-        # Merge transit details into chart_data
         if "error" not in van_han:
             chart_data["transit_stars"] = van_han.get("transit_stars", [])
             chart_data["target_period"] = van_han.get("target_period", {})
@@ -129,6 +148,7 @@ def get_van_han(
     current_year: int = None,
     current_month: int = 1,
     current_day: int = None,
+    timezone: Union[int, str, None] = None,
 ) -> dict:
     """
     Calculate transit stars (sao lưu) and active houses (Đại Hạn, Tiểu Hạn, Nguyệt Hạn, Nhật Hạn)
@@ -159,13 +179,15 @@ def get_van_han(
     - `day`: Day of birth (1-31).
     - `month`: Month of birth (1-12).
     - `year`: Year of birth.
-    - `hour_val`: Hour of birth (e.g., "14:30", "Ngọ").
+    - `hour_val`: Hour of birth (e.g., "14:30", "Ngọ"). Local civil time at the birthplace.
     - `gender_val`: Gender ("Nam" or "Nữ").
     - `is_solar`: True if birth date is Solar (Dương lịch), False if Lunar (Âm lịch).
     - `current_year`: Target Lunar year to inspect (defaults to current system year, e.g., 2026).
     - `current_month`: Target Lunar month to inspect (1-12, default 1).
     - `current_day`: Target Lunar day to inspect (1-30, optional). When provided, also returns
       `nhat_han` — the daily transit house derived from Nguyệt Hạn.
+    - `timezone`: Numeric UTC offset (default 7). Accepts integer (e.g. `8`) or `h:30` string
+      (e.g. `"8:30"`). See `generate_horoscope.timezone` for full spec.
 
     ### Output Schema and Error Conditions
     - **Returns**: A dictionary containing:
@@ -180,8 +202,12 @@ def get_van_han(
       - `nhat_han`: (only if `current_day` is provided) Details of the active daily house,
         derived from Nguyệt Hạn.
     - **Errors**: Returns an error dictionary `{"error": "error_message"}` if birth details are
-      invalid or calculation fails.
+      invalid, calculation fails, or `timezone` is malformed.
     """
+    tz, err = _resolve_tz(timezone)
+    if err is not None:
+        return err
+
     try:
         if current_year is None:
             current_year = datetime.now().year
@@ -197,6 +223,7 @@ def get_van_han(
             current_year=current_year,
             current_month=current_month,
             current_day=current_day,
+            timezone=tz,
         )
     except Exception as e:
         return {"error": str(e)}
@@ -208,6 +235,7 @@ def get_auspicious_info(
     month: int = None,
     year: int = None,
     is_solar: bool = True,
+    timezone: Union[int, str, None] = None,
 ) -> dict:
     """
     Evaluate Auspicious Days (Ngày Hoàng Đạo / Hắc Đạo), Auspicious Hours (Giờ Hoàng Đạo / Hắc Đạo),
@@ -223,6 +251,11 @@ def get_auspicious_info(
     - `month`: Month of year (1-12). Defaults to current month if omitted.
     - `year`: Year (four digits e.g. 2026). Defaults to current year if omitted.
     - `is_solar`: Set to `True` (default) for Solar date (Dương lịch), or `False` for Lunar date (Âm lịch).
+    - `timezone`: Numeric UTC offset (default 7). Accepts integer (e.g. `8`) or `h:30` string
+      (e.g. `"8:30"`). The Solar↔Lunar date mapping honors this; metadata lookups (can chi of day,
+      tiết-khí names, trực, hoàng đạo) are derived from the Solar date via the OO layer which
+      is anchored at UTC+7 for those J2000-epoch tables — exact tiết-khí timestamps in the
+      response may differ slightly for non-7 tz near a tiết-khí boundary.
 
     ### Returns
     A rich Vietnamese JSON structure detailing:
@@ -234,6 +267,10 @@ def get_auspicious_info(
     - `huong_xuat_hanh` (Hỷ Thần, Tài Thần, Phúc Thần, Dương/Âm Quý Thần)
     - `gio_hoang_dao` (12 Giờ Canh Chi, Khung giờ, Sao Hoàng Đạo/Hắc Đạo, Cát/Hung)
     """
+    tz, err = _resolve_tz(timezone)
+    if err is not None:
+        return err
+
     now = datetime.now()
     if day is None:
         day = now.day
@@ -242,7 +279,7 @@ def get_auspicious_info(
     if year is None:
         year = now.year
 
-    return _get_auspicious_details(day, month, year, is_solar=is_solar)
+    return _get_auspicious_details(day, month, year, is_solar=is_solar, timezone=tz)
 
 
 @mcp.tool()
@@ -252,7 +289,7 @@ def convert_calendar(
     year: int,
     from_solar: bool = True,
     lunar_leap: bool = False,
-    timezone: int = 7,
+    timezone: Union[int, str, None] = None,
 ) -> dict:
     """
     Convert a date between the Solar (Dương lịch) and Lunar (Âm lịch) calendars.
@@ -280,7 +317,8 @@ def convert_calendar(
     - `from_solar`: If `True` (default), converts Solar to Lunar. If `False`, converts Lunar to Solar.
     - `lunar_leap`: Only applicable when `from_solar=False`. Set to `True` if the source Lunar
       month is a leap month (tháng nhuận); otherwise `False`.
-    - `timezone`: Timezone offset (default: 7, matching Vietnam/ICT).
+    - `timezone`: Numeric UTC offset (default 7 for ICT / Vietnam). Accepts integer (e.g. `8`)
+      or `h:30` string (e.g. `"8:30"`). Other minutes values and out-of-range inputs are rejected.
 
     ### Output Schema and Error Conditions
     - **Returns**: A dictionary containing:
@@ -288,18 +326,22 @@ def convert_calendar(
       - `month`: Converted month (int).
       - `year`: Converted year (int).
       - `leap`: Boolean indicating if the Lunar month is a leap month.
-    - **Errors**: Returns `{"error": "error_message"}` if date arguments are out of bounds or
-      fail calendar validation.
+    - **Errors**: Returns `{"error": "error_message"}` if date arguments are out of bounds,
+      fail calendar validation, or `timezone` is malformed.
     """
+    tz, err = _resolve_tz(timezone)
+    if err is not None:
+        return err
+
     try:
-        val_err = _input.validate_calendar_convert(day, month, year, timezone=timezone)
+        val_err = _input.validate_calendar_convert(day, month, year, timezone=tz)
         if val_err:
             return val_err
 
         if from_solar:
-            return _calendar.convert_solar_to_lunar(day, month, year, timezone=timezone)
+            return _calendar.convert_solar_to_lunar(day, month, year, timezone=tz)
         else:
-            return _calendar.convert_lunar_to_solar(day, month, year, is_leap=lunar_leap, timezone=timezone)
+            return _calendar.convert_lunar_to_solar(day, month, year, is_leap=lunar_leap, timezone=tz)
     except Exception as e:
         return {"error": str(e)}
 
