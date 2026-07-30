@@ -33,7 +33,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/nmhaaa3218/TuViMCP"
 Repository = "https://github.com/nmhaaa3218/TuViMCP"
-Documentation = "https://tuvi-mcp-server.readthedocs.io/"
+Documentation = "https://tuvimcp.readthedocs.io/en/latest/"
 "Bug Tracker" = "https://github.com/nmhaaa3218/TuViMCP/issues"
 
 [project.optional-dependencies]
