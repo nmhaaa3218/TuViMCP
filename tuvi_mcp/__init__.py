@@ -4,15 +4,17 @@
 """
 
 # Tu Vi Horoscope MCP Server Package
-__version__ = "0.3.2"
+__version__ = "0.4.0"
 
-from .horoscope import BirthInfo, Calendar, Gender, Horoscope, HoroscopeResult
+from .horoscope import AuspiciousResult, BirthInfo, Calendar, Gender, Horoscope, HoroscopeResult, TransitResult
 
 __all__ = [
+    "AuspiciousResult",
     "BirthInfo",
     "Calendar",
     "Gender",
     "Horoscope",
     "HoroscopeResult",
+    "TransitResult",
     "__version__",
 ]

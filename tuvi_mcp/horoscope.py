@@ -21,11 +21,11 @@ from datetime import date, datetime
 from enum import Enum, IntEnum
 from typing import Any
 
+from ._auspicious import get_auspicious_details as _get_auspicious_details
 from ._chart import get_horoscope_chart as _get_horoscope_chart
-from ._input import map_hour_of_day_to_branch, parse_solar_hour
+from ._input import map_hour_of_day_to_branch
 from ._rendering import generate_laso_image
 from ._transit import get_van_han_analysis as _get_van_han_analysis
-from .auspicious import get_auspicious_details as _get_auspicious_details
 
 
 class Gender(IntEnum):
@@ -74,7 +74,9 @@ def _coerce_hour(value: Any) -> int:
     if isinstance(value, (int, float)):
         if 1 <= value <= 12 and int(value) == value:
             return _BRANCH_START_HOUR[int(value)]
-        return int(value) % 24
+        if 0 <= int(value) <= 23:
+            return int(value) % 24
+        raise ValueError(f"hour must be 0-23 (solar) or 1-12 (branch index), got {value!r}")
     if isinstance(value, str):
         solar_h = parse_solar_hour(value)
         if solar_h is not None:
@@ -125,19 +127,10 @@ class BirthInfo:
         """Convert a flexible hour input to a canonical solar hour 0-23.
 
         Accepts the same forms as ``Horoscope.from_birth`` ``hour``.
+        Delegates to the internal ``_coerce_hour`` to avoid duplicating
+        the conversion logic.
         """
-        solar = parse_solar_hour(hour_val)
-        if solar is not None:
-            return solar
-        if isinstance(hour_val, (int, float)) and not isinstance(hour_val, bool):
-            if 1 <= hour_val <= 12:
-                return _BRANCH_START_HOUR[int(hour_val)]
-            return int(hour_val) % 24
-        if isinstance(hour_val, str):
-            from ._input import parse_hour as _parse_branch
-
-            return _BRANCH_START_HOUR[_parse_branch(hour_val)]
-        raise ValueError(f"Invalid hour: {hour_val!r}")
+        return _coerce_hour(hour_val)
 
     def chart_branch(self) -> int:
         """Return the Earthly Branch index (1-12) for ``self.hour``."""
@@ -181,6 +174,112 @@ class HoroscopeResult:
         if self.nhat_han is not None:
             out["nhat_han"] = self.nhat_han
         return out
+
+    def __getitem__(self, key: str) -> Any:
+        """Dict-like access for backward compat with pre-refactor callers."""
+        try:
+            return getattr(self, key)
+        except AttributeError:
+            raise KeyError(key) from None
+
+    def __contains__(self, key: str) -> bool:
+        return hasattr(self, key)
+
+    def __iter__(self) -> Any:
+        """Iterate over field names (like dict keys)."""
+        return iter(self.__dataclass_fields__)
+
+
+@dataclass(frozen=True, slots=True)
+class TransitResult:
+    """Typed transit (Vận Hạn) result with dict serialization.
+
+    Returned by ``Horoscope.transit()``. All fields are JSON-serializable.
+    Supports both attribute access (``res.target_period``) and dict-like
+    access (``res["target_period"]``) for backward compatibility.
+    """
+
+    person_details: dict
+    target_period: dict
+    transit_stars: list
+    dai_han: dict | None = None
+    tieu_han: dict | None = None
+    nguyet_han: dict | None = None
+    nhat_han: dict | None = None
+
+    def to_dict(self) -> dict:
+        out: dict[str, Any] = {
+            "person_details": self.person_details,
+            "target_period": self.target_period,
+            "transit_stars": self.transit_stars,
+        }
+        if self.dai_han is not None:
+            out["dai_han"] = self.dai_han
+        if self.tieu_han is not None:
+            out["tieu_han"] = self.tieu_han
+        if self.nguyet_han is not None:
+            out["nguyet_han"] = self.nguyet_han
+        if self.nhat_han is not None:
+            out["nhat_han"] = self.nhat_han
+        return out
+
+    def __getitem__(self, key: str) -> Any:
+        try:
+            return getattr(self, key)
+        except AttributeError:
+            raise KeyError(key) from None
+
+    def __contains__(self, key: str) -> bool:
+        return hasattr(self, key)
+
+    def __iter__(self) -> Any:
+        return iter(self.__dataclass_fields__)
+
+
+@dataclass(frozen=True, slots=True)
+class AuspiciousResult:
+    """Typed auspicious day evaluation result with dict serialization.
+
+    Returned by ``Horoscope.auspicious()``. All fields are JSON-serializable.
+    Supports both attribute and dict-like access.
+    """
+
+    duong_lich: str
+    am_lich: str
+    can_chi_ngay: str
+    ngay_hoang_dao: dict
+    truc_ngay: dict
+    nhi_thap_bat_tu: dict
+    huong_xuat_hanh: dict
+    gio_hoang_dao: list
+    tiet_khi_hien_tai: str = "N/A"
+    tiet_khi_tiep_theo: str = "N/A"
+
+    def to_dict(self) -> dict:
+        return {
+            "duong_lich": self.duong_lich,
+            "am_lich": self.am_lich,
+            "can_chi_ngay": self.can_chi_ngay,
+            "tiet_khi_hien_tai": self.tiet_khi_hien_tai,
+            "tiet_khi_tiep_theo": self.tiet_khi_tiep_theo,
+            "ngay_hoang_dao": self.ngay_hoang_dao,
+            "truc_ngay": self.truc_ngay,
+            "nhi_thap_bat_tu": self.nhi_thap_bat_tu,
+            "huong_xuat_hanh": self.huong_xuat_hanh,
+            "gio_hoang_dao": self.gio_hoang_dao,
+        }
+
+    def __getitem__(self, key: str) -> Any:
+        try:
+            return getattr(self, key)
+        except AttributeError:
+            raise KeyError(key) from None
+
+    def __contains__(self, key: str) -> bool:
+        return hasattr(self, key)
+
+    def __iter__(self) -> Any:
+        return iter(self.__dataclass_fields__)
 
 
 def _coerce_gender(value: Any) -> Gender:
@@ -285,11 +384,7 @@ class Horoscope:
             is_solar=self._birth.calendar is Calendar.SOLAR,
         )
         if isinstance(raw, dict) and "error" in raw:
-            return HoroscopeResult(
-                thien_ban=raw,
-                dia_ban=[],
-                cach_cuc=[],
-            )
+            raise ValueError(raw["error"])
         return HoroscopeResult(
             thien_ban=raw.get("thien_ban", {}),
             dia_ban=raw.get("dia_ban", []),
@@ -317,7 +412,7 @@ class Horoscope:
         """
         if year is None:
             year = datetime.now().year
-        return _get_van_han_analysis(
+        raw = _get_van_han_analysis(
             name=self._birth.name,
             day=self._birth.day,
             month=self._birth.month,
@@ -328,6 +423,17 @@ class Horoscope:
             current_year=year,
             current_month=month,
             current_day=day,
+        )
+        if isinstance(raw, dict) and "error" in raw:
+            raise ValueError(raw["error"])
+        return TransitResult(
+            person_details=raw.get("person_details", {}),
+            target_period=raw.get("target_period", {}),
+            transit_stars=raw.get("transit_stars", []),
+            dai_han=raw.get("dai_han"),
+            tieu_han=raw.get("tieu_han"),
+            nguyet_han=raw.get("nguyet_han"),
+            nhat_han=raw.get("nhat_han"),
         )
 
     def auspicious(
@@ -341,11 +447,25 @@ class Horoscope:
         Any omitted component defaults to today's date.
         """
         today = date.today()
-        return _get_auspicious_details(
+        raw = _get_auspicious_details(
             day if day is not None else today.day,
             month if month is not None else today.month,
             year if year is not None else today.year,
             is_solar=True,
+        )
+        if isinstance(raw, dict) and "error" in raw:
+            raise ValueError(raw["error"])
+        return AuspiciousResult(
+            duong_lich=raw["duong_lich"],
+            am_lich=raw["am_lich"],
+            can_chi_ngay=raw["can_chi_ngay"],
+            ngay_hoang_dao=raw["ngay_hoang_dao"],
+            truc_ngay=raw["truc_ngay"],
+            nhi_thap_bat_tu=raw["nhi_thap_bat_tu"],
+            huong_xuat_hanh=raw["huong_xuat_hanh"],
+            gio_hoang_dao=raw["gio_hoang_dao"],
+            tiet_khi_hien_tai=raw.get("tiet_khi_hien_tai", "N/A"),
+            tiet_khi_tiep_theo=raw.get("tiet_khi_tiep_theo", "N/A"),
         )
 
     def render_chart(self, chart: HoroscopeResult | dict | None = None, year: int | None = None) -> str:
@@ -358,9 +478,11 @@ class Horoscope:
 
 
 __all__ = [
+    "AuspiciousResult",
     "BirthInfo",
     "Calendar",
     "Gender",
     "Horoscope",
     "HoroscopeResult",
+    "TransitResult",
 ]

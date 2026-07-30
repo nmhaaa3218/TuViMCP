@@ -7,7 +7,7 @@ Backward-compatible shim. The FastMCP server definition moved to
 ``from tuvi_mcp.mcp_server import generate_horoscope`` keep working.
 """
 
-from .server import (
+from ._server import (
     convert_calendar,
     generate_horoscope,
     get_auspicious_info,

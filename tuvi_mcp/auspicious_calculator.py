@@ -5,7 +5,7 @@
 Backward-compatible shim. Implementation moved to ``tuvi_mcp.auspicious``.
 """
 
-from .auspicious import (
+from ._auspicious import (
     CAN_MAP,
     DIRECTION_MAP,
     HOUR_WINDOW_MAP,

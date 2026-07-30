@@ -65,7 +65,7 @@ except Exception:
     Lich_EPHEM = None
 
 __title__ = "ansaotuvi"
-__version__ = "0.3.2"
+__version__ = "0.4.0"
 __author__ = "Manh Ha Nguyen"
 __author_email__ = "manh.ha.3218@gmail.com"
 __license__ = "MIT License"

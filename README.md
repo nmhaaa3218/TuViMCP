@@ -65,6 +65,24 @@ path = h.render_chart(chart, year=2026)
 
 The same library is what the MCP tools wrap, so behavior is identical whether you call `Horoscope.from_birth(...).chart()` or invoke the `generate_horoscope` tool from an MCP client.
 
+```python
+# All results support attribute access + to_dict() for JSON serialization
+chart = h.chart()
+print(chart.thien_ban["can_nam"], chart.thien_ban["chi_nam"])
+json_data = chart.to_dict()  # ← JSON-serializable dict
+
+# Transit (Vận Hạn) and Auspicious results are also typed objects
+van_han: TransitResult = h.transit(year=2026, month=5)
+auspicious: AuspiciousResult = h.auspicious(day=27, month=7, year=2026)
+
+# SQLite database — save, list, retrieve profiles
+from tuvi_mcp.database import init_db, save_horoscope, list_saved_horoscopes, get_saved_horoscope_by_name
+
+init_db()  # one-time setup
+save_horoscope("My Chart", chart.to_dict())
+profiles = list_saved_horoscopes()
+print(profiles)  # [{"id": 1, "name": "My Chart", ...}]
+```
 
 ### Known Limitations & Assumptions
 - **Timezone Assumption:** Calculations default to the Vietnamese local timezone (GMT+7). Birth details outside this timezone must be converted beforehand.

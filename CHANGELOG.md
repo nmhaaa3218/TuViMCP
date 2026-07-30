@@ -7,18 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.3.2] - 2026-07-28
+## [0.4.0] - 2026-07-30
 
 ### Added
 - **Public library API** (Phase 1 of library refactor): new typed, ergonomic surface for Python consumers.
   - `tuvi_mcp.Horoscope` — class with `from_birth(...)`, `.chart()`, `.transit()`, `.auspicious()`, `.render_chart()` methods.
   - `tuvi_mcp.BirthInfo` — frozen, validated dataclass for birth input.
-  - `tuvi_mcp.Gender` — `IntEnum` (`MALE = 1`, `FEMALE = -1`).
-  - `tuvi_mcp.Calendar` — `Enum` (`SOLAR`, `LUNAR`).
-  - `tuvi_mcp.HoroscopeResult` — typed chart result with `.to_dict()` serializer.
-  - `tuvi_mcp.calendar` — stable re-export of `convert_solar_to_lunar` / `convert_lunar_to_solar` / `validate_calendar_convert`.
-  - `tuvi_mcp.auspicious` — stable re-export of `get_auspicious_details`.
-- **17 new tests** in `tests/test_library_api.py` covering the public API surface.
+  - `tuvi_mcp.Gender` / `Calendar` — strongly-typed enums.
+  - `tuvi_mcp.HoroscopeResult`, `TransitResult`, `AuspiciousResult` — typed results with `.to_dict()` + dict-like access.
+- **17 new tests** in `tests/test_library_api.py`.
+
+### Changed
+- **Private module separation**: Internal implementation moved to underscore-prefixed modules:
+  - `auspicious.py` → `_auspicious.py` (public shim re-exports only `get_auspicious_details`)
+  - `server.py` → `_server.py` (public shim preserves backward compat for `mcp`, `generate_horoscope`, etc.)
+  - `_compat/` now has `__init__.py` for proper package structure.
+- **Library consistency**: `transit()` and `auspicious()` now return typed dataclasses (`TransitResult`, `AuspiciousResult`) matching the pattern set by `chart()` (`HoroscopeResult`). All three support attribute access, `.to_dict()`, and dict-like `__getitem__`.
+
+### Fixed
+- **`BirthInfo.parse_hour`** — now delegates to `_coerce_hour` instead of maintaining duplicate conversion logic.
+- **Hour validation** — `_coerce_hour` raises `ValueError` for values > 23 (previously silently wrapped via `% 24`).
+- **Chart error handling** — `chart()` raises `ValueError` on validation failure instead of returning an empty `HoroscopeResult` wrapping an error dict.
+- **`__getitem__` raises `KeyError`** (not `AttributeError`) for missing keys — correct dict-like behavior.
 
 ### Notes
 - All existing imports (`from tuvi_mcp import tuvi_calculator`, etc.) continue to work unchanged. The new API is purely additive.

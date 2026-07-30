@@ -14,7 +14,7 @@ Run with:
 import argparse
 import sys
 
-from .server import mcp
+from ._server import mcp
 
 
 def main() -> None:
