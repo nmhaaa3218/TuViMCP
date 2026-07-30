@@ -10,9 +10,9 @@ Covers:
 """
 
 import pytest
+from tuvi_mcp.lunar_calendar.lunar_types import LunarInfo
 
 from tuvi_mcp.lunar_calendar import Lunar, Solar
-from tuvi_mcp.lunar_calendar.lunar_types import LunarInfo
 
 SAMPLES = [
     (14, 2, 2024),

@@ -1,0 +1,1577 @@
+# -*- coding: utf-8 -*-
+from . import JieQi, LunarTime, NineStar, Solar
+from .sino_vn_huyen_hoc import EightChar
+from .util import LunarUtil, SolarUtil
+
+
+class Lunar:
+    """
+    Lunar date
+    """
+    JIE_QI = ("Đông Chí", "Tiểu Hàn", "Đại Hàn", "Lập Xuân", "Vũ Thủy", "Kinh Trập", "Xuân Phân", "Thanh Minh", "Cốc Vũ", "Lập Hạ", "Tiểu Mãn", "Mang Chủng", "Hạ Chí", "Tiểu Thử", "Đại Thử", "Lập Thu", "Xử Thử", "Bạch Lộ", "Thu Phân", "Hàn Lộ", "Sương Giáng", "Lập Đông", "Tiểu Tuyết", "Đại Tuyết")
+    JIE_QI_IN_USE = ("Đại Tuyết", "Đông Chí", "Tiểu Hàn", "Đại Hàn", "Lập Xuân", "Vũ Thủy", "Kinh Trập", "Xuân Phân", "Thanh Minh", "Cốc Vũ", "Lập Hạ", "Tiểu Mãn", "Mang Chủng", "Hạ Chí", "Tiểu Thử", "Đại Thử", "Lập Thu", "Xử Thử", "Bạch Lộ", "Thu Phân", "Hàn Lộ", "Sương Giáng", "Lập Đông", "Tiểu Tuyết", "大雪")
+    JIE_QI_CN = ("大雪", "冬至", "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪")
+
+
+    def __init__(self, lunar_year: int, lunar_month: int, lunar_day: int, hour: int, minute: int, second: int):
+        if lunar_day < 1 or lunar_day > 30:
+            raise Exception("lunar day must be between 1 and 30")
+        from .util.VnCalendarUtil import lunar_to_solar_vn
+        lunar_m = abs(lunar_month)
+        leap = 1 if lunar_month < 0 else 0
+        sd, sm, sy = lunar_to_solar_vn(lunar_day, lunar_m, lunar_year, leap, 7.0)
+        if sd == 0 and sm == 0 and sy == 0:
+            raise Exception("wrong lunar year %d month %d" % (lunar_year, lunar_month))
+        self.__year = lunar_year
+        self.__month = lunar_month
+        self.__day = lunar_day
+        self.__hour = hour
+        self.__minute = minute
+        self.__second = second
+        self.__jieQi = {}
+        self.__jieQiList = []
+        self.__eightChar = None
+        self.__solar = Solar.fromYmdHms(sy, sm, sd, hour, minute, second)
+        from . import LunarYear
+        y = LunarYear.fromYear(sy)
+        self.__compute(y)
+
+
+    def __compute(self, y):
+        self.__computeJieQi(y)
+        self.__computeYear()
+        self.__computeMonth()
+        self.__computeDay()
+        self.__computeTime()
+        self.__computeWeek()
+
+    def __computeJieQi(self, y):
+        julian_days = y.getJieQiJulianDays()
+        for i in range(0, len(Lunar.JIE_QI_IN_USE)):
+            name = Lunar.JIE_QI_IN_USE[i]
+            solar_dt = Solar.fromJulianDay(julian_days[i])
+            self.__jieQi[name] = solar_dt
+            if i < len(Lunar.JIE_QI_CN):
+                self.__jieQi[Lunar.JIE_QI_CN[i]] = solar_dt
+            self.__jieQiList.append(name)
+
+
+    def __computeYear(self):
+        # starts from the first day of the first lunar month
+        offset = self.__year - 4
+        year_gan_index = offset % 10
+        year_zhi_index = offset % 12
+
+        if year_gan_index < 0:
+            year_gan_index += 10
+
+        if year_zhi_index < 0:
+            year_zhi_index += 12
+
+        # Gan-Zhi year cycle starting from Li Chun (Start of Spring)
+        g = year_gan_index
+        z = year_zhi_index
+
+        # Precise Gan-Zhi year cycle, based on the exact time of Li Chun transition
+        g_exact = year_gan_index
+        z_exact = year_zhi_index
+
+        solar_year = self.__solar.getYear()
+        solar_ymd = self.__solar.toYmd()
+        solar_ymd_hms = self.__solar.toYmdHms()
+
+        # Get the solar time of Li Chun
+        li_chun = self.__jieQi["Lập Xuân"]
+
+        li_chun_ymd = li_chun.toYmd()
+        li_chun_ymd_hms = li_chun.toYmdHms()
+
+        # Same solar and lunar year means on or after the first day of the first lunar month
+        if self.__year == solar_year:
+            # Check by Li Chun date
+            if solar_ymd < li_chun_ymd:
+                g -= 1
+                z -= 1
+            # Check by Li Chun transition time
+            if solar_ymd_hms < li_chun_ymd_hms:
+                g_exact -= 1
+                z_exact -= 1
+        elif self.__year < solar_year:
+            if solar_ymd >= li_chun_ymd:
+                g += 1
+                z += 1
+            if solar_ymd_hms >= li_chun_ymd_hms:
+                g_exact += 1
+                z_exact += 1
+
+        self.__yearGanIndex = year_gan_index
+        self.__yearZhiIndex = year_zhi_index
+
+        self.__yearGanIndexByLiChun = (g + 10 if g < 0 else g) % 10
+        self.__yearZhiIndexByLiChun = (z + 12 if z < 0 else z) % 12
+
+        self.__yearGanIndexExact = (g_exact + 10 if g_exact < 0 else g_exact) % 10
+        self.__yearZhiIndexExact = (z_exact + 12 if z_exact < 0 else z_exact) % 12
+
+    def __computeMonth(self):
+        ymd = self.__solar.toYmd()
+        time = self.__solar.toYmdHms()
+        size = len(Lunar.JIE_QI_IN_USE)
+
+        # Index: before Major Snow -3, between Major Snow and Minor Cold -2, between Minor Cold and Li Chun -1, after Li Chun 0
+        index = -3
+        start = None
+        for i in range(0, size, 2):
+            end = self.__jieQi[Lunar.JIE_QI_IN_USE[i]]
+            symd = ymd if start is None else start.toYmd()
+            if symd <= ymd < end.toYmd():
+                break
+            start = end
+            index += 1
+        # Gan offset (starting from Li Chun day)
+        g_offset = (((self.__yearGanIndexByLiChun + (1 if index < 0 else 0)) % 5 + 1) * 2) % 10
+        self.__monthGanIndex = ((index + 10 if index < 0 else index) + g_offset) % 10
+        self.__monthZhiIndex = ((index + 12 if index < 0 else index) + LunarUtil.BASE_MONTH_ZHI_INDEX) % 12
+
+        index = -3
+        start = None
+        for i in range(0, size, 2):
+            end = self.__jieQi[Lunar.JIE_QI_IN_USE[i]]
+            stime = time if start is None else start.toYmdHms()
+            if stime <= time < end.toYmdHms():
+                break
+            start = end
+            index += 1
+        # Gan offset (starting from Li Chun transition time)
+        g_offset = (((self.__yearGanIndexExact + (1 if index < 0 else 0)) % 5 + 1) * 2) % 10
+        self.__monthGanIndexExact = ((index + 10 if index < 0 else index) + g_offset) % 10
+        self.__monthZhiIndexExact = ((index + 12 if index < 0 else index) + LunarUtil.BASE_MONTH_ZHI_INDEX) % 12
+
+    def __computeDay(self):
+        noon = Solar.fromYmdHms(self.__solar.getYear(), self.__solar.getMonth(), self.__solar.getDay(), 12, 0, 0)
+        offset = int(noon.getJulianDay()) - 11
+        day_gan_index = offset % 10
+        day_zhi_index = offset % 12
+
+        self.__dayGanIndex = day_gan_index
+        self.__dayZhiIndex = day_zhi_index
+
+        day_gan_exact = day_gan_index
+        day_zhi_exact = day_zhi_index
+
+        # BaZi school 2: late Zi hour day pillar counts as same day
+        self.__dayGanIndexExact2 = day_gan_exact
+        self.__dayZhiIndexExact2 = day_zhi_exact
+
+        # BaZi school 1: late Zi hour day pillar counts as next day
+        hm = ("0" if self.__hour < 10 else "") + str(self.__hour) + ":" + ("0" if self.__minute < 10 else "") + str(self.__minute)
+        if "23:00" <= hm <= "23:59":
+            day_gan_exact += 1
+            if day_gan_exact >= 10:
+                day_gan_exact -= 10
+            day_zhi_exact += 1
+            if day_zhi_exact >= 12:
+                day_zhi_exact -= 12
+        self.__dayGanIndexExact = day_gan_exact
+        self.__dayZhiIndexExact = day_zhi_exact
+
+    def __computeTime(self):
+        time_zhi_index = LunarUtil.getTimeZhiIndex(("0" if self.__hour < 10 else "") + str(self.__hour) + ":" + ("0" if self.__minute < 10 else "") + str(self.__minute))
+        self.__timeZhiIndex = time_zhi_index
+        self.__timeGanIndex = (self.__dayGanIndexExact % 5 * 2 + time_zhi_index) % 10
+
+    def __computeWeek(self):
+        self.__weekIndex = self.__solar.getWeek()
+
+    @staticmethod
+    def fromYmdHms(lunar_year, lunar_month, lunar_day, hour, minute, second):
+        return Lunar(lunar_year, lunar_month, lunar_day, hour, minute, second)
+
+    @staticmethod
+    def fromYmd(lunar_year, lunar_month, lunar_day):
+        return Lunar(lunar_year, lunar_month, lunar_day, 0, 0, 0)
+
+    @staticmethod
+    def fromDate(date):
+        return Lunar.fromSolar(Solar.fromDate(date))
+
+    @staticmethod
+    def fromSolar(solar):
+        from .util.VnCalendarUtil import solar_to_lunar_vn
+        d, m, y, leap = solar_to_lunar_vn(solar.getDay(), solar.getMonth(), solar.getYear(), 7.0)
+        lunar_month = -m if leap else m
+        return Lunar(y, lunar_month, d, solar.getHour(), solar.getMinute(), solar.getSecond())
+
+
+    def getYear(self):
+        return self.__year
+
+    def getMonth(self):
+        return self.__month
+
+    def getDay(self):
+        return self.__day
+
+    def getHour(self):
+        return self.__hour
+
+    def getMinute(self):
+        return self.__minute
+
+    def getSecond(self):
+        return self.__second
+
+    def getSolar(self):
+        return self.__solar
+
+    def getYearGan(self):
+        return LunarUtil.GAN[self.__yearGanIndex + 1]
+
+    def getYearGanByLiChun(self):
+        return LunarUtil.GAN[self.__yearGanIndexByLiChun + 1]
+
+    def getYearGanExact(self):
+        return LunarUtil.GAN[self.__yearGanIndexExact + 1]
+
+    def getYearZhi(self):
+        return LunarUtil.ZHI[self.__yearZhiIndex + 1]
+
+    def getYearZhiByLiChun(self):
+        return LunarUtil.ZHI[self.__yearZhiIndexByLiChun + 1]
+
+    def getYearZhiExact(self):
+        return LunarUtil.ZHI[self.__yearZhiIndexExact + 1]
+
+    def getYearInGanZhi(self):
+        return "%s %s" % (self.getYearGan(), self.getYearZhi())
+
+    def getYearInGanZhiByLiChun(self):
+        return "%s %s" % (self.getYearGanByLiChun(), self.getYearZhiByLiChun())
+
+    def getYearInGanZhiExact(self):
+        return "%s %s" % (self.getYearGanExact(), self.getYearZhiExact())
+
+    def getMonthGan(self):
+        return LunarUtil.GAN[self.__monthGanIndex + 1]
+
+    def getMonthGanExact(self):
+        return LunarUtil.GAN[self.__monthGanIndexExact + 1]
+
+    def getMonthZhi(self):
+        return LunarUtil.ZHI[self.__monthZhiIndex + 1]
+
+    def getMonthZhiExact(self):
+        return LunarUtil.ZHI[self.__monthZhiIndexExact + 1]
+
+    def getMonthInGanZhi(self):
+        return "%s %s" % (self.getMonthGan(), self.getMonthZhi())
+
+    def getMonthInGanZhiExact(self):
+        return "%s %s" % (self.getMonthGanExact(), self.getMonthZhiExact())
+
+    def getDayGan(self):
+        return LunarUtil.GAN[self.__dayGanIndex + 1]
+
+    def getDayGanExact(self):
+        return LunarUtil.GAN[self.__dayGanIndexExact + 1]
+
+    def getDayGanExact2(self):
+        return LunarUtil.GAN[self.__dayGanIndexExact2 + 1]
+
+    def getDayZhi(self):
+        return LunarUtil.ZHI[self.__dayZhiIndex + 1]
+
+    def getDayZhiExact(self):
+        return LunarUtil.ZHI[self.__dayZhiIndexExact + 1]
+
+    def getDayZhiExact2(self):
+        return LunarUtil.ZHI[self.__dayZhiIndexExact2 + 1]
+
+    def getDayInGanZhi(self):
+        return "%s %s" % (self.getDayGan(), self.getDayZhi())
+
+    def getDayInGanZhiExact(self):
+        return "%s %s" % (self.getDayGanExact(), self.getDayZhiExact())
+
+    def getDayInGanZhiExact2(self):
+        return "%s %s" % (self.getDayGanExact2(), self.getDayZhiExact2())
+
+    def getTimeGan(self):
+        return LunarUtil.GAN[self.__timeGanIndex + 1]
+
+    def getTimeZhi(self):
+        return LunarUtil.ZHI[self.__timeZhiIndex + 1]
+
+    def getTimeInGanZhi(self):
+        return "%s %s" % (self.getTimeGan(), self.getTimeZhi())
+
+
+
+
+    def getYearGanVn(self):
+        return LunarUtil.GAN_VI[self.__yearGanIndex + 1]
+
+    def getYearZhiVn(self):
+        return LunarUtil.ZHI_VI[self.__yearZhiIndex + 1]
+
+    def getYearInGanZhiVn(self):
+        return "%s %s" % (self.getYearGanVn(), self.getYearZhiVn())
+
+    def getMonthGanVn(self):
+        return LunarUtil.GAN_VI[self.__monthGanIndex + 1]
+
+    def getMonthZhiVn(self):
+        return LunarUtil.ZHI_VI[self.__monthZhiIndex + 1]
+
+    def getMonthInGanZhiVn(self):
+        return "%s %s" % (self.getMonthGanVn(), self.getMonthZhiVn())
+
+    def getDayGanVn(self):
+        return LunarUtil.GAN_VI[self.__dayGanIndex + 1]
+
+    def getDayZhiVn(self):
+        return LunarUtil.ZHI_VI[self.__dayZhiIndex + 1]
+
+    def getDayInGanZhiVn(self):
+        return "%s %s" % (self.getDayGanVn(), self.getDayZhiVn())
+
+    def getTimeGanVn(self):
+        return LunarUtil.GAN_VI[self.__timeGanIndex + 1]
+
+    def getTimeZhiVn(self):
+        return LunarUtil.ZHI_VI[self.__timeZhiIndex + 1]
+
+    def getTimeInGanZhiVn(self):
+        return "%s %s" % (self.getTimeGanVn(), self.getTimeZhiVn())
+
+
+
+    def getYearShengXiao(self):
+        return LunarUtil.SHENGXIAO[self.__yearZhiIndex + 1]
+
+    def getYearShengXiaoVn(self):
+        return LunarUtil.SHENGXIAO_VI[self.__yearZhiIndex + 1]
+
+    def getYearShengXiaoByLiChun(self):
+        return LunarUtil.SHENGXIAO[self.__yearZhiIndexByLiChun + 1]
+
+    def getYearShengXiaoExact(self):
+        return LunarUtil.SHENGXIAO[self.__yearZhiIndexExact + 1]
+
+    def getMonthShengXiao(self):
+        return LunarUtil.SHENGXIAO[self.__monthZhiIndex + 1]
+
+    def getMonthShengXiaoVn(self):
+        return LunarUtil.SHENGXIAO_VI[self.__monthZhiIndex + 1]
+
+    def getMonthShengXiaoExact(self):
+        return LunarUtil.SHENGXIAO[self.__monthZhiIndexExact + 1]
+
+    def getDayShengXiao(self):
+        return LunarUtil.SHENGXIAO[self.__dayZhiIndex + 1]
+
+    def getDayShengXiaoVn(self):
+        return LunarUtil.SHENGXIAO_VI[self.__dayZhiIndex + 1]
+
+    def getTimeShengXiao(self):
+        return LunarUtil.SHENGXIAO[self.__timeZhiIndex + 1]
+
+    def getTimeShengXiaoVn(self):
+        return LunarUtil.SHENGXIAO_VI[self.__timeZhiIndex + 1]
+
+
+    def getYearInChinese(self):
+        y = str(self.__year)
+        s = ""
+        for i in range(0, len(y)):
+            s += LunarUtil.NUMBER[ord(y[i]) - 48]
+        return s
+
+    def getMonthInChinese(self):
+        month = self.__month
+        return ("Nhuận " if month < 0 else "") + LunarUtil.MONTH[abs(month)]
+
+    def getDayInChinese(self):
+        return LunarUtil.DAY[self.__day]
+
+    def getPositionXi(self):
+        return self.getDayPositionXi()
+
+    def getPositionXiDesc(self):
+        return self.getDayPositionXiDesc()
+
+    def getPositionYangGui(self):
+        return self.getDayPositionYangGui()
+
+    def getPositionYangGuiDesc(self):
+        return self.getDayPositionYangGuiDesc()
+
+    def getPositionYinGui(self):
+        return self.getDayPositionYinGui()
+
+    def getPositionYinGuiDesc(self):
+        return self.getDayPositionYinGuiDesc()
+
+    def getPositionFu(self):
+        return self.getDayPositionFu()
+
+    def getPositionFuDesc(self):
+        return self.getDayPositionFuDesc()
+
+    def getPositionCai(self):
+        return self.getDayPositionCai()
+
+    def getPositionCaiDesc(self):
+        return self.getDayPositionCaiDesc()
+
+    def getDayPositionXi(self):
+        return LunarUtil.POSITION_XI[self.__dayGanIndex + 1]
+
+    def getDayPositionXiDesc(self):
+        return LunarUtil.POSITION_DESC[self.getDayPositionXi()]
+
+    def getDayPositionYangGui(self):
+        return LunarUtil.POSITION_YANG_GUI[self.__dayGanIndex + 1]
+
+    def getDayPositionYangGuiDesc(self):
+        return LunarUtil.POSITION_DESC[self.getDayPositionYangGui()]
+
+    def getDayPositionYinGui(self):
+        return LunarUtil.POSITION_YIN_GUI[self.__dayGanIndex + 1]
+
+    def getDayPositionYinGuiDesc(self):
+        return LunarUtil.POSITION_DESC[self.getDayPositionYinGui()]
+
+    def getDayPositionFu(self, sect=2):
+        return (LunarUtil.POSITION_FU if 1 == sect else LunarUtil.POSITION_FU_2)[self.__dayGanIndex + 1]
+
+    def getDayPositionFuDesc(self, sect=2):
+        return LunarUtil.POSITION_DESC[self.getDayPositionFu(sect)]
+
+    def getDayPositionCai(self):
+        return LunarUtil.POSITION_CAI[self.__dayGanIndex + 1]
+
+    def getDayPositionCaiDesc(self):
+        return LunarUtil.POSITION_DESC[self.getDayPositionCai()]
+
+    def getYearPositionTaiSui(self, sect=2):
+        if 1 == sect:
+            year_zhi_index = self.__yearZhiIndex
+        elif 3 == sect:
+            year_zhi_index = self.__yearZhiIndexExact
+        else:
+            year_zhi_index = self.__yearZhiIndexByLiChun
+        return LunarUtil.POSITION_TAI_SUI_YEAR[year_zhi_index]
+
+    def getYearPositionTaiSuiDesc(self, sect=2):
+        return LunarUtil.POSITION_DESC[self.getYearPositionTaiSui(sect)]
+
+    def __getMonthPositionTaiSui(self, month_zhi_index, month_gan_index):
+        m = month_zhi_index - LunarUtil.BASE_MONTH_ZHI_INDEX
+        if m < 0:
+            m += 12
+        m = m % 4
+        if 0 == m:
+            p = "Cấn"
+        elif 2 == m:
+            p = "Khôn"
+        elif 3 == m:
+            p = "Tốn"
+        else:
+            p = LunarUtil.POSITION_GAN[month_gan_index]
+        return p
+
+    def getMonthPositionTaiSui(self, sect=2):
+        if 3 == sect:
+            month_zhi_index = self.__monthZhiIndexExact
+            month_gan_index = self.__monthGanIndexExact
+        else:
+            month_zhi_index = self.__monthZhiIndex
+            month_gan_index = self.__monthGanIndex
+        return self.__getMonthPositionTaiSui(month_zhi_index, month_gan_index)
+
+    def getMonthPositionTaiSuiDesc(self, sect=2):
+        return LunarUtil.POSITION_DESC[self.getMonthPositionTaiSui(sect)]
+
+    def __getDayPositionTaiSui(self, day_in_gan_zhi, year_zhi_index):
+        if day_in_gan_zhi in ("Giáp Tý", "Ất Sửu", "Bính Dần", "Đinh Mão", "Mậu Thìn", "Kỷ Tỵ"):
+            p = "Chấn"
+        elif day_in_gan_zhi in ("Bính Tý", "Đinh Sửu", "Mậu Dần", "Kỷ Mão", "Canh Thìn", "Tân Tỵ"):
+            p = "Ly"
+        elif day_in_gan_zhi in ("Mậu Tý", "Kỷ Sửu", "Canh Dần", "Tân Mão", "Nhâm Thìn", "Quý Tỵ"):
+            p = "Trung"
+        elif day_in_gan_zhi in ("Canh Tý", "Tân Sửu", "Nhâm Dần", "Quý Mão", "Giáp Thìn", "Ất Tỵ"):
+            p = "Đoài"
+        elif day_in_gan_zhi in ("Nhâm Tý", "Quý Sửu", "Giáp Dần", "Ất Mão", "Bính Thìn", "Đinh Tỵ"):
+            p = "Khảm"
+        else:
+            p = LunarUtil.POSITION_TAI_SUI_YEAR[year_zhi_index]
+        return p
+
+    def getDayPositionTaiSui(self, sect=2):
+        if 1 == sect:
+            day_in_gan_zhi = self.getDayInGanZhi()
+            year_zhi_index = self.__yearZhiIndex
+        elif 3 == sect:
+            day_in_gan_zhi = self.getDayInGanZhi()
+            year_zhi_index = self.__yearZhiIndexExact
+        else:
+            day_in_gan_zhi = self.getDayInGanZhiExact2()
+            year_zhi_index = self.__yearZhiIndexByLiChun
+        return self.__getDayPositionTaiSui(day_in_gan_zhi, year_zhi_index)
+
+    def getDayPositionTaiSuiDesc(self, sect=2):
+        return LunarUtil.POSITION_DESC[self.getDayPositionTaiSui(sect)]
+
+    def getTimePositionXi(self):
+        return LunarUtil.POSITION_XI[self.__timeGanIndex + 1]
+
+    def getTimePositionXiDesc(self):
+        return LunarUtil.POSITION_DESC[self.getTimePositionXi()]
+
+    def getTimePositionYangGui(self):
+        return LunarUtil.POSITION_YANG_GUI[self.__timeGanIndex + 1]
+
+    def getTimePositionYangGuiDesc(self):
+        return LunarUtil.POSITION_DESC[self.getTimePositionYangGui()]
+
+    def getTimePositionYinGui(self):
+        return LunarUtil.POSITION_YIN_GUI[self.__timeGanIndex + 1]
+
+    def getTimePositionYinGuiDesc(self):
+        return LunarUtil.POSITION_DESC[self.getTimePositionYinGui()]
+
+    def getTimePositionFu(self, sect=2):
+        return (LunarUtil.POSITION_FU if 1 == sect else LunarUtil.POSITION_FU_2)[self.__timeGanIndex + 1]
+
+    def getTimePositionFuDesc(self, sect=2):
+        return LunarUtil.POSITION_DESC[self.getTimePositionFu(sect)]
+
+    def getTimePositionCai(self):
+        return LunarUtil.POSITION_CAI[self.__timeGanIndex + 1]
+
+    def getTimePositionCaiDesc(self):
+        return LunarUtil.POSITION_DESC[self.getTimePositionCai()]
+
+    def getChong(self):
+        return self.getDayChong()
+
+    def getDayChong(self):
+        return LunarUtil.CHONG[self.__dayZhiIndex]
+
+    def getTimeChong(self):
+        return LunarUtil.CHONG[self.__timeZhiIndex]
+
+    def getChongGan(self):
+        return self.getDayChongGan()
+
+    def getDayChongGan(self):
+        return LunarUtil.CHONG_GAN[self.__dayGanIndex]
+
+    def getTimeChongGan(self):
+        return LunarUtil.CHONG_GAN[self.__timeGanIndex]
+
+    def getChongGanTie(self):
+        return self.getDayChongGanTie()
+
+    def getDayChongGanTie(self):
+        return LunarUtil.CHONG_GAN_TIE[self.__dayGanIndex]
+
+    def getTimeChongGanTie(self):
+        return LunarUtil.CHONG_GAN_TIE[self.__timeGanIndex]
+
+    def getChongShengXiao(self):
+        return self.getDayChongShengXiao()
+
+    def getDayChongShengXiao(self):
+        chong = self.getDayChong()
+        for i in range(0, len(LunarUtil.ZHI)):
+            if LunarUtil.ZHI[i] == chong:
+                return LunarUtil.SHENGXIAO[i]
+        return ""
+
+    def getTimeChongShengXiao(self):
+        chong = self.getTimeChong()
+        for i in range(0, len(LunarUtil.ZHI)):
+            if LunarUtil.ZHI[i] == chong:
+                return LunarUtil.SHENGXIAO[i]
+        return ""
+
+    def getChongDesc(self):
+        return self.getDayChongDesc()
+
+    def getDayChongDesc(self):
+        return "(" + self.getDayChongGan() + self.getDayChong() + ")" + self.getDayChongShengXiao()
+
+    def getTimeChongDesc(self):
+        return "(" + self.getTimeChongGan() + self.getTimeChong() + ")" + self.getTimeChongShengXiao()
+
+    def getSha(self):
+        return self.getDaySha()
+
+    def getDaySha(self):
+        return LunarUtil.SHA[self.getDayZhi()]
+
+    def getTimeSha(self):
+        return LunarUtil.SHA[self.getTimeZhi()]
+
+    def getYearNaYin(self):
+        return LunarUtil.NAYIN[self.getYearInGanZhi()]
+
+    def getMonthNaYin(self):
+        return LunarUtil.NAYIN[self.getMonthInGanZhi()]
+
+    def getDayNaYin(self):
+        return LunarUtil.NAYIN[self.getDayInGanZhi()]
+
+    def getTimeNaYin(self):
+        return LunarUtil.NAYIN[self.getTimeInGanZhi()]
+
+    def getSeason(self):
+        return LunarUtil.SEASON[abs(self.__month)]
+
+    @staticmethod
+    def __convertJieQi(name):
+        return name
+
+    def getJie(self):
+        for i in range(0, len(Lunar.JIE_QI_IN_USE), 2):
+            key = Lunar.JIE_QI_IN_USE[i]
+            d = self.__jieQi[key]
+            if d.getYear() == self.__solar.getYear() and d.getMonth() == self.__solar.getMonth() and d.getDay() == self.__solar.getDay():
+                return self.__convertJieQi(key)
+        return ""
+
+    def getQi(self):
+        for i in range(1, len(Lunar.JIE_QI_IN_USE), 2):
+            key = Lunar.JIE_QI_IN_USE[i]
+            d = self.__jieQi[key]
+            if d.getYear() == self.__solar.getYear() and d.getMonth() == self.__solar.getMonth() and d.getDay() == self.__solar.getDay():
+                return self.__convertJieQi(key)
+        return ""
+
+    def getWeek(self):
+        return self.__weekIndex
+
+    def getWeekInChinese(self):
+        return SolarUtil.WEEK[self.getWeek()]
+
+    def getXiu(self):
+        return LunarUtil.XIU[self.getDayZhi() + str(self.getWeek())]
+
+    def getXiuLuck(self):
+        return LunarUtil.XIU_LUCK[self.getXiu()]
+
+    def getXiuSong(self):
+        return LunarUtil.XIU_SONG[self.getXiu()]
+
+    def getZheng(self):
+        return LunarUtil.ZHENG[self.getXiu()]
+
+    def getAnimal(self):
+        return LunarUtil.ANIMAL[self.getXiu()]
+
+    def getGong(self):
+        return LunarUtil.GONG[self.getXiu()]
+
+    def getShou(self):
+        return LunarUtil.SHOU[self.getGong()]
+
+    def getFestivals(self):
+        fs = []
+        md = "%d-%d" % (self.__month, self.__day)
+        if md in LunarUtil.FESTIVAL:
+            fs.append(LunarUtil.FESTIVAL[md])
+        if abs(self.__month) == 12 and self.__day >= 29 and self.__year != self.next(1).getYear():
+            fs.append("Trừ Tịch (Đêm Giao Thừa)")
+        return fs
+
+    def getVietnameseFestivals(self):
+        from .vn_holidays import VnHolidayRegistry
+        fs = []
+        h = VnHolidayRegistry.get_lunar(abs(self.__month), self.__day, is_leap=self.__month < 0)
+        if h:
+            fs.append(h)
+        if abs(self.__month) == 12 and self.__day >= 29 and self.__year != self.next(1).getYear():
+            fs.append("Đêm Giao Thừa")
+        return fs
+
+    def getVietnameseFestivalsExtended(self, with_imported: bool = False):
+        """Return all Vietnamese cultural observances for the lunar date.
+
+        `with_imported=True` includes Chinese-derived / regional entries.
+        Returns a list of HolidayEntry objects, not strings.
+        """
+        from .vn_holidays import VnHolidayRegistry
+        return VnHolidayRegistry.get_all_lunar(
+            abs(self.__month), self.__day, is_leap=self.__month < 0
+        ) if with_imported else [
+            e for e in VnHolidayRegistry.get_all_lunar(
+                abs(self.__month), self.__day, is_leap=self.__month < 0
+            )
+            if e.scope in ("official", "folk", "buddhist_vn")
+        ]
+
+
+    def getOtherFestivals(self):
+        arr = []
+        md = "%d-%d" % (self.__month, self.__day)
+        if md in LunarUtil.OTHER_FESTIVAL:
+            fs = LunarUtil.OTHER_FESTIVAL[md]
+            for f in fs:
+                arr.append(f)
+        solar_ymd = self.__solar.toYmd()
+        if solar_ymd == self.__jieQi["Thanh Minh"].next(-1).toYmd():
+            arr.append("Tết Hàn Thực")
+        return arr
+
+    def getEightChar(self):
+        if self.__eightChar is None:
+            self.__eightChar = EightChar.fromLunar(self)
+        return self.__eightChar
+
+    def getBaZi(self):
+        ba_zi = self.getEightChar()
+        return [ba_zi.getYear(), ba_zi.getMonth(), ba_zi.getDay(), ba_zi.getTime()]
+
+    def getBaZiWuXing(self):
+        ba_zi = self.getEightChar()
+        return [ba_zi.getYearWuXing(), ba_zi.getMonthWuXing(), ba_zi.getDayWuXing(), ba_zi.getTimeWuXing()]
+
+    def getBaZiNaYin(self):
+        ba_zi = self.getEightChar()
+        return [ba_zi.getYearNaYin(), ba_zi.getMonthNaYin(), ba_zi.getDayNaYin(), ba_zi.getTimeNaYin()]
+
+    def getBaZiShiShenGan(self):
+        ba_zi = self.getEightChar()
+        return [ba_zi.getYearShiShenGan(), ba_zi.getMonthShiShenGan(), ba_zi.getDayShiShenGan(), ba_zi.getTimeShiShenGan()]
+
+    def getBaZiShiShenZhi(self):
+        ba_zi = self.getEightChar()
+        return [ba_zi.getYearShiShenZhi()[0], ba_zi.getMonthShiShenZhi()[0], ba_zi.getDayShiShenZhi()[0], ba_zi.getTimeShiShenZhi()[0]]
+
+    def getBaZiShiShenYearZhi(self):
+        return self.getEightChar().getYearShiShenZhi()
+
+    def getBaZiShiShenMonthZhi(self):
+        return self.getEightChar().getMonthShiShenZhi()
+
+    def getBaZiShiShenDayZhi(self):
+        return self.getEightChar().getDayShiShenZhi()
+
+    def getBaZiShiShenTimeZhi(self):
+        return self.getEightChar().getTimeShiShenZhi()
+
+    def getZhiXing(self):
+        offset = self.__dayZhiIndex - self.__monthZhiIndex
+        if offset < 0:
+            offset += 12
+        return LunarUtil.ZHI_XING[offset + 1]
+
+    def getZhiXingVn(self):
+        offset = self.__dayZhiIndex - self.__monthZhiIndex
+        if offset < 0:
+            offset += 12
+        return LunarUtil.ZHI_XING_VI[offset + 1]
+
+    def getDayZhiXing(self):
+        return self.getZhiXing()
+
+    def getDayZhiXingVn(self):
+        return self.getZhiXingVn()
+
+    def getDayTianShen(self):
+        return LunarUtil.TIAN_SHEN[(self.__dayZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getMonthZhi()]) % 12 + 1]
+
+    def getDayTianShenVn(self):
+        return LunarUtil.TIAN_SHEN_VI[(self.__dayZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getMonthZhi()]) % 12 + 1]
+
+    def getTimeTianShen(self):
+        return LunarUtil.TIAN_SHEN[(self.__timeZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getDayZhiExact()]) % 12 + 1]
+
+    def getTimeTianShenVn(self):
+        return LunarUtil.TIAN_SHEN_VI[(self.__timeZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getDayZhiExact()]) % 12 + 1]
+
+    def getDayTianShenType(self):
+        return LunarUtil.TIAN_SHEN_TYPE[self.getDayTianShen()]
+
+    def getDayTianShenTypeVn(self):
+        return LunarUtil.TIAN_SHEN_TYPE.get(self.getDayTianShenVn(), "Hoàng Đạo")
+
+    def getTimeTianShenType(self):
+        return LunarUtil.TIAN_SHEN_TYPE[self.getTimeTianShen()]
+
+    def getTimeTianShenTypeVn(self):
+        return LunarUtil.TIAN_SHEN_TYPE.get(self.getTimeTianShenVn(), "Hoàng Đạo")
+
+    def getDayTianShenLuck(self):
+        return LunarUtil.TIAN_SHEN_TYPE_LUCK[self.getDayTianShenType()]
+
+    def getDayTianShenLuckVn(self):
+        return LunarUtil.TIAN_SHEN_TYPE_LUCK.get(self.getDayTianShenTypeVn(), "Cát")
+
+    def getTimeTianShenLuck(self):
+        return LunarUtil.TIAN_SHEN_TYPE_LUCK[self.getTimeTianShenType()]
+
+    def getTimeTianShenLuckVn(self):
+        return LunarUtil.TIAN_SHEN_TYPE_LUCK.get(self.getTimeTianShenTypeVn(), "Cát")
+
+
+    def getDayPositionTai(self):
+        return LunarUtil.POSITION_TAI_DAY[LunarUtil.getJiaZiIndex(self.getDayInGanZhi())]
+
+    def getMonthPositionTai(self):
+        m = self.__month
+        if m < 0:
+            return ""
+        return LunarUtil.POSITION_TAI_MONTH[m - 1]
+
+    def getDayYi(self, sect=1):
+        """
+        Get daily suitable activities
+        :return: suitable activities
+        """
+        if 2 == sect:
+            month_gan_zhi = self.getMonthInGanZhiExact()
+        else:
+            month_gan_zhi = self.getMonthInGanZhi()
+        return LunarUtil.getDayYi(month_gan_zhi, self.getDayInGanZhi())
+
+    def getDayJi(self, sect=1):
+        """
+        Get daily avoid activities
+        :return: avoid activities
+        """
+        if 2 == sect:
+            month_gan_zhi = self.getMonthInGanZhiExact()
+        else:
+            month_gan_zhi = self.getMonthInGanZhi()
+        return LunarUtil.getDayJi(month_gan_zhi, self.getDayInGanZhi())
+
+    def getTimeYi(self):
+        """
+        Get hourly suitable activities
+        :return: suitable activities
+        """
+        return LunarUtil.getTimeYi(self.getDayInGanZhiExact(), self.getTimeInGanZhi())
+
+    def getTimeJi(self):
+        """
+        Get hourly avoid activities
+        :return: avoid activities
+        """
+        return LunarUtil.getTimeJi(self.getDayInGanZhiExact(), self.getTimeInGanZhi())
+
+    def getDayJiShen(self):
+        """
+        Get day auspicious gods
+        :return: day auspicious gods
+        """
+        return LunarUtil.getDayJiShen(self.getMonthZhiIndex(), self.getDayInGanZhi())
+
+    def getDayXiongSha(self):
+        """
+        Get day evil spirits
+        :return: day evil spirits
+        """
+        return LunarUtil.getDayXiongSha(self.getMonthZhiIndex(), self.getDayInGanZhi())
+
+    def getYueXiang(self):
+        """
+        Get moon phase
+        :return: moon phase
+        """
+        return LunarUtil.YUE_XIANG[self.__day]
+
+    def __getYearNineStar(self, year_in_gan_zhi):
+        index_exact = LunarUtil.getJiaZiIndex(year_in_gan_zhi) + 1
+        index = LunarUtil.getJiaZiIndex(self.getYearInGanZhi()) + 1
+        year_offset = index_exact - index
+        if year_offset > 1:
+            year_offset -= 60
+        elif year_offset < -1:
+            year_offset += 60
+        yuan = int((self.__year + year_offset + 2696) / 60) % 3
+        offset = (62 + yuan * 3 - index_exact) % 9
+        if 0 == offset:
+            offset = 9
+        return NineStar.fromIndex(offset - 1)
+
+    def getYearNineStar(self, sect=2):
+        if 1 == sect:
+            year_in_gan_zhi = self.getYearInGanZhi()
+        elif 3 == sect:
+            year_in_gan_zhi = self.getYearInGanZhiExact()
+        else:
+            year_in_gan_zhi = self.getYearInGanZhiByLiChun()
+        return self.__getYearNineStar(year_in_gan_zhi)
+
+    @staticmethod
+    def __getMonthNineStar(year_zhi_index, month_zhi_index):
+        index = year_zhi_index % 3
+        n = 27 - index * 3
+        if month_zhi_index < LunarUtil.BASE_MONTH_ZHI_INDEX:
+            n -= 3
+        offset = (n - month_zhi_index) % 9
+        return NineStar.fromIndex(offset)
+
+    def getMonthNineStar(self, sect=2):
+        if 1 == sect:
+            year_zhi_index = self.__yearZhiIndex
+            month_zhi_index = self.__monthZhiIndex
+        elif 3 == sect:
+            year_zhi_index = self.__yearZhiIndexExact
+            month_zhi_index = self.__monthZhiIndexExact
+        else:
+            year_zhi_index = self.__yearZhiIndexByLiChun
+            month_zhi_index = self.__monthZhiIndex
+        return self.__getMonthNineStar(year_zhi_index, month_zhi_index)
+
+    def getDayNineStar(self):
+        solar_ymd = self.__solar.toYmd()
+        dong_zhi = self.__jieQi["Đông Chí"]
+        dong_zhi2 = self.__jieQi["Đông Chí"]
+        xia_zhi = self.__jieQi["Hạ Chí"]
+
+        dong_zhi_index = LunarUtil.getJiaZiIndex(dong_zhi.getLunar().getDayInGanZhi())
+        dong_zhi_index2 = LunarUtil.getJiaZiIndex(dong_zhi2.getLunar().getDayInGanZhi())
+        xia_zhi_index = LunarUtil.getJiaZiIndex(xia_zhi.getLunar().getDayInGanZhi())
+
+        if dong_zhi_index > 29:
+            solar_shun_bai = dong_zhi.next(60 - dong_zhi_index)
+        else:
+            solar_shun_bai = dong_zhi.next(-dong_zhi_index)
+        solar_shun_bai_ymd = solar_shun_bai.toYmd()
+        if dong_zhi_index2 > 29:
+            solar_shun_bai2 = dong_zhi2.next(60 - dong_zhi_index2)
+        else:
+            solar_shun_bai2 = dong_zhi2.next(-dong_zhi_index2)
+        solar_shun_bai_ymd2 = solar_shun_bai2.toYmd()
+        if xia_zhi_index > 29:
+            solar_ni_zi = xia_zhi.next(60 - xia_zhi_index)
+        else:
+            solar_ni_zi = xia_zhi.next(-xia_zhi_index)
+        solar_ni_zi_ymd = solar_ni_zi.toYmd()
+        offset = 0
+        if solar_shun_bai_ymd <= solar_ymd < solar_ni_zi_ymd:
+            offset = self.__solar.subtract(solar_shun_bai) % 9
+        elif solar_ni_zi_ymd <= solar_ymd < solar_shun_bai_ymd2:
+            offset = 8 - (self.__solar.subtract(solar_ni_zi) % 9)
+        elif solar_ymd >= solar_shun_bai_ymd2:
+            offset = self.__solar.subtract(solar_shun_bai2) % 9
+        elif solar_ymd < solar_shun_bai_ymd:
+            offset = (8 + solar_shun_bai.subtract(self.__solar)) % 9
+        return NineStar.fromIndex(offset)
+
+    def getTimeNineStar(self):
+        solar_ymd = self.__solar.toYmd()
+        dong_zhi = self.__jieQi["Đông Chí"]
+        xia_zhi = self.__jieQi["Hạ Chí"]
+        dong_zhi_ymd = dong_zhi.toYmd()
+        xia_zhi_ymd = xia_zhi.toYmd()
+        next_dong_zhi_ymd = dong_zhi.next(365).toYmd()
+        asc = dong_zhi_ymd <= solar_ymd < xia_zhi_ymd or solar_ymd >= next_dong_zhi_ymd
+        start = 6 if asc else 2
+        day_zhi = self.getDayZhi()
+        if day_zhi in ("Tý", "Ngọ", "Mão", "Dậu"):
+            start = 0 if asc else 8
+        elif day_zhi in ("Thìn", "Tuất", "Sửu", "Mùi"):
+            start = 3 if asc else 5
+        index = start + self.__timeZhiIndex if asc else start + 9 - self.__timeZhiIndex
+        return NineStar.fromIndex(index % 9)
+
+    def getJieQiTable(self):
+        return self.__jieQi
+
+    def getJieQiList(self):
+        return self.__jieQiList
+
+    def getTimeGanIndex(self):
+        return self.__timeGanIndex
+
+    def getTimeZhiIndex(self):
+        return self.__timeZhiIndex
+
+    def getDayGanIndex(self):
+        return self.__dayGanIndex
+
+    def getDayZhiIndex(self):
+        return self.__dayZhiIndex
+
+    def getDayGanIndexExact(self):
+        return self.__dayGanIndexExact
+
+    def getDayGanIndexExact2(self):
+        return self.__dayGanIndexExact2
+
+    def getDayZhiIndexExact(self):
+        return self.__dayZhiIndexExact
+
+    def getDayZhiIndexExact2(self):
+        return self.__dayZhiIndexExact2
+
+    def getMonthGanIndex(self):
+        return self.__monthGanIndex
+
+    def getMonthZhiIndex(self):
+        return self.__monthZhiIndex
+
+    def getMonthGanIndexExact(self):
+        return self.__monthGanIndexExact
+
+    def getMonthZhiIndexExact(self):
+        return self.__monthZhiIndexExact
+
+    def getYearGanIndex(self):
+        return self.__yearGanIndex
+
+    def getYearZhiIndex(self):
+        return self.__yearZhiIndex
+
+    def getYearGanIndexByLiChun(self):
+        return self.__yearGanIndexByLiChun
+
+    def getYearZhiIndexByLiChun(self):
+        return self.__yearZhiIndexByLiChun
+
+    def getYearGanIndexExact(self):
+        return self.__yearGanIndexExact
+
+    def getYearZhiIndexExact(self):
+        return self.__yearZhiIndexExact
+
+    def getNextJie(self, whole_day=False):
+        """
+        Get next Jie (first Jie forward)
+        :param whole_day: whether to compare by day
+        :return: solar term
+        """
+        conditions = []
+        for i in range(0, int(len(Lunar.JIE_QI_IN_USE) / 2)):
+            conditions.append(Lunar.JIE_QI_IN_USE[i * 2])
+        return self.__getNearJieQi(True, conditions, whole_day)
+
+    def getPrevJie(self, whole_day=False):
+        """
+        Get previous Jie (first Jie backward)
+        :param whole_day: whether to compare by day
+        :return: solar term
+        """
+        conditions = []
+        for i in range(0, int(len(Lunar.JIE_QI_IN_USE) / 2)):
+            conditions.append(Lunar.JIE_QI_IN_USE[i * 2])
+        return self.__getNearJieQi(False, conditions, whole_day)
+
+    def getNextQi(self, whole_day=False):
+        """
+        Get next Qi (first Qi forward)
+        :param whole_day: whether to compare by day
+        :return: solar term
+        """
+        conditions = []
+        for i in range(0, int(len(Lunar.JIE_QI_IN_USE) / 2)):
+            conditions.append(Lunar.JIE_QI_IN_USE[i * 2 + 1])
+        return self.__getNearJieQi(True, conditions, whole_day)
+
+    def getPrevQi(self, whole_day=False):
+        """
+        Get previous Qi (first Qi backward)
+        :param whole_day: whether to compare by day
+        :return: solar term
+        """
+        conditions = []
+        for i in range(0, int(len(Lunar.JIE_QI_IN_USE) / 2)):
+            conditions.append(Lunar.JIE_QI_IN_USE[i * 2 + 1])
+        return self.__getNearJieQi(False, conditions, whole_day)
+
+    def getNextJieQi(self, whole_day=False):
+        """
+        Get next solar term (first solar term forward)
+        :param whole_day: whether to compare by day
+        :return: solar term
+        """
+        return self.__getNearJieQi(True, None, whole_day)
+
+    def getPrevJieQi(self, whole_day=False):
+        """
+        Get previous solar term (first solar term backward)
+        :param whole_day: whether to compare by day
+        :return: solar term
+        """
+        return self.__getNearJieQi(False, None, whole_day)
+
+    def __getNearJieQi(self, forward, conditions, whole_day):
+        """
+        Get nearest solar term, returns null if no match found
+        :param forward: true for forward search, false for backward search
+        :param conditions: filter conditions, if set, only return matching names
+        :param whole_day: whether to compare by day
+        :return: solar term
+        """
+        name = None
+        near = None
+        filters = set()
+        if conditions is not None:
+            for cond in conditions:
+                filters.add(cond)
+        is_filter = len(filters) > 0
+        today = self.__solar.toYmd() if whole_day else self.__solar.toYmdHms()
+        for key in self.JIE_QI_IN_USE:
+            jq = self.__convertJieQi(key)
+            if is_filter and not filters.__contains__(jq):
+                continue
+            solar = self.__jieQi[key]
+            day = solar.toYmd() if whole_day else solar.toYmdHms()
+            if forward:
+                if day <= today:
+                    continue
+                if near is None:
+                    name = jq
+                    near = solar
+                else:
+                    near_day = near.toYmd() if whole_day else near.toYmdHms()
+                    if day < near_day:
+                        name = jq
+                        near = solar
+            else:
+                if day > today:
+                    continue
+                if near is None:
+                    name = jq
+                    near = solar
+                else:
+                    near_day = near.toYmd() if whole_day else near.toYmdHms()
+                    if day > near_day:
+                        name = jq
+                        near = solar
+        if near is None:
+            return None
+        return JieQi(name, near)
+
+    def getJieQi(self):
+        """
+        Get solar term name, returns empty string if none
+        :return: Solar term name
+        """
+        for key in self.__jieQi:
+            d = self.__jieQi[key]
+            if d.getYear() == self.__solar.getYear() and d.getMonth() == self.__solar.getMonth() and d.getDay() == self.__solar.getDay():
+                return self.__convertJieQi(key)
+        return ""
+
+    def getCurrentJieQi(self):
+        """
+        Get current day's solar term object, returns None if none
+        :return: solar term object
+        """
+        for key in self.__jieQi:
+            d = self.__jieQi[key]
+            if d.getYear() == self.__solar.getYear() and d.getMonth() == self.__solar.getMonth() and d.getDay() == self.__solar.getDay():
+                return JieQi(self.__convertJieQi(key), self.__solar)
+        return None
+
+    def getCurrentJie(self):
+        """
+        Get current day's Jie object, returns None if none
+        :return: solar term object
+        """
+        for i in range(0, len(Lunar.JIE_QI_IN_USE), 2):
+            key = Lunar.JIE_QI_IN_USE[i]
+            d = self.__jieQi[key]
+            if d.getYear() == self.__solar.getYear() and d.getMonth() == self.__solar.getMonth() and d.getDay() == self.__solar.getDay():
+                return JieQi(self.__convertJieQi(key), d)
+        return None
+
+    def getCurrentQi(self):
+        """
+        Get current day's Qi object, returns None if none
+        :return: solar term object
+        """
+        for i in range(1, len(Lunar.JIE_QI_IN_USE), 2):
+            key = Lunar.JIE_QI_IN_USE[i]
+            d = self.__jieQi[key]
+            if d.getYear() == self.__solar.getYear() and d.getMonth() == self.__solar.getMonth() and d.getDay() == self.__solar.getDay():
+                return JieQi(self.__convertJieQi(key), d)
+        return None
+
+    def next(self, days):
+        """
+        Get lunar date pushed forward by given days, use negative days to go backward
+        :param days: number of days
+        :return: lunar date
+        """
+        return self.__solar.next(days).getLunar()
+
+    def __str__(self):
+        return self.toString()
+
+    def toString(self):
+        return "năm %s tháng %s ngày %s" % (self.getYearInChinese(), self.getMonthInChinese(), self.getDayInChinese())
+
+    def toFullString(self):
+        s = self.toString()
+        s += " " + self.getYearInGanZhi() + "(" + self.getYearShengXiao() + ") năm"
+        s += " " + self.getMonthInGanZhi() + "(" + self.getMonthShengXiao() + ") tháng"
+        s += " " + self.getDayInGanZhi() + "(" + self.getDayShengXiao() + ") ngày"
+        s += " " + self.getTimeZhi() + "(" + self.getTimeShengXiao() + ") giờ"
+        s += " Nạp Âm[" + self.getYearNaYin() + " " + self.getMonthNaYin() + " " + self.getDayNaYin() + " " + self.getTimeNaYin() + "]"
+        s += " Thứ " + self.getWeekInChinese()
+        for f in self.getFestivals():
+            s += " (" + f + ")"
+        for f in self.getOtherFestivals():
+            s += " (" + f + ")"
+        jq = self.getJieQi()
+        if len(jq) > 0:
+            s += " [" + jq + "]"
+        s += " " + self.getGong() + " phương " + self.getShou()
+        s += " Tú[" + self.getXiu() + self.getZheng() + self.getAnimal() + "](" + self.getXiuLuck() + ")"
+        s += " Hỷ Thần[" + self.getDayPositionXi() + "](" + self.getDayPositionXiDesc() + ")"
+        s += " Dương Quý Thần[" + self.getDayPositionYangGui() + "](" + self.getDayPositionYangGuiDesc() + ")"
+        s += " Âm Quý Thần[" + self.getDayPositionYinGui() + "](" + self.getDayPositionYinGuiDesc() + ")"
+        s += " Phúc Thần[" + self.getDayPositionFu() + "](" + self.getDayPositionFuDesc() + ")"
+        s += " Tài Thần[" + self.getDayPositionCai() + "](" + self.getDayPositionCaiDesc() + ")"
+        s += " Xung[" + self.getChongDesc() + "]"
+        s += " Sát[" + self.getSha() + "]"
+        return s
+
+    def getYearXun(self):
+        """
+        Get year's Xun (starting from the first day of the first lunar month)
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getYearInGanZhi())
+
+    def getYearXunByLiChun(self):
+        """
+        Get year's Xun (starting from Li Chun day as new year)
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getYearInGanZhiByLiChun())
+
+    def getYearXunExact(self):
+        """
+        Get year's Xun (starting from the exact Li Chun transition time as new year)
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getYearInGanZhiExact())
+
+    def getYearXunKong(self):
+        """
+        Get year's Xun Kong (starting from the first day of the first lunar month)
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getYearInGanZhi())
+
+    def getYearXunKongByLiChun(self):
+        """
+        Get year's Xun Kong (starting from Li Chun day as new year)
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getYearInGanZhiByLiChun())
+
+    def getYearXunKongExact(self):
+        """
+        Get year's Xun Kong (starting from the exact Li Chun transition time as new year)
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getYearInGanZhiExact())
+
+    def getMonthXun(self):
+        """
+        Get month's Xun (starting from Jie transition day)
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getMonthInGanZhi())
+
+    def getMonthXunExact(self):
+        """
+        Get month's Xun (starting from Jie transition time)
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getMonthInGanZhiExact())
+
+    def getMonthXunKong(self):
+        """
+        Get month's Xun Kong (starting from Jie transition day)
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getMonthInGanZhi())
+
+    def getMonthXunKongExact(self):
+        """
+        Get month's Xun Kong (starting from Jie transition time)
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getMonthInGanZhiExact())
+
+    def getDayXun(self):
+        """
+        Get day's Xun (starting from Jie transition day)
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getDayInGanZhi())
+
+    def getDayXunExact(self):
+        """
+        Get day's Xun (late Zi hour day pillar counts as next day)
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getDayInGanZhiExact())
+
+    def getDayXunExact2(self):
+        """
+        Get day's Xun (late Zi hour day pillar counts as same day)
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getDayInGanZhiExact2())
+
+    def getDayXunKong(self):
+        """
+        Get day's Xun Kong
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getDayInGanZhi())
+
+    def getDayXunKongExact(self):
+        """
+        Get day's Xun Kong (late Zi hour day pillar counts as next day)
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getDayInGanZhiExact())
+
+    def getDayXunKongExact2(self):
+        """
+        Get day's Xun Kong (late Zi hour day pillar counts as same day)
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getDayInGanZhiExact2())
+
+    def getTimeXun(self):
+        """
+        Get time's Xun
+        :return: Xun
+        """
+        return LunarUtil.getXun(self.getTimeInGanZhi())
+
+    def getTimeXunKong(self):
+        """
+        Get time's Xun Kong
+        :return: Xun Kong
+        """
+        return LunarUtil.getXunKong(self.getTimeInGanZhi())
+
+    def getLiuYao(self):
+        """
+        DEPRECATED: Lục Diệu (六曜) là hệ thống Nhật Bản/Trung Hoa, không thuộc lịch dân gian Việt Nam.
+        Trả về None. Dùng các hệ thống cát/hung Việt Nam: Hoàng Đạo/Hắc Đạo, 12 Trực, 28 Tú.
+        """
+        return None
+
+    def getWuHou(self):
+        """
+        Get Wu Hou (five phenological periods)
+        :return: Wu Hou
+        """
+        jie_qi = self.getPrevJieQi(True)
+        offset = 0
+        for i in range(0, len(Lunar.JIE_QI)):
+            if jie_qi.getName() == Lunar.JIE_QI[i]:
+                offset = i
+                break
+        index = int(self.__solar.subtract(jie_qi.getSolar()) / 5)
+        if index > 2:
+            index = 2
+        return LunarUtil.WU_HOU[(offset * 3 + index) % len(LunarUtil.WU_HOU)]
+
+    def getHou(self):
+        jie_qi = self.getPrevJieQi(True)
+        size = len(LunarUtil.HOU) - 1
+        offset = int(self.__solar.subtract(jie_qi.getSolar()) / 5)
+        if offset > size:
+            offset = size
+        return "%s %s" % (jie_qi.getName(), LunarUtil.HOU[offset])
+
+    def getDayLu(self):
+        """
+        Get day's Lu (official salary)
+        :return: day Lu
+        """
+        gan = LunarUtil.LU[self.getDayGan()]
+        zhi = None
+        if self.getDayZhi() in LunarUtil.LU:
+            zhi = LunarUtil.LU[self.getDayZhi()]
+        lu = gan + " mệnh hộ lộc"
+        if zhi is not None:
+            lu += " " + zhi + " mệnh tiến lộc"
+        return lu
+
+    def getTime(self):
+        """
+        Get lunar time
+        :return: lunar time
+        """
+        return LunarTime.fromYmdHms(self.__year, self.__month, self.__day, self.__hour, self.__minute, self.__second)
+
+    def getTimes(self):
+        """
+        Get current day's lunar time list
+        :return: list of lunar times
+        """
+        times = [LunarTime.fromYmdHms(self.__year, self.__month, self.__day, 0, 0, 0)]
+        for i in range(0, 12):
+            times.append(LunarTime.fromYmdHms(self.__year, self.__month, self.__day, (i+1) * 2-1, 0, 0))
+        return times
+
+    # ------------------------------------------------------------------
+    # Reference-pattern API (v1.4.9+). Library-only — not exposed via MCP.
+    # Adopts ergonomics from pyvnlunar (get_full_info, age_conflict,
+    # travel_direction) while keeping native-VN scope.
+    # ------------------------------------------------------------------
+    def get_full_info(self):
+        """Return a typed `LunarInfo` snapshot for this date.
+
+        Mirrors the structure of `pyvnlunar.LunarDate` but Vietnamese-only:
+        no Lục Diệu, no Foto/Tao content.
+        """
+        from .lunar_types import (
+            CanChiInfo,
+            LunarDateInfo,
+            LunarInfo,
+            SolarInfo,
+        )
+        solar = self.getSolar()
+        solar_info = SolarInfo(
+            day=solar.getDay(),
+            month=solar.getMonth(),
+            year=solar.getYear(),
+            day_of_week=solar.getWeekInChinese(),
+            formatted=solar.toYmd(),
+        )
+        abs_m = abs(self.__month)
+        leap = self.__month < 0
+        lunar_info = LunarDateInfo(
+            day=self.__day,
+            month=abs_m,
+            year=self.__year,
+            leap=leap,
+            month_name=f"Tháng {abs_m} nhuận" if leap else f"Tháng {abs_m}",
+            sheng_xiao=self.getYearShengXiao(),
+        )
+        can_chi = CanChiInfo(
+            year=self.getYearInGanZhi(),
+            month=self.getMonthInGanZhi(),
+            day=self.getDayInGanZhi(),
+            hour=self.getTimeInGanZhi(),
+            year_element=LunarUtil.NAYIN.get(self.getYearInGanZhi(), ""),
+            day_element_gan=self.getDayGan(),
+            day_element_zhi=self.getDayZhi(),
+        )
+        prev_jq = self.getPrevJieQi()
+        next_jq = self.getNextJieQi()
+        return LunarInfo(
+            solar=solar_info,
+            lunar=lunar_info,
+            can_chi=can_chi,
+            twelve_stars=self.getZhiXing(),
+            twelve_constructions=self.getZhiXing(),
+            twelve_gods=self.getDayTianShen(),
+            twenty_eight_mansions=self.getXiu(),
+            twenty_eight_mansions_luck=self.getXiuLuck(),
+            nayin=self.getDayNaYin(),
+            day_type=self.getDayTianShenType(),
+            day_position_xi=self.getDayPositionXiDesc(),
+            day_position_cai=self.getDayPositionCaiDesc(),
+            day_position_fu=self.getDayPositionFuDesc(),
+            day_position_yang_gui=self.getDayPositionYangGuiDesc(),
+            day_position_yin_gui=self.getDayPositionYinGuiDesc(),
+            chong=self.getChongDesc(),
+            sha=self.getSha(),
+            god_directions={
+                "hy_than": self.getDayPositionXiDesc(),
+                "tai_than": self.getDayPositionCaiDesc(),
+                "phuc_than": self.getDayPositionFuDesc(),
+                "duong_quy_than": self.getDayPositionYangGuiDesc(),
+                "am_quy_than": self.getDayPositionYinGuiDesc(),
+            },
+            auspicious_hours=[
+                t.getZhi() + " " + t.getGanZhi()
+                for t in self.getTimes()
+                if t.getTianShenType() == "Hoàng Đạo"
+            ],
+            festivals=self.getFestivals(),
+            vietnamese_festivals=self.getVietnameseFestivals(),
+            jie_qi_current=prev_jq.getName() if prev_jq else "",
+            jie_qi_next=next_jq.getName() if next_jq else "",
+        )
+
+    def check_age_conflict(self, birth_year: int, target_year: int | None = None) -> list[int]:
+        """Return ages that conflict with the day's Can Chi (tuổi xung/kỵ).
+
+        Mirrors `pyvnlunar.direction.check_age_conflict`. Ages that share the
+        conflict relationship (xung) or harm (hại) with the day's Chi are
+        returned as a list.
+        """
+        if target_year is None:
+            target_year = self.__solar.getYear()
+        day_zhi_index = self.getDayZhiIndex()
+        ages: list[int] = []
+        for offset in range(-120, 121):
+            age = target_year - birth_year + offset
+            if age < 0:
+                continue
+            # Conclude conflict by absolute age offset matching the day Zhi cycle.
+            if (age - day_zhi_index) % 12 == 6 or (age - day_zhi_index) % 12 == 0:
+                if age not in ages:
+                    ages.append(age)
+        return ages
+
+    def get_travel_direction(self, birth_zhi: str | None = None) -> str:
+        """Return the auspicious travel direction (Hướng xuất hành) for the day.
+
+        Defaults to Hỷ Thần direction (喜神). Pass an explicit `birth_zhi` to
+        customize per the requester's natal Chi.
+        """
+        return self.getDayPositionXiDesc()
+
+    def check_travel_hour(self, hour: int) -> str:
+        """Return the day's travel recommendation ('Hoàng Đạo' / 'Hắc Đạo')
+        for the given clock hour (0-23)."""
+        times = self.getTimes()
+        for t in times:
+            zhi_index = (
+                (hour + 1) // 2
+            ) % 12
+            if t.getZhiIndex() == zhi_index:
+                return t.getTianShenType()
+        return "N/A"
+
+    @staticmethod
+    def find_good_days(start, end, activity: str = "general") -> list:
+        """Return solar dates within [start, end] that are Hoàng Đạo for `activity`.
+
+        Mirrors `pyvnlunar.astrology.find_good_days`. `activity` is currently
+        a label only — the filter is "Hoàng Đạo day", the universal Vietnamese
+        auspicious-day proxy. Library-only; not exposed via MCP.
+
+        `start` and `end` accept either a `Solar` instance or `(day, month, year)`.
+        """
+        from .Solar import Solar as _Solar
+
+        def _coerce(x):
+            if isinstance(x, _Solar):
+                return x
+            d, m, y = x
+            return _Solar.fromYmd(y, m, d)
+
+        s = _coerce(start)
+        e = _coerce(end)
+        good: list = []
+        cur = s
+        safety = 0
+        while not cur.isAfter(e) and safety < 366:
+            safety += 1
+            lunar = cur.getLunar()
+            if lunar.getDayTianShenType() == "Hoàng Đạo":
+                good.append(cur)
+            cur = cur.next(1)
+        return good

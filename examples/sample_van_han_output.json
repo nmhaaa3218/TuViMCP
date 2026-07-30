@@ -5,7 +5,7 @@
     "birth_solar": "10/6/1995",
     "birth_lunar": "13/5/1995",
     "birth_lunar_year_can_chi": "Ất Hợi",
-    "birth_lunar_month_can_chi": "Nhâm Thìn",
+    "birth_lunar_month_can_chi": "Nhâm Ngọ",
     "birth_lunar_day_can_chi": "Nhâm Thân",
     "birth_hour": "Đinh Mùi",
     "element": "H",
@@ -65,6 +65,18 @@
     "cung_than": false,
     "tuan_trung": true,
     "triet_lo": false,
+    "quan_he_hinh_hoc": {
+      "xung_chieu": "Mão",
+      "tam_hop": [
+        "Sửu",
+        "Tỵ"
+      ],
+      "nhi_hop": "Thìn",
+      "giap_cung": [
+        "Thân",
+        "Tuất"
+      ]
+    },
     "sao": [
       {
         "id": 33,
@@ -115,6 +127,18 @@
     "cung_than": false,
     "tuan_trung": true,
     "triet_lo": false,
+    "quan_he_hinh_hoc": {
+      "xung_chieu": "Dần",
+      "tam_hop": [
+        "Tý",
+        "Thìn"
+      ],
+      "nhi_hop": "Tỵ",
+      "giap_cung": [
+        "Mùi",
+        "Dậu"
+      ]
+    },
     "sao": [
       {
         "id": 14,
@@ -230,6 +254,18 @@
     "cung_than": false,
     "tuan_trung": false,
     "triet_lo": false,
+    "quan_he_hinh_hoc": {
+      "xung_chieu": "Dậu",
+      "tam_hop": [
+        "Mùi",
+        "Hợi"
+      ],
+      "nhi_hop": "Tuất",
+      "giap_cung": [
+        "Dần",
+        "Thìn"
+      ]
+    },
     "sao": [
       {
         "id": 5,
@@ -314,5 +350,6 @@
       }
     ],
     "transit_stars": []
-  }
+  },
+  "nhat_han": null
 }

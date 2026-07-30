@@ -197,10 +197,16 @@ def test_deleted_modules_absent():
 
 
 def test_eightchar_lives_under_sino_vn_huyen_hoc():
-    """EightChar is now in the explicitly-labeled subpackage."""
+    """EightChar is in the explicitly-labeled subpackage; canonical home
+    is the private ``_lunar_calendar`` package post-refactor."""
     from tuvi_mcp.lunar_calendar.sino_vn_huyen_hoc import EightChar
 
-    assert EightChar.__module__ == "tuvi_mcp.lunar_calendar.sino_vn_huyen_hoc.EightChar"
+    # Alias shim resolves to the private package where the class lives.
+    assert EightChar.__module__ == "tuvi_mcp._lunar_calendar.sino_vn_huyen_hoc.EightChar"
+    # The legacy public path also resolves thanks to ``sys.modules`` aliasing.
+    from tuvi_mcp._lunar_calendar.sino_vn_huyen_hoc import EightChar as _Private
+
+    assert EightChar is _Private
 
 
 def test_default_lunar_calendar_exports_no_eightchar():

@@ -3,6 +3,7 @@
 [![CI](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://img.shields.io/pypi/v/tuvi-mcp-server)](https://pypi.org/project/tuvi-mcp-server/)
+[![Documentation Status](https://readthedocs.org/projects/tuvi-mcp-server/badge/?version=latest)](https://tuvi-mcp-server.readthedocs.io/en/latest/)
 
 [![TuViMCP MCP server](https://glama.ai/mcp/servers/nmhaaa3218/TuViMCP/badges/card.svg)](https://glama.ai/mcp/servers/nmhaaa3218/TuViMCP)
 
@@ -15,6 +16,7 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 ## English Documentation
 
 ### Quick Links
+- [Full Documentation](https://tuvi-mcp-server.readthedocs.io/en/latest/)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Changelog / Release History](CHANGELOG.md)
 - [Example JSON Outputs & Scripts](examples/)
@@ -30,8 +32,65 @@ This is a Model Context Protocol (MCP) server developed in Python that calculate
 - **Flexible Hour Mapping:** Automatically maps calendar hours (e.g., "14:30") or string names (e.g., "Ngọ", "Tý") to the correct Earthly Branch hour index.
 - **Local Inlining (Independent):** Includes the core `ansaotuvi` calculation logic internally with custom Tuần/Triệt double-cung fixes.
 
+### Python Library API
+
+Beyond the MCP server, `tuvi-mcp-server` ships a typed, ergonomic Python API for direct use in scripts, notebooks, or web backends:
+
+```python
+from tuvi_mcp import Horoscope, BirthInfo, Gender, Calendar
+
+# Construct a horoscope handle from birth details (flexible hour / gender / calendar inputs)
+h = Horoscope.from_birth(
+    name="Nguyễn Văn A",
+    year=1995, month=6, day=10,
+    hour="14:30",          # also accepts "Ngọ", 14, or 7 (branch index)
+    gender="Nam",          # also accepts "male", 1, True, or Gender.MALE
+    calendar="solar",      # also accepts Calendar.SOLAR
+)
+
+# Base birth chart
+chart = h.chart()
+print(chart.thien_ban["can_nam"], chart.thien_ban["chi_nam"])
+print(len(chart.dia_ban), "cungs")
+
+# Vận Hạn for a target Lunar year/month/day
+van_han = h.transit(year=2026, month=5, day=15)
+print(van_han["target_period"]["current_year_can_chi"])
+print(van_han["nhat_han"])
+
+# Auspicious day evaluation
+auspicious = h.auspicious(day=27, month=7, year=2026)
+
+# Render chart as PNG
+path = h.render_chart(chart, year=2026)
+```
+
+The same library is what the MCP tools wrap, so behavior is identical whether you call `Horoscope.from_birth(...).chart()` or invoke the `generate_horoscope` tool from an MCP client.
+
+```python
+from tuvi_mcp import AuspiciousResult, TransitResult
+
+# All results support attribute access + to_dict() for JSON serialization
+chart = h.chart()
+print(chart.thien_ban["can_nam"], chart.thien_ban["chi_nam"])
+json_data = chart.to_dict()  # ← JSON-serializable dict
+
+# Transit (Vận Hạn) and Auspicious results are also typed objects
+van_han: TransitResult = h.transit(year=2026, month=5)
+auspicious: AuspiciousResult = h.auspicious(day=27, month=7, year=2026)
+
+# SQLite database — save, list, retrieve profiles
+from tuvi_mcp.database import init_db, save_horoscope, list_saved_horoscopes, get_saved_horoscope_by_name
+
+init_db()  # one-time setup
+id_ = save_horoscope("My Chart", 10, 6, 1995, 14, "Nam", True)
+print(f"saved as id {id_}")
+profiles = list_saved_horoscopes()
+print(profiles)  # [{"id": 1, "name": "My Chart", ...}]
+```
+
 ### Known Limitations & Assumptions
-- **Timezone Assumption:** Calculations default to the Vietnamese local timezone (GMT+7). Birth details outside this timezone must be converted beforehand.
+- **Timezone:** Calculations default to the Vietnamese local timezone (GMT+7). For births elsewhere, pass `timezone` explicitly to the MCP tool (`timezone` accepts an integer like `8` or an `h:30` string like `"8:30"`). Defaults to 7 when omitted. The astronomical engine uses the supplied `timezone` only for boundary rounding of the Solar↔Lunar date — the civil hour branch (chi giờ) is always derived from the user-supplied local clock time.
 - **Calendar Boundaries:** The core calculations are stable for modern birth years, but traditional leap months (tháng nhuận) follow standard Vietnamese lunar calendar mappings (Hoang Nam Dia methodology) which might vary in historical or remote future years.
 - **Calculations School (Phái):** Star distributions follow standard consensus calculations. Customizable star weight/distributions (different schools like Nam Phái vs. Bắc Phái vs. custom configurations) are not supported.
 
@@ -100,11 +159,12 @@ Generates a full Tử Vi chart from raw birth details, with optional high-qualit
   - `day` (integer): Day of birth (1-31).
   - `month` (integer): Month of birth (1-12).
   - `year` (integer): Year of birth.
-  - `hour_val` (string): Hour of birth (e.g., "14:30", "Ngọ", "Tý", or branch index `1-12`).
+  - `hour_val` (string): Hour of birth (e.g., "14:30", "Ngọ", "Tý", or branch index `1-12`). Interpreted as local civil time at the birthplace — do not convert to Vietnam time unless that is the intended civil-tz reference (see `timezone` below).
   - `gender_val` (string): Gender ("Nam" or "Nữ", case-insensitive).
   - `is_solar` (boolean): True for Solar, False for Lunar (default: True).
   - `current_year` (integer, optional): Year to inspect transit stars/Vận Hạn for (defaults to current year).
   - `generate_image` (boolean, optional): Whether to generate and return the high-quality chart image along with the chart data (default: True).
+  - `timezone` (integer or string, optional): UTC offset for the civil timezone at the birthplace. Accepts an integer (e.g. `7`, `-5`) or an `h:30` string (e.g. `"7:30"`, `"-5:30"`). Default: `7` (ICT/Vietnam). Other minute values and out-of-range inputs are rejected. Only the boundary rounding of astronomical events (lunar day, tiết-khí, Đông chí) is affected — the civil hour branch (chi giờ) is always derived from `hour_val`.
 * **Return Value:** 
   - If `generate_image` is `True`, returns a list containing `[Image, chart_data]` (where `Image` is a FastMCP Image content block pointing to the generated PNG).
   - If `generate_image` is `False`, returns the raw JSON dictionary `chart_data` directly. Contains keys: `thien_ban` (demographics, pillars, element, destiny) and `dia_ban` (12 houses with stars).
@@ -114,12 +174,14 @@ Generates a full Tử Vi chart from raw birth details, with optional high-qualit
 Calculates yearly transit stars and active houses (major, yearly, monthly, and daily periods) for a target period.
 * **Purpose & Comparison:** Use this tool to perform predictive transit analysis for a specific target timeframe.
 * **Side Effects:** None (read-only calculation).
-* **Calendar Prerequisites:** **CRITICAL:** `current_year` and `current_month` represent the **Lunar** year and month. If inspecting a Solar timeframe (e.g. 'October 2026'), you **MUST** convert it using `convert_calendar` first.
+* **Calendar Prerequisites:** **CRITICAL:** `current_year`, `current_month`, and (if provided) `current_day` represent the **Lunar** year, month, and day. If inspecting a Solar timeframe (e.g. 'October 2026'), you **MUST** convert it using `convert_calendar` first.
 * **Arguments:**
   - `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar` (same as birth parameters above).
   - `current_year` (integer): Target Lunar year to inspect (default: current year).
   - `current_month` (integer): Target Lunar month to inspect (1-12, default: 1).
-* **Return Value:** A dictionary with keys `person_details` (Can-Chi), `target_period` (resolved age and target), `transit_stars`, `dai_han`, and `tieu_han`. Returns `{"error": "error_message"}` if input details are invalid.
+  - `current_day` (integer, optional): Target Lunar day to inspect (1-30, enables Nhật Hạn).
+  - `timezone` (integer or string, optional): same as `generate_horoscope.timezone`.
+* **Return Value:** A dictionary with keys `person_details` (Can-Chi), `target_period` (resolved age and target), `transit_stars`, `dai_han`, `tieu_han`, `nguyet_han`, and (if `current_day` given) `nhat_han`. Returns `{"error": "error_message"}` if input details are invalid.
 
 #### 3. `convert_calendar`
 Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calendars.
@@ -131,7 +193,7 @@ Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calend
   - `year` (integer): Year of the date to convert.
   - `from_solar` (boolean): `True` to convert Solar -> Lunar (default), `False` to convert Lunar -> Solar.
   - `lunar_leap` (boolean): Only used if `from_solar` is `False`. `True` if the input lunar month is a leap month (tháng nhuận).
-  - `timezone` (integer): Timezone offset (default: 7 for Vietnam/ICT).
+  - `timezone` (integer or string): Timezone offset. Accepts an integer hour (e.g. `7`, `-5`, `9`) or an `h:30` string (e.g. `"7:30"`, `"-5:30"`, `"9:30"`). Default: `7` for Vietnam/ICT.
 * **Return Value:**
   - Converted date parameters: `day`, `month`, `year` of target calendar, plus a `leap` boolean (specifically indicating if the Lunar month is a leap month).
   - Returns `{"error": "error_message"}` if date arguments fail validation.
@@ -145,6 +207,7 @@ Evaluates auspicious days, hours, 12 Trực, 28 Tú, Tiết Khí, and travel dir
   - `month` (integer, optional): Month of year. Defaults to current month.
   - `year` (integer, optional): Year (4 digits). Defaults to current year.
   - `is_solar` (boolean, optional): `True` for Solar date (default), `False` for Lunar date.
+  - `timezone` (integer or string, optional): same as `generate_horoscope.timezone`. The Solar↔Lunar date mapping honors this; metadata lookups (can chi of day, tiết-khí names, trực, hoàng đạo) are derived from the Solar date via the OO layer which is anchored at UTC+7 for those J2000-epoch tables — exact tiết-khí timestamps in the response may differ slightly for non-7 tz near a tiết-khí boundary.
 * **Return Value:** A dictionary with keys: `duong_lich`, `am_lich`, `can_chi_ngay`, `ngay_hoang_dao`, `truc_ngay`, `nhi_thap_bat_tu`, `huong_xuat_hanh`, `gio_hoang_dao`, `tiet_khi_hien_tai`, `tiet_khi_tiep_theo`.
 
 ### Example Tool Call & JSON Outputs
@@ -153,7 +216,7 @@ To illustrate the structured responses, here is an example of what the server ou
 
 #### 1. Horoscope Generation Output Summary (`generate_horoscope`)
 
-When calling `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995, hour_val="14:30", gender_val="Nam", is_solar=true)`, the server outputs a structured JSON response containing `thien_ban` (person information) and `dia_ban` (the list of 12 houses and their stars).
+When calling `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995, hour_val="14:30", gender_val="Nam", is_solar=true)`, the server outputs a structured JSON response containing `thien_ban` (person information), `dia_ban` (the list of 12 houses and their stars), and `cach_cuc` (recognized astrological formations).
 
 **Response Snippet:**
 ```json
@@ -169,17 +232,17 @@ When calling `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1
     "hanh_cuc": 5,
     "ten_cuc": "Thổ ngũ Cục",
     "menh_chu": "Cự môn",
-    "than_chu": "Thiên tướng",
-    "ban_menh": "SƠN ÐẦU HỎA",
-    "cach_cuc": [
-      {
-        "ma": "CC-01",
-        "ten": "Thạch Trung Ẩn Ngọc",
-        "danh_gia": "Cách",
-        "mo_ta": "..."
-      }
-    ]
+    "than_chu": "Thiên cơ",
+    "ban_menh": "SƠN ÐẦU HỎA"
   },
+  "cach_cuc": [
+    {
+      "id": 5,
+      "name": "Đan Trì Quế Trì Cách",
+      "category": "Cát Cục",
+      "description": "Thái Dương cư Thìn Tỵ Ngọ (Đan Trì) hoặc Thái Âm cư Dậu Tuất Hợi (Quế Trì)."
+    }
+  ],
   "dia_ban": [
     {
       "cung_so": 1,
@@ -396,8 +459,10 @@ Tính toán sao lưu động và xác định các cung hạn đang kích hoạt
 
 * **Tham số:**
   * `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`: giống như trong `generate_horoscope`.
-  * `current_year` (integer): Năm cần xem hạn. Mặc định là năm hiện tại.
+  * `current_year` (integer): Năm âm lịch cần xem hạn. Mặc định là năm hiện tại.
   * `current_month` (integer): Tháng âm lịch cần xem hạn, từ 1 đến 12. Mặc định là 1.
+  * `current_day` (integer, tùy chọn): Ngày âm lịch cần xem hạn (1-30). Nếu cung cấp, sẽ tính thêm Nhật Hạn.
+  * `timezone` (integer hoặc string, tùy chọn): giống như `generate_horoscope.timezone`.
 
 ---
 
@@ -411,7 +476,7 @@ Chuyển đổi ngày qua lại giữa Dương lịch và Âm lịch.
   * `year` (integer): Năm cần chuyển đổi.
   * `from_solar` (boolean): `True` để chuyển đổi từ Dương lịch sang Âm lịch (mặc định), hoặc `False` để chuyển từ Âm lịch sang Dương lịch.
   * `lunar_leap` (boolean): Chỉ dùng khi `from_solar` là `False`. `True` nếu tháng âm lịch đầu vào là tháng nhuận.
-  * `timezone` (integer): Múi giờ, mặc định là 7 (Giờ Việt Nam).
+  * `timezone` (integer hoặc string): Múi giờ. Chấp nhận số nguyên giờ (vd. `7`, `-5`, `9`) hoặc chuỗi `h:30` (vd. `"7:30"`, `"-5:30"`, `"9:30"`). Mặc định: `7` (Giờ Việt Nam/ICT).
 * **Đầu ra:**
   * Nếu `from_solar` là `True`, trả về dictionary chứa `lunar_day`, `lunar_month`, `lunar_year`, `lunar_leap` (boolean), và chuỗi ngày đã định dạng `formatted`.
   * Nếu `from_solar` là `False`, trả về dictionary chứa `solar_day`, `solar_month`, `solar_year`, và chuỗi ngày đã định dạng `formatted`.
@@ -427,6 +492,7 @@ Chuyển đổi ngày qua lại giữa Dương lịch và Âm lịch.
   * `month` (integer, tùy chọn): Tháng. Mặc định là tháng hiện tại.
   * `year` (integer, tùy chọn): Năm (4 chữ số). Mặc định là năm hiện tại.
   * `is_solar` (boolean, tùy chọn): `True` nếu dùng Dương lịch (mặc định), `False` nếu dùng Âm lịch.
+  * `timezone` (integer hoặc string, tùy chọn): giống như `generate_horoscope.timezone`. Mapping Dương↔Âm theo múi giờ này; các tra cứu metadata (can chi ngày, tên tiết khí, trực, hoàng đạo) lấy từ lớp OO neo tại UTC+7 cho các bảng J2000 — timestamp tiết khí trong response có thể lệch nhẹ với tz ≠ 7.
 * **Đầu ra:** Dictionary chứa: `duong_lich`, `am_lich`, `can_chi_ngay`, `ngay_hoang_dao`, `truc_ngay`, `nhi_thap_bat_tu`, `huong_xuat_hanh`, `gio_hoang_dao`, `tiet_khi_hien_tai`, `tiet_khi_tiep_theo`.
 
 ---
@@ -437,7 +503,7 @@ Dưới đây là cấu trúc dữ liệu JSON thực tế do máy chủ MCP tr�
 
 #### 1. Kết quả Lập Lá Số (`generate_horoscope`)
 
-Khi gọi `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995, hour_val="14:30", gender_val="Nam", is_solar=true)`, đầu ra trả về đối tượng JSON gồm thông tin Thiên Bàn (`thien_ban`) và danh sách 12 cung Địa Bàn (`dia_ban`).
+Khi gọi `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995, hour_val="14:30", gender_val="Nam", is_solar=true)`, đầu ra trả về đối tượng JSON gồm thông tin Thiên Bàn (`thien_ban`), danh sách 12 cung Địa Bàn (`dia_ban`), và các cách cục (`cach_cuc`).
 
 **Đoạn trích đầu ra:**
 ```json
@@ -453,17 +519,17 @@ Khi gọi `generate_horoscope(name="Nguyễn Văn A", day=10, month=6, year=1995
     "hanh_cuc": 5,
     "ten_cuc": "Thổ ngũ Cục",
     "menh_chu": "Cự môn",
-    "than_chu": "Thiên tướng",
-    "ban_menh": "SƠN ÐẦU HỎA",
-    "cach_cuc": [
-      {
-        "ma": "CC-01",
-        "ten": "Thạch Trung Ẩn Ngọc",
-        "danh_gia": "Cách",
-        "mo_ta": "..."
-      }
-    ]
+    "than_chu": "Thiên cơ",
+    "ban_menh": "SƠN ÐẦU HỎA"
   },
+  "cach_cuc": [
+    {
+      "id": 5,
+      "name": "Đan Trì Quế Trì Cách",
+      "category": "Cát Cục",
+      "description": "Thái Dương cư Thìn Tỵ Ngọ (Đan Trì) hoặc Thái Âm cư Dậu Tuất Hợi (Quế Trì)."
+    }
+  ],
   "dia_ban": [
     {
       "cung_so": 1,

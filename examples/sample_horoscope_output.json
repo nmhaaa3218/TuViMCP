@@ -8,7 +8,7 @@
     "chi_gio_sinh": "Mùi",
     "can_gio_sinh": 4,
     "can_thang": "Nhâm",
-    "chi_thang": "Thìn",
+    "chi_thang": "Ngọ",
     "can_nam": "Ất",
     "chi_nam": "Hợi",
     "can_ngay": "Nhâm",
@@ -18,7 +18,7 @@
     "hanh_cuc": 5,
     "ten_cuc": "Thổ ngũ Cục",
     "menh_chu": "Cự môn",
-    "than_chu": "Thiên tướng",
+    "than_chu": "Thiên cơ",
     "menh": "H",
     "ban_menh": "SƠN ÐẦU HỎA",
     "sinh_khac": "Mệnh sinh Cục",
@@ -35,6 +35,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Ngọ",
+        "tam_hop": [
+          "Thìn",
+          "Thân"
+        ],
+        "nhi_hop": "Sửu",
+        "giap_cung": [
+          "Hợi",
+          "Sửu"
+        ]
+      },
       "sao": [
         {
           "id": 9,
@@ -129,6 +141,18 @@
       "cung_than": true,
       "tuan_trung": false,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Mùi",
+        "tam_hop": [
+          "Tỵ",
+          "Dậu"
+        ],
+        "nhi_hop": "Tý",
+        "giap_cung": [
+          "Tý",
+          "Dần"
+        ]
+      },
       "sao": [
         {
           "id": 3,
@@ -205,6 +229,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Thân",
+        "tam_hop": [
+          "Ngọ",
+          "Tuất"
+        ],
+        "nhi_hop": "Hợi",
+        "giap_cung": [
+          "Sửu",
+          "Mão"
+        ]
+      },
       "sao": [
         {
           "id": 4,
@@ -308,6 +344,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Dậu",
+        "tam_hop": [
+          "Mùi",
+          "Hợi"
+        ],
+        "nhi_hop": "Tuất",
+        "giap_cung": [
+          "Dần",
+          "Thìn"
+        ]
+      },
       "sao": [
         {
           "id": 5,
@@ -402,6 +450,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Tuất",
+        "tam_hop": [
+          "Thân",
+          "Tý"
+        ],
+        "nhi_hop": "Dậu",
+        "giap_cung": [
+          "Mão",
+          "Tỵ"
+        ]
+      },
       "sao": [
         {
           "id": 13,
@@ -523,6 +583,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Hợi",
+        "tam_hop": [
+          "Dậu",
+          "Sửu"
+        ],
+        "nhi_hop": "Thân",
+        "giap_cung": [
+          "Thìn",
+          "Ngọ"
+        ]
+      },
       "sao": [
         {
           "id": 6,
@@ -635,6 +707,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": true,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Tý",
+        "tam_hop": [
+          "Tuất",
+          "Dần"
+        ],
+        "nhi_hop": "Mùi",
+        "giap_cung": [
+          "Tỵ",
+          "Mùi"
+        ]
+      },
       "sao": [
         {
           "id": 1,
@@ -747,6 +831,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": true,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Sửu",
+        "tam_hop": [
+          "Hợi",
+          "Mão"
+        ],
+        "nhi_hop": "Ngọ",
+        "giap_cung": [
+          "Ngọ",
+          "Thân"
+        ]
+      },
       "sao": [
         {
           "id": 35,
@@ -805,6 +901,18 @@
       "cung_than": false,
       "tuan_trung": true,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Dần",
+        "tam_hop": [
+          "Tý",
+          "Thìn"
+        ],
+        "nhi_hop": "Tỵ",
+        "giap_cung": [
+          "Mùi",
+          "Dậu"
+        ]
+      },
       "sao": [
         {
           "id": 14,
@@ -917,6 +1025,18 @@
       "cung_than": false,
       "tuan_trung": true,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Mão",
+        "tam_hop": [
+          "Sửu",
+          "Tỵ"
+        ],
+        "nhi_hop": "Thìn",
+        "giap_cung": [
+          "Thân",
+          "Tuất"
+        ]
+      },
       "sao": [
         {
           "id": 33,
@@ -966,6 +1086,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Thìn",
+        "tam_hop": [
+          "Dần",
+          "Ngọ"
+        ],
+        "nhi_hop": "Mão",
+        "giap_cung": [
+          "Dậu",
+          "Hợi"
+        ]
+      },
       "sao": [
         {
           "id": 2,
@@ -1069,6 +1201,18 @@
       "cung_than": false,
       "tuan_trung": false,
       "triet_lo": false,
+      "quan_he_hinh_hoc": {
+        "xung_chieu": "Tỵ",
+        "tam_hop": [
+          "Mão",
+          "Mùi"
+        ],
+        "nhi_hop": "Dần",
+        "giap_cung": [
+          "Tuất",
+          "Tý"
+        ]
+      },
       "sao": [
         {
           "id": 8,
@@ -1161,6 +1305,88 @@
           "attribute": "Hãm địa"
         }
       ]
+    }
+  ],
+  "cach_cuc": [
+    {
+      "id": 5,
+      "name": "Đan Trì Quế Trì Cách",
+      "category": "Cát Cục",
+      "description": "Thái Dương cư Thìn Tỵ Ngọ (Đan Trì) hoặc Thái Âm cư Dậu Tuất Hợi (Quế Trì).",
+      "reason": "Thái Dương/Thái Âm miếu vượng rực rỡ tại Cung Mệnh.",
+      "co_ca": "Nhị diệu thường minh chính đắc trung\nTài hoa thanh thế định anh hùng\nThiếu niên tế đắc phong vân hội\nNhất dược thiên trì tiện hóa long.\nDịch nghĩa:\nHai",
+      "binh_chu": "Tuất, an mệnh tại cung Thìn hoặc cung Tuất. Thái dương cư Tị, Thái âm cư Dậu, an mệnh ở cung Tị hoặc cung Dậu. Cổ ca nói: Nhị diệu thường minh chính đắc trung Tài hoa thanh thế định anh hùng Thiếu niên tế đắc phong vân hội Nhất dược thiên trì tiện hóa long. Dịch nghĩa: Hai sao thường sáng chính đắc trung Tài hoa thanh thế định anh hùng Tuổi trẻ đỗ đạt ra làm quan Một bước lên mây hóa thành rồng. Thái dương thủ mệnh mà nhập miếu, cổ nhân gọi là \"đan trì\", Thái âm thủ mệnh mà nhập miếu, cổ nhân gọi là \"quế trì\". 47 Thời cổ đại xem trọng công danh khoa cử, mà không trọng sự giầu có của giới thươn...",
+      "uu_khuyet_diem": ""
+    },
+    {
+      "id": 11,
+      "name": "Cơ Nguyệt Đồng Lương Cách",
+      "category": "Cát Cục",
+      "description": "Bốn sao Thiên Cơ, Thái Âm, Thiên Đồng, Thiên Lương hội tụ tại Tam Phương Tứ Chính.",
+      "reason": "Bộ sao Cơ Nguyệt Đồng Lương hội hợp, phù hợp công chức, quản lý, tư vấn.",
+      "co_ca": "Dần Thân tứ diệu mệnh gia lâm\nTổ tông căn nguyên định hữu thành\nĐao bút chỉ trung nghi tác lực\nVinh hoa phát vượng tại công môn\nDịch nghĩa:\n87\nDần Thân cung mệnh bốn",
+      "binh_chu": "Bốn sao Thiên Cơ, Thái Âm, Thiên Đồng, Thiên Lương tập trung tại các cung mệnh, tài, quan (Cần phải xuất hiện đồng thời cả 4 sao). Ưu điểm: Có tài hoạch định, có năng lực làm việc và trợ giúp, nếu làm việc tại các cơ quan nhà nước, sự nghiệp hành chính sẽ có triển vọng tốt, đảm nhiệm chức vụ cao, phù hợp với các lĩnh vực giáo dục, truyền thông, văn hóa hoặc các công việc đòi hỏi chất xám, kỹ thuật, hoặc các nghề môi giới, tư vấn, đại lý, kinh doanh cửa hàng. 86 Khuyết điểm: Nếu bốn sao trên trấn mệnh tại cung Dần Thân sẽ bất lợi về mặt tình cảm, tính cách trầm lặng hoặc dễ kích động. Với cách...",
+      "uu_khuyet_diem": "Ưu điểm: Có tài hoạch định, có năng lực làm việc và trợ giúp, nếu làm việc tại | Khuyết điểm: Nếu bốn sao trên trấn mệnh tại cung Dần Thân sẽ bất lợi về mặt"
+    },
+    {
+      "id": 13,
+      "name": "Văn Lương Chấn Kỷ Cách",
+      "category": "Cát Cục",
+      "description": "Sao Văn Xương và Thiên Lương hội chiếu Cung Mệnh.",
+      "reason": "Văn Xương tài hoa kết hợp Thiên Lương cương trực, giữ gìn kỷ cương pháp luật.",
+      "co_ca": "Văn tinh cảnh trực ngộ Thiên Lương\nVị liệt hoàng môn điểu phủ hành\nCương kỷ triều trung công nghiệp kiến\nBức nhân thanh khí mãn càn khôn\nNghĩa là:",
+      "binh_chu": "Thiên Cơ, Văn Khúc cùng trấn mệnh tại cung Dần hoặc Ngọ, hoặc sao Thiên Lương trấn mệnh tại cung Ngọ, có sao Văn Khúc tại cung Tý củng chiếu. Ưu điểm: Quyền cao chức trọng, phúc thọ song toàn, giỏi tính toán, dự đoán, 89 theo nghiệp võ sẽ hiển đạt. Văn Khúc hoặc Văn Xương và Thiên Lương trấn mệnh tại Vượng địa, tại cung tam phương có các sao Lộc tồn, Hóa Khoa, Hóa quyền, Hóa Lộc, Tả Phụ, Hữu Bật, Thiên Khôi, Thiên Việt gia hội là thuộc cách cục này. Nên theo nghiệp chính trị, nếu gặp nhiều cát tinh, chủ về cực hiển quý. Ca quyết như sau: Văn tinh cảnh trực ngộ Thiên Lương Vị liệt hoàng môn điể...",
+      "uu_khuyet_diem": "Ưu điểm: Quyền cao chức trọng, phúc thọ song toàn, giỏi tính toán, dự đoán,"
+    },
+    {
+      "id": 17,
+      "name": "Dương Lương Xương Lộc Cách",
+      "category": "Cát Cục",
+      "description": "Thái Dương, Thiên Lương, Văn Xương và Lộc Tồn/Hóa Lộc hội chiếu Cung Mệnh.",
+      "reason": "Bộ sao thi cử danh tiếng bậc nhất, vô cùng lợi cho thi cử, khoa bảng, vị trí cao.",
+      "co_ca": "N/A",
+      "binh_chu": "Cũng chính là cách cục Nhật chiếu lôi môn, sao Thái Dương và sao Thiên Lương trấn mệnh tại cung Mão, ngoài ra còn phải là người sinh năm Ất, cung mệnh đồng thời xuất hiện Lộc Tồn và Văn Xương mới hợp cách. Nếu lá số được cách cục này, sự nghiệp học hành cực kỳ xuất sắc, thi cử đỗ đạt cao, đảm nhiệm các vị trí, chức vụ trọng yếu của nhà nước, trở thành nhân vật nổi tiếng trong chính giới, cực hiển quý. Ưu điểm: Dự thi công chức hoặc các kỳ thi quốc gia sẽ có thành tích cao, tiền tài chức vị song toàn, hợp với nghề kinh doanh. Trong kinh văn có viết: \" Lương, Dương, Xương, Lộc tề tựu, thi cử đỗ...",
+      "uu_khuyet_diem": "Ưu điểm: Dự thi công chức hoặc các kỳ thi quốc gia sẽ có thành tích cao, tiền"
+    },
+    {
+      "id": 19,
+      "name": "Nguyệt Lãng Thiên Môn Cách",
+      "category": "Cát Cục",
+      "description": "Thái Âm miếu địa rạng rỡ tại Hợi trấn Cung Mệnh.",
+      "reason": "Thái Âm đêm rằm chiếu sáng cửa trời tại Hợi, chủ về thanh cao, đại phú đại quý.",
+      "co_ca": "Chính ngộ phong vân tế hội kỳ\nHải môn cao xứ nhất long phi\nVăn chương gian xuất anh hùng hán\nVạn lý công danh đắc giả hy\nThái Âm nhập miếu hữu quang huy\nTài nhập tài hương phân ngoại kỳ\nPhá hao hung tinh giai bất phạm\nĐôi kim tích ngọc phú hào nhi\nNghĩa là:\nGặp hội phong vân nhiều cơ hội\nNon cao bể rộng gặp rồng bay\nTừ văn chương phất người hào kiệt\nGiành được công danh thực hiếm thay\nThái Âm nhập miếu hào quang rọi\nTài nhập cung tài ắt được may\n96\nHung tinh phá bại đều không phạm\nNên nhà giàu có vàng ngọc đầy\nKinh văn có câu: \" Trăng sáng cổng trời, thăng quan tiến bước\".",
+      "binh_chu": "Hay còn gọi là Nguyệt lạc Hợi cung (Trăng rơi cung Hợi), tức người sinh vào ban đêm, gặp sao Thái Âm trấn mệnh tại cung Hợi, lại được Lộc Tồn, Khoa, Quyền, Lộc, Tả, Hữu, Xương, Khúc, Khôi, Việt gia hội là hợp cách cục này. Lá 95 số hợp cách cục này không đại quý cũng là đại phú. Sao Thái Âm cùng cung với Xương, Khúc là tốt nhất, người sinh năm Ất, Bính, Mậu là đẹp nhất, tiếp theo là các năm Đinh, Tân, Canh. Tại cung mệnh có sát tinh là phá cách. Ưu điểm: Sao Thái Âm nhập miếu Hợi cung, người Nam dung mạo thanh tú cử chỉ lịch thiệp, người nữ xinh đẹp yêu kiều. Thông minh tài trí, học vấn, tài n...",
+      "uu_khuyet_diem": "Ưu điểm: Sao Thái Âm nhập miếu Hợi cung, người Nam dung mạo thanh tú cử"
+    },
+    {
+      "id": 29,
+      "name": "Quyền Lộc Tuần Phùng Cách",
+      "category": "Cát Cục",
+      "description": "Hóa Quyền và Hóa Lộc đồng cung hoặc hội chiếu tại Cung Mệnh.",
+      "reason": "Quyền hành đi đôi với Tài lộc, chủ về vừa có uy quyền vừa có tài chính dồi dào.",
+      "co_ca": "Mệnh phùng Quyền Lộc thực kham khoa\nThiên tải công danh phú quý gia\nĐơn kiến dã ưng thân phúc hậu\nBình sinh ổn bộ hảo sinh nhai\nNghĩa là:\nMệnh gặp Quyền Lộc thực đáng mừng\nCông danh bền vững được giàu sang\nChỉ gặp một",
+      "binh_chu": "1. Sao Hóa Lộc và Hóa Quyền cùng tại cung mệnh là thuộc cách cục này. Cụ thể như sau: - Người sinh năm Ất, sao Thiên Cơ, Thiên Lương trấn mệnh tại Thìn, Tuất, Thiên Cơ hóa Lộc, Thiên Lương hóa Quyền. - Người sinh năm Đinh, sao Thiên Đồng, Thái Âm trấn mệnh tại Tý, Ngọ, Thái Âm hóa Lộc, Thiên Đồng hóa Quyền. - Người sinh năm Kỷ, sao Vũ Khúc, Tham Lang trấn mệnh tại Sửu, Mùi, Vũ Khúc hóa Lộc, Tham Lang hóa Quyền. - Người sinh năm Tân, sao Cự Môn, Thái Dương trấn mệnh tại cung Dần, Thân, Cự Môn hóa Lộc, Thái Dương hóa Quyền. Các sao tại cung mệnh cần phải miếu vượng, tại cung tam phương tứ chính...",
+      "uu_khuyet_diem": ""
+    },
+    {
+      "id": 41,
+      "name": "Song Lộc Triều Viên Cách",
+      "category": "Cát Cục",
+      "description": "Lộc Tồn và Hóa Lộc cùng hội chiếu Cung Mệnh từ Tam Phương Tứ Chính.",
+      "reason": "Hai nguồn tài lộc hội chiếu Cung Mệnh, chủ về tài lộc dồi dào từ nhiều nguồn.",
+      "co_ca": "Tài quan nhị xứ dữ thiên di\nSong lộc phùng chi tối hữu ích\nĐức hợp càn khôn nhân kính trọng\nThao thao phú quý thế hy kỳ\nNghĩa là:\nTài quan hai cung cùng thiên di\nHai Lộc gặp nhau thật thích nghi\nĐức ngang trời đất ngừoi kính trọng\nGiàu sang chất ngất khó ai bì\nKinh văn có viết: \" Hai Lộc gặp nhau một đời phú quý\".\n125",
+      "binh_chu": "Cung vị tam phương tứ chính của cung mệnh có Lộc Tồn, Hóa Lộc gia hội. Ca quyết: Tài quan nhị xứ dữ thiên di Song lộc phùng chi tối hữu ích Đức hợp càn khôn nhân kính trọng Thao thao phú quý thế hy kỳ Nghĩa là: Tài quan hai cung cùng thiên di Hai Lộc gặp nhau thật thích nghi Đức ngang trời đất ngừoi kính trọng Giàu sang chất ngất khó ai bì Kinh văn có viết: \" Hai Lộc gặp nhau một đời phú quý\". 125...",
+      "uu_khuyet_diem": ""
+    },
+    {
+      "id": 43,
+      "name": "Lộc Mã Giao Trì Cách",
+      "category": "Cát Cục",
+      "description": "Lộc Tồn (hoặc Hóa Lộc) gặp Thiên Mã tại Cung Mệnh hoặc Tam Phương.",
+      "reason": "Tài lộc bôn ba năng động, dễ kinh doanh buôn bán thành công, phát tài xa quê hương.",
+      "co_ca": "N/A",
+      "binh_chu": "Tại cung vị tam phương tứ chính của cung mệnh có Lộc Tồn (hoặc Hóa Lộc), lại có Thiên Mã gia hội. Lá số sở hữu cách cục này thường là phát tài tại quê người hoặc có được tiền tài từ nơi xa đến, môi trường sống có nhiều thay đổi lớn, thường xa quê, du lịch, sự nghiệp chủ về bôn ba vất vả để làm ăn. Gặp nhiều cát tinh sẽ trở thành cự phú. Kinh văn có viết: \" Lộc Mã thích được song hành\", \" Thiên Lộc, Thiên Mã, thi cử thành tích lẫy lừng\". Nhận định về cát cách Hóa Lộc, Lộc Tồn: Sao Hóa Lộc và Sao Lộc Tồn là hai tài tinh quan trọng trong Tử Vi Đẩu Số, hai ngôi sao này có những điểm tương đồng và...",
+      "uu_khuyet_diem": ""
     }
   ]
 }

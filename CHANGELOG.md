@@ -7,6 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.0] - 2026-07-30
+
+### Added
+- **Public library API** (Phase 1 of library refactor, `f40ba0c`): new typed, ergonomic surface for Python consumers.
+  - `tuvi_mcp.Horoscope` — class with `from_birth(...)`, `.chart()`, `.transit()`, `.auspicious()`, `.render_chart()` methods.
+  - `tuvi_mcp.BirthInfo` — frozen, validated dataclass for birth input.
+  - `tuvi_mcp.Gender` / `Calendar` — strongly-typed enums.
+  - `tuvi_mcp.HoroscopeResult`, `TransitResult`, `AuspiciousResult` — typed results with `.to_dict()` + dict-like access.
+- **CLI/server split** (Phase 2 of library refactor, `4ffdd9d`): `__main__.py` owns the CLI entry point; `_server.py` owns the FastMCP definitions; `server.py` and `mcp_server.py` remain as backward-compatible shims.
+- **Calculator split into private modules** (Phase 3 of library refactor, `362020b`): `tuvi_calculator.py` reduced from 785 lines to a 65-line shim that re-exports from `_calendar`, `_chart`, `_input`, `_transit`, `_auspicious`. Existing imports (`from tuvi_mcp.tuvi_calculator import …`) keep working unchanged.
+- **Public-facing calendar module** (`tuvi_mcp/calendar.py`): stable, semantically-named re-export of `convert_solar_to_lunar`, `convert_lunar_to_solar`, and `validate_calendar_convert` from the internal `_calendar` and `_input` modules.
+- **Server consolidation** (`dd8f914`): server implementation logic fully removed from `server.py`; FastMCP registration lives only in `_server.py`.
+- **Sphinx + Furo documentation site** (`c3884bb`, `46c8433`): full API reference built with `myst-parser` and `sphinx-autodoc-typehints`. Published to https://tuvi-mcp-server.readthedocs.io. Pages: `api/horoscope`, `api/results`, `api/enums`, `api/database`, `tools/*`, plus Vietnamese-language `quickstart`/`contributing` summaries.
+- **Timezone parameter on MCP tool surface** (`9b0206f`): every MCP tool (`generate_horoscope`, `get_van_han`, `get_auspicious_info`, `convert_calendar`) now accepts `timezone: int | str | None = None`. Accepts integer hour (`7`, `-5`) or `h:30` string (`"7:30"`, `"-5:30"`); other minute values and out-of-range inputs are rejected with `INVALID_INPUT_PARAMETER` + `suggestions`. Default remains 7 (ICT). The astronomical engine (`VnCalendarUtil`) was already timezone-parameterized — this change unblocks the previously hard-coded `7` literals in the chart math pipeline.
+- **Timezone threading in chart math** (`9b0206f`): `build_raw_chart`, `adjust_date_for_late_ty`, `get_horoscope_chart`, `get_van_han_analysis` now accept and propagate `timezone`. The five hard-coded `7` literals in the chart pipeline (`_chart.py:63, 64, 82, 99, 104`) and the inner `canChiNgay(timeZone=7, …)` call in `_engine/AmDuong.py:322` have been replaced with the parameter.
+- **Timezone in `_auspicious.py`** (`9b0206f`): `get_auspicious_details(timezone=…)` honors tz at the Solar↔Lunar date boundary via direct `VnCalendarUtil` calls; the OO `Solar`/`Lunar` lookup path remains tz=7-anchored for tiết-khí-table lookups (documented limitation; tiết-khí NAMES are timezone-independent).
+- **Timezone in `Horoscope` public API** (`9b0206f`): `BirthInfo.timezone` is now propagated through `Horoscope.chart()`, `Horoscope.transit()`, and `Horoscope.auspicious(timezone=…)`. Library users who pass `timezone=8` to `from_birth(...)` now actually get a tz=8 chart, not the previous silent tz=7 default.
+
+### Changed
+- **Private module separation**: Internal implementation moved to underscore-prefixed modules:
+  - `auspicious.py` → `_auspicious.py` (public shim re-exports only `get_auspicious_details`)
+  - `server.py` → `_server.py` (public shim preserves backward compat for `mcp`, `generate_horoscope`, etc.)
+  - `_compat/` now has `__init__.py` for proper package structure.
+- **Library consistency** (Phases 1–3, `f40ba0c`, `362020b`): `transit()` and `auspicious()` now return typed dataclasses (`TransitResult`, `AuspiciousResult`) matching the pattern set by `chart()` (`HoroscopeResult`). All three support attribute access, `.to_dict()`, and dict-like `__getitem__`.
+- **Public Horoscope API promoted in README + quickstart** (Phase 4, `6ee8610`): the `Horoscope.from_birth()` ergonomic surface is now the documented primary entry point for library consumers. Legacy function-style imports kept and demonstrated in `examples/quick_start.py` as a fallback.
+- **Lunar calendar consolidation + ansaotuvi removal** (`760ee7c`): `_lunar_calendar/util/` directory restructured; deprecated `tuvi_mcp.ansaotuvi` engine files removed in favor of the Vietnamese `VnCalendarUtil` path.
+- **Style cleanup** (`b4ecee5`): ruff issues cleaned up across all new modules introduced by Phases 1–4.
+
+### Fixed
+- **`BirthInfo.parse_hour`** — now delegates to `_coerce_hour` instead of maintaining duplicate conversion logic.
+- **Hour validation** — `_coerce_hour` raises `ValueError` for values > 23 (previously silently wrapped via `% 24`).
+- **Chart error handling** — `chart()` raises `ValueError` on validation failure instead of returning an empty `HoroscopeResult` wrapping an error dict.
+- **`__getitem__` raises `KeyError`** (not `AttributeError`) for missing keys — correct dict-like behavior.
+
+### Tests
+- **17 new tests** in `tests/test_library_api.py` covering the new typed `Horoscope` API, `BirthInfo` validation, and the `to_dict` / `__getitem__` result surfaces.
+- **28 new tests** in `tests/test_mcp_timezone.py` covering `coerce_timezone` validation (int / `h:30` string / hard-error cases), default-unchanged behavior at tz=7, Tết 1968 / Tết 1985 / Tết 2007 / Tết 2026 boundary divergence between tz=7 and tz=8, late-Tý hour-23 rolling under tz=8, and cross-validation against online-published Vietnamese/Chinese calendar data.
+- **2 new tests** in `tests/test_library_api.py` confirming `Horoscope.chart()` honors `BirthInfo.timezone` and `Horoscope.auspicious(timezone=…)` overrides at the boundary date.
+
+### Notes
+- All existing imports (`from tuvi_mcp import tuvi_calculator`, `from tuvi_mcp.server import mcp`, `from tuvi_mcp.auspicious_calculator import get_auspicious_details`, etc.) continue to work unchanged. The new API is purely additive.
+- Library users who already passed `timezone=8` to `Horoscope.from_birth(...)` previously got a tz=7 chart silently. After this release, that input is honored end-to-end through the chart math pipeline.
+- Vietnamese Tử Vi community consensus (per lyso.vn masters) is that the local civil time at the birthplace is the canonical input — not a converted UTC instant. The `timezone` parameter here represents that civil timezone used for boundary-rounding of astronomical events (lunar day, tiết-khí, Đông chí), not a UTC conversion. Civil hour branch (chi giờ) is always derived from the user-supplied local clock time.
+
+---
+
 ## [0.3.1] - 2026-07-28
 
 ### Added

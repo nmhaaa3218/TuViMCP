@@ -3,8 +3,7 @@
 Tests for Phase 1: Engine Foundation & Timezone Calibration (UTC+7 Vietnamese Standard)
 """
 
-import pytest
-from tuvi_mcp.lunar_calendar import Solar, Lunar
+from tuvi_mcp.lunar_calendar import Solar
 
 
 def test_tet_1985_benchmark():

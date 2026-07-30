@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tuvi-mcp-server"
-version = "0.3.1"
+version = "0.4.0"
 description = "A Model Context Protocol (MCP) server for Vietnamese Tu Vi horoscope calculation and management"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -33,19 +33,32 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/nmhaaa3218/TuViMCP"
 Repository = "https://github.com/nmhaaa3218/TuViMCP"
+Documentation = "https://tuvi-mcp-server.readthedocs.io/"
 "Bug Tracker" = "https://github.com/nmhaaa3218/TuViMCP/issues"
 
 [project.optional-dependencies]
 test = [
     "pytest>=8.0.0",
 ]
+docs = [
+    "sphinx>=7.2",
+    "furo>=2024",
+    "myst-parser>=2.0",
+    "sphinx-autodoc-typehints>=2.0",
+    "linkify-it-py>=2.0",
+]
 
 [project.scripts]
-tuvi-mcp = "tuvi_mcp.mcp_server:main"
+tuvi-mcp = "tuvi_mcp.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["tuvi_mcp*"]
+
+# Ship non-code assets (declarative Cách Cục rule dataset, etc.) alongside
+# the Python package so wheel installs carry them.
+[tool.setuptools.package-data]
+"tuvi_mcp._data" = ["*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -62,8 +75,12 @@ exclude = [
 select = ["E", "F", "W", "I"]
 ignore = []
 
+[tool.ruff.lint.per-file-ignores]
+# Package ``__init__`` modules re-export public symbols through ``__all__``;
+# ruff flags the bare ``from .X import Y`` lines as unused (F401), which is
+# the canonical Python re-export pattern.
+"**/__init__.py" = ["F401"]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-
-

@@ -3,16 +3,16 @@
 Tests for Phase 2: Native Vietnamese Data Layer & Terminology Engine
 """
 
-import pytest
-from tuvi_mcp.lunar_calendar import Solar, Lunar
 from tuvi_mcp.lunar_calendar.util import LunarUtil
+
+from tuvi_mcp.lunar_calendar import Solar
 
 
 def test_vietnamese_can_chi_names():
     """Verify Can and Chi are native Vietnamese strings."""
     solar = Solar.fromYmd(2026, 7, 27)
     lunar = solar.getLunar()
-    
+
     assert lunar.getYearGanVn() in ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"]
     assert lunar.getYearZhiVn() in ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"]
     assert lunar.getYearInGanZhiVn() == f"{lunar.getYearGanVn()} {lunar.getYearZhiVn()}"
