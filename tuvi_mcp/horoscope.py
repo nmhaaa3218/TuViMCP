@@ -355,6 +355,9 @@ class Horoscope:
         calendar_enum = _coerce_calendar(calendar)
         hour_int = _coerce_hour(hour)
         tz = float(timezone) if timezone is not None else 7.0
+        # Note: the library API intentionally accepts any float offset (e.g. 5.75
+        # for Nepal NPT), unlike the stricter MCP layer which only allows integer
+        # hours and h:30 half-hour increments via coerce_timezone.
         birth = BirthInfo(
             name=name,
             year=year,
@@ -455,6 +458,11 @@ class Horoscope:
 
         Any omitted component defaults to today's date. ``timezone`` defaults
         to ``BirthInfo.timezone`` when omitted (or ``7.0`` if neither set).
+
+        Note: ``day``, ``month``, ``year`` are always interpreted as a **Solar**
+        (Gregorian) date. Passing a Lunar date here will yield incorrect results;
+        convert to Solar first using ``tuvi_mcp._calendar.convert_lunar_to_solar``
+        if needed.
 
         Returns:
             AuspiciousResult with fields: ``duong_lich``, ``am_lich``,

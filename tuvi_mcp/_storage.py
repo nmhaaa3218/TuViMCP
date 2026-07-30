@@ -45,11 +45,19 @@ def init_db():
                 hour INTEGER NOT NULL,
                 gender TEXT NOT NULL,
                 is_solar BOOLEAN NOT NULL DEFAULT 1,
+                timezone REAL NOT NULL DEFAULT 7.0,
                 notes TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
         conn.commit()
+        # Safe migration: add timezone column to pre-existing databases that
+        # were created before the column was introduced.
+        try:
+            conn.execute("ALTER TABLE horoscopes ADD COLUMN timezone REAL NOT NULL DEFAULT 7.0")
+            conn.commit()
+        except Exception:
+            pass  # Column already exists — ignore
 
 
 # Run initialization automatically when module is loaded
@@ -57,17 +65,18 @@ init_db()
 
 
 def save_horoscope(
-    name: str, day: int, month: int, year: int, hour: int, gender: str, is_solar: bool, notes: str = None
+    name: str, day: int, month: int, year: int, hour: int, gender: str,
+    is_solar: bool, timezone: float = 7.0, notes: str = None
 ) -> int:
     """Save a horoscope details to the database, returning its id."""
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(
             """
-            INSERT INTO horoscopes (name, day, month, year, hour, gender, is_solar, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO horoscopes (name, day, month, year, hour, gender, is_solar, timezone, notes)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
-            (name, day, month, year, hour, gender, 1 if is_solar else 0, notes),
+            (name, day, month, year, hour, gender, 1 if is_solar else 0, float(timezone), notes),
         )
         conn.commit()
         return cursor.lastrowid
@@ -77,7 +86,7 @@ def list_saved_horoscopes() -> list:
     """Retrieve all saved horoscopes."""
     with get_connection() as conn:
         rows = conn.execute("""
-            SELECT id, name, day, month, year, hour, gender, is_solar, notes, created_at
+            SELECT id, name, day, month, year, hour, gender, is_solar, timezone, notes, created_at
             FROM horoscopes
             ORDER BY created_at DESC
         """).fetchall()
@@ -89,8 +98,9 @@ def _enrich_with_cach_cuc(record: dict) -> dict:
 
     The DB row stores birth inputs only; we rebuild the chart from those inputs
     and run the declarative evaluator so the persisted record surfaces the same
-    pattern-recognition surface as `generate_horoscope`. Lazy import avoids
-    pulling tuvi_calculator when no read occurs.
+    pattern-recognition surface as `generate_horoscope`. The stored `timezone`
+    is passed through so boundary-sensitive calculations match the original. Lazy
+    import avoids pulling tuvi_calculator when no read occurs.
     """
     if not record:
         return record
@@ -104,6 +114,7 @@ def _enrich_with_cach_cuc(record: dict) -> dict:
         hour_val=record["hour"],
         gender_val=record["gender"],
         is_solar=bool(record["is_solar"]),
+        timezone=float(record.get("timezone", 7.0)),
     )
     if isinstance(chart, dict) and "error" not in chart:
         record["cach_cuc"] = chart.get("cach_cuc", [])
@@ -117,7 +128,7 @@ def get_saved_horoscope_by_id(horoscope_id: int) -> dict:
     with get_connection() as conn:
         row = conn.execute(
             """
-            SELECT id, name, day, month, year, hour, gender, is_solar, notes, created_at
+            SELECT id, name, day, month, year, hour, gender, is_solar, timezone, notes, created_at
             FROM horoscopes
             WHERE id = ?
         """,
@@ -131,7 +142,7 @@ def get_saved_horoscope_by_name(name: str) -> dict:
     with get_connection() as conn:
         row = conn.execute(
             """
-            SELECT id, name, day, month, year, hour, gender, is_solar, notes, created_at
+            SELECT id, name, day, month, year, hour, gender, is_solar, timezone, notes, created_at
             FROM horoscopes
             WHERE name = ?
             ORDER BY created_at DESC

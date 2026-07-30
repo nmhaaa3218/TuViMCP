@@ -334,7 +334,7 @@ def convert_calendar(
         return err
 
     try:
-        val_err = _input.validate_calendar_convert(day, month, year, timezone=tz)
+        val_err = _input.validate_calendar_convert(day, month, year, from_solar=from_solar, lunar_leap=lunar_leap, timezone=tz)
         if val_err:
             return val_err
 

@@ -9,11 +9,10 @@ Public entry: ``get_van_han_analysis``.
 
 from __future__ import annotations
 
-from ._chart import adjust_date_for_late_ty, build_raw_chart, get_horoscope_chart
+from ._chart import get_horoscope_chart
 from ._engine.AmDuong import dichCung, thienCan, timThienMa
 from ._input import (
     CAN_NAMES,
-    parse_gender,
     parse_hour,
     validate_birth_parameters,
     validate_transit_period,
@@ -77,15 +76,22 @@ def get_van_han_analysis(
     if transit_err:
         return transit_err
     hour = parse_hour(hour_val)
-    gender = parse_gender(gender_val)
 
-    calc_day, calc_month, calc_year, _, _ = adjust_date_for_late_ty(day, month, year, hour_val, is_solar, timezone)
-
-    # Calculate birth details first
-    _, tb = build_raw_chart(calc_day, calc_month, calc_year, hour, gender, is_solar, name, timezone)
+    # Build chart once — get_horoscope_chart already runs adjust_date_for_late_ty + build_raw_chart
+    # internally, so we avoid a redundant second build by extracting birth lunar data from the
+    # returned dict instead of calling build_raw_chart separately.
     chart = get_horoscope_chart(name, day, month, year, hour_val, gender_val, is_solar, timezone)
+    if "error" in chart:
+        return chart
 
     from ._input import BRANCH_NAMES
+
+    # Extract birth lunar year/month and gender from chart data
+    thien_ban = chart["thien_ban"]
+    ngay_am_parts = thien_ban["ngay_am"].split("/")
+    birth_lunar_year = int(ngay_am_parts[2])
+    birth_lunar_month = int(ngay_am_parts[1])
+    nam_nu = thien_ban["gioi_tinh"]
 
     # Current lunar year and branch
     curr_can = (current_year + 6) % 10 + 1
@@ -93,7 +99,6 @@ def get_van_han_analysis(
     curr_year_can_chi = f"{CAN_NAMES[curr_can]} {BRANCH_NAMES[curr_chi]}"
 
     # Calculate current age (tuổi mụ)
-    birth_lunar_year = tb.namAm
     age = current_year - birth_lunar_year + 1
 
     # 1. Identify active Đại Hạn cung
@@ -116,7 +121,7 @@ def get_van_han_analysis(
     active_nguyet_han_cung = None
     if active_tieu_han_cung:
         p_tieu_han = active_tieu_han_cung["cung_so"] - 1
-        m_birth = tb.thangAm
+        m_birth = birth_lunar_month
         h_birth = hour
         m_target = current_month
 
@@ -153,16 +158,16 @@ def get_van_han_analysis(
     return {
         "person_details": {
             "name": name,
-            "gender": tb.namNu,
-            "birth_solar": chart["thien_ban"]["ngay_duong"],
-            "birth_lunar": chart["thien_ban"]["ngay_am"],
-            "birth_lunar_year_can_chi": f"{chart['thien_ban']['can_nam']} {chart['thien_ban']['chi_nam']}",
-            "birth_lunar_month_can_chi": f"{chart['thien_ban']['can_thang']} {chart['thien_ban']['chi_thang']}",
-            "birth_lunar_day_can_chi": f"{chart['thien_ban']['can_ngay']} {chart['thien_ban']['chi_ngay']}",
-            "birth_hour": chart["thien_ban"]["gio_sinh"],
-            "element": chart["thien_ban"]["menh"],
-            "destiny_cuc": chart["thien_ban"]["ten_cuc"],
-            "lai_nhan_cung": chart["thien_ban"].get("lai_nhan_cung", ""),
+            "gender": nam_nu,
+            "birth_solar": thien_ban["ngay_duong"],
+            "birth_lunar": thien_ban["ngay_am"],
+            "birth_lunar_year_can_chi": f"{thien_ban['can_nam']} {thien_ban['chi_nam']}",
+            "birth_lunar_month_can_chi": f"{thien_ban['can_thang']} {thien_ban['chi_thang']}",
+            "birth_lunar_day_can_chi": f"{thien_ban['can_ngay']} {thien_ban['chi_ngay']}",
+            "birth_hour": thien_ban["gio_sinh"],
+            "element": thien_ban["menh"],
+            "destiny_cuc": thien_ban["ten_cuc"],
+            "lai_nhan_cung": thien_ban.get("lai_nhan_cung", ""),
         },
         "target_period": {
             "current_year": current_year,
