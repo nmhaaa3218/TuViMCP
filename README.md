@@ -357,7 +357,7 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 
 * **Vẽ lá số chất lượng cao:** Xuất ảnh lá số sắc nét tỷ lệ chuẩn phù hợp in ấn, tự động tô màu chữ theo ngũ hành của sao (Mộc: Xanh lá, Hỏa: Đỏ, Thổ: Vàng cam, Kim: Xám, Thủy: Xanh dương), vẽ nhãn bao nổi bật cho cung bị Tuần/Triệt, vẽ các đường nối hình học làm nổi bật tam hợp chiếu mệnh thân.
 
-* **Xem Vận Hạn:** Tính toán các sao lưu động như Lưu Thái Tuế, Lưu Lộc Tồn, v.v., đồng thời xác định các cung hạn đang kích hoạt gồm Đại Hạn 10 năm, Tiểu Hạn theo năm và Nguyệt Hạn theo tháng cho bất kỳ năm/tháng cần xem nào, ví dụ năm 2026.
+* **Xem Vận Hạn:** Tính toán các sao lưu động như Lưu Thái Tuế, Lưu Lộc Tồn, v.v., đồng thời xác định các cung hạn đang kích hoạt gồm Đại Hạn 10 năm, Tiểu Hạn theo năm, Nguyệt Hạn theo tháng và Nhật Hạn theo ngày cho bất kỳ năm/tháng/ngày cần xem nào, ví dụ năm 2026.
 
 * **Xem Ngày Tốt / Giờ Hoàng Đạo:** Đánh giá Hoàng Đạo/Hắc Đạo, 12 Trực, 28 Tú, Tiết Khí, hướng xuất hành và giờ tốt cho bất kỳ ngày tháng nào.
 
@@ -455,7 +455,7 @@ Tạo lá số Tử Vi đầy đủ từ thông tin ngày giờ sinh, hỗ trợ
 
 #### 2. `get_van_han`
 
-Tính toán sao lưu động và xác định các cung hạn đang kích hoạt, bao gồm Đại Hạn, Tiểu Hạn, Nguyệt Hạn và Nhật Hạn cho tháng/năm cần xem.
+Tính toán sao lưu động và xác định các cung hạn đang kích hoạt, bao gồm Đại Hạn, Tiểu Hạn, Nguyệt Hạn và Nhật Hạn cho ngày/tháng/năm cần xem.
 
 * **Tham số:**
   * `name`, `day`, `month`, `year`, `hour_val`, `gender_val`, `is_solar`: giống như trong `generate_horoscope`.
