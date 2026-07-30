@@ -70,7 +70,7 @@ def get_van_han_analysis(
     timezone: float = 7.0,
 ) -> dict:
     """Analyze transit stars & active cungs (Đại Hạn, Tiểu Hạn, Nguyệt Hạn, Nhật Hạn) for a target Lunar period."""
-    validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar)
+    validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar, timezone)
     if validation_err:
         return validation_err
     transit_err = validate_transit_period(current_year, current_month, current_day)

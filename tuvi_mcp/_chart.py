@@ -118,7 +118,7 @@ def get_horoscope_chart(
     name: str, day: int, month: int, year: int, hour_val, gender_val, is_solar: bool = True, timezone: float = 7.0
 ) -> dict:
     """Standardized entry point to calculate and return full horoscope JSON."""
-    validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar)
+    validation_err = validate_birth_parameters(day, month, year, hour_val, gender_val, is_solar, timezone)
     if validation_err:
         return validation_err
     hour = parse_hour(hour_val)

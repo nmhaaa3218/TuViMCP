@@ -197,7 +197,7 @@ def parse_gender(gender_val) -> int:
 
 
 def validate_birth_parameters(
-    day: int, month: int, year: int, hour_val, gender_val, is_solar: bool = True
+    day: int, month: int, year: int, hour_val, gender_val, is_solar: bool = True, timezone: float = 7.0
 ) -> dict | None:
     """Validate birth parameters. Returns None if valid, else a structured error dict."""
     errors = []
@@ -231,7 +231,7 @@ def validate_birth_parameters(
         else:
             from ._calendar import convert_lunar_to_solar  # local import to avoid cycle
 
-            solar_res = convert_lunar_to_solar(day, month, year, False)
+            solar_res = convert_lunar_to_solar(day, month, year, False, timezone)
             if "error" in solar_res:
                 errors.append(f"Unreal Lunar date '{day}/{month}/{year}' ({solar_res['error']}).")
                 suggestions["day"] = f"Verify the specified Lunar day exists in Lunar month {month}/{year}."
@@ -384,7 +384,7 @@ def _tz_error(msg: str, value) -> dict:
 
 
 def validate_calendar_convert(
-    day: int, month: int, year: int, from_solar: bool = True, lunar_leap: bool = False, timezone: int = 7
+    day: int, month: int, year: int, from_solar: bool = True, lunar_leap: bool = False, timezone: float = 7.0
 ) -> dict | None:
     """Validate calendar conversion input parameters."""
     errors = []
