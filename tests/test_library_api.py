@@ -217,3 +217,31 @@ def pytest_sessionfinish(session, exitstatus):
         os.remove(db_path)
     except Exception:
         pass
+
+
+def test_horoscope_chart_honors_timezone_at_boundary():
+    """BirthInfo.timezone must propagate to chart math (regression for 9b0206f)."""
+    from tuvi_mcp import Horoscope
+
+    h_tz7 = Horoscope.from_birth(
+        name="Tet1985_VN", year=1985, month=1, day=21, hour="06:00",
+        gender="Nam", calendar="solar", timezone=7.0,
+    )
+    h_tz8 = Horoscope.from_birth(
+        name="Tet1985_CN", year=1985, month=1, day=21, hour="06:00",
+        gender="Nam", calendar="solar", timezone=8.0,
+    )
+    assert h_tz7.chart().thien_ban["ngay_am"] != h_tz8.chart().thien_ban["ngay_am"]
+
+
+def test_horoscope_auspicious_honors_timezone_kwarg():
+    """``Horoscope.auspicious(timezone=)`` overrides BirthInfo.timezone."""
+    from tuvi_mcp import Horoscope
+
+    h = Horoscope.from_birth(
+        name="X", year=1990, month=6, day=15, hour="10:00",
+        gender="Nam", calendar="solar", timezone=7.0,
+    )
+    a_default = h.auspicious(day=21, month=1, year=1985)
+    a_tz8 = h.auspicious(day=21, month=1, year=1985, timezone=8.0)
+    assert a_default.am_lich != a_tz8.am_lich

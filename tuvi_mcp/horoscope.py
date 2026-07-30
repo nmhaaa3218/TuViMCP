@@ -373,7 +373,10 @@ class Horoscope:
         return self._birth
 
     def chart(self) -> HoroscopeResult:
-        """Calculate the base birth chart (Thiên Bàn + Địa Bàn + Cách Cục)."""
+        """Calculate the base birth chart (Thiên Bàn + Địa Bàn + Cách Cục).
+
+        Honors ``BirthInfo.timezone`` for the astronomical boundary rounding.
+        """
         raw = _get_horoscope_chart(
             name=self._birth.name,
             day=self._birth.day,
@@ -382,6 +385,7 @@ class Horoscope:
             hour_val=_hour_to_chart_token(self._birth.hour),
             gender_val=int(self._birth.gender),
             is_solar=self._birth.calendar is Calendar.SOLAR,
+            timezone=self._birth.timezone,
         )
         if isinstance(raw, dict) and "error" in raw:
             raise ValueError(raw["error"])
@@ -398,6 +402,9 @@ class Horoscope:
         day: int | None = None,
     ) -> TransitResult:
         """Calculate transit (Vận Hạn) analysis for a target Lunar period.
+
+        Honors ``BirthInfo.timezone`` for the astronomical boundary rounding
+        of the birth chart that transits are anchored to.
 
         Args:
             year: Target Lunar year. Defaults to current year.
@@ -423,6 +430,7 @@ class Horoscope:
             current_year=year,
             current_month=month,
             current_day=day,
+            timezone=self._birth.timezone,
         )
         if isinstance(raw, dict) and "error" in raw:
             raise ValueError(raw["error"])
@@ -441,10 +449,12 @@ class Horoscope:
         day: int | None = None,
         month: int | None = None,
         year: int | None = None,
+        timezone: float | None = None,
     ) -> AuspiciousResult:
         """Evaluate auspicious details for a given calendar date.
 
-        Any omitted component defaults to today's date.
+        Any omitted component defaults to today's date. ``timezone`` defaults
+        to ``BirthInfo.timezone`` when omitted (or ``7.0`` if neither set).
 
         Returns:
             AuspiciousResult with fields: ``duong_lich``, ``am_lich``,
@@ -453,11 +463,13 @@ class Horoscope:
             ``tiet_khi_hien_tai``, ``tiet_khi_tiep_theo``.
         """
         today = date.today()
+        tz = self._birth.timezone if timezone is None else timezone
         raw = _get_auspicious_details(
             day if day is not None else today.day,
             month if month is not None else today.month,
             year if year is not None else today.year,
             is_solar=True,
+            timezone=tz,
         )
         if isinstance(raw, dict) and "error" in raw:
             raise ValueError(raw["error"])
