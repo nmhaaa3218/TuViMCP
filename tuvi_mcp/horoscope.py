@@ -494,13 +494,26 @@ class Horoscope:
             tiet_khi_tiep_theo=raw.get("tiet_khi_tiep_theo", "N/A"),
         )
 
-    def render_chart(self, chart: HoroscopeResult | dict | None = None, year: int | None = None) -> str:
-        """Render the chart as a PNG image. Returns the file path."""
+    def render_chart(
+        self,
+        chart: HoroscopeResult | dict | None = None,
+        year: int | None = None,
+        font_path: str | None = None,
+        font_bold_path: str | None = None,
+    ) -> str:
+        """Render the chart as a PNG image. Returns the file path.
+
+        :param chart: Pre-calculated chart result or dict. Defaults to ``self.chart().to_dict()``.
+        :param year: Transit target Lunar year for display in chart header.
+        :param font_path: Path to a custom TrueType (.ttf) regular font file. Defaults to bundled Roboto font.
+        :param font_bold_path: Path to a custom TrueType (.ttf) bold font file.
+        :return: Path to rendered PNG file in system temporary directory.
+        """
         if chart is None:
             chart = self.chart().to_dict()
         elif isinstance(chart, HoroscopeResult):
             chart = chart.to_dict()
-        return generate_laso_image(chart, current_year=year)
+        return generate_laso_image(chart, current_year=year, font_path=font_path, font_bold_path=font_bold_path)
 
 
 __all__ = [

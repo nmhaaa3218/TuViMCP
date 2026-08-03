@@ -67,8 +67,11 @@ print(van_han["target_period"]["current_year_can_chi"])
 # Auspicious day
 auspicious = h.auspicious(day=27, month=7, year=2026)
 
-# Render chart as PNG
+# Render chart as PNG (uses bundled Roboto Unicode font by default)
 path = h.render_chart(chart, year=2026)
+
+# Optionally specify custom TTF font files
+path = h.render_chart(chart, year=2026, font_path="/path/to/custom_font.ttf")
 
 # JSON-serializable output
 json_data = chart.to_dict()

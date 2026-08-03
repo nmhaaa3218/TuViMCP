@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-08-03
+
+### Added
+- **Bundled Unicode Font (`Roboto`)**: Packaged open-source `Roboto-Regular.ttf` & `Roboto-Bold.ttf` directly within `tuvi_mcp._fonts` and setuptools `package-data`. Guarantees crisp rendering and full Vietnamese diacritics support (`ệ`, `ỉ`, `ử`, `ơ`, `đ`, `ấ`, `ở`...) on headless and minimal serverless environments (Vercel, AWS Lambda, Docker Alpine/Slim).
+- **Custom Font Overrides**: Extended `generate_laso_image` and `Horoscope.render_chart(...)` to accept optional `font_path` and `font_bold_path` parameters for custom typography.
+
+### Fixed
+- **Headless Font Degradation**: Fixed blurry/pixelated chart images, unscalable font sizes, and corrupted Vietnamese Unicode characters caused by `ImageFont.load_default()` fallback when desktop system fonts (`Arial`, `DejaVu`) are missing on headless serverless runtimes.
+
 ---
 
 ## [0.4.0] - 2026-07-30

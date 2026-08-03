@@ -61,8 +61,11 @@ print(van_han["nhat_han"])
 # Auspicious day evaluation
 auspicious = h.auspicious(day=27, month=7, year=2026)
 
-# Render chart as PNG
+# Render chart as PNG (uses bundled Roboto Unicode font by default)
 path = h.render_chart(chart, year=2026)
+
+# Optionally specify custom TTF font files
+path = h.render_chart(chart, year=2026, font_path="/path/to/custom_font.ttf")
 ```
 
 The same library is what the MCP tools wrap, so behavior is identical whether you call `Horoscope.from_birth(...).chart()` or invoke the `generate_horoscope` tool from an MCP client.

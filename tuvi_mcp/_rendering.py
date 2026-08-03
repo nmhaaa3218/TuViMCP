@@ -55,8 +55,44 @@ ATTR_SUFFIX_MAP = {
     "Hãm địa": "H"
 }
 
-def get_font(size=12, bold=False):
-    """Resolve Arial or fallback system font dynamically based on OS."""
+def get_font(size=12, bold=False, font_path=None):
+    """Resolve font dynamically according to priority:
+    1. Explicit custom font_path (if provided, valid type, and file exists)
+    2. Package-bundled Unicode font (tuvi_mcp/_fonts/Roboto-*.ttf)
+    3. OS System Desktop Fonts (macOS, Linux, Windows)
+    4. Pillow default fallback (with size parameter support for Pillow >=10.1)
+    """
+    # 1. Custom font_path
+    if font_path and isinstance(font_path, (str, os.PathLike)):
+        try:
+            if os.path.exists(font_path):
+                return ImageFont.truetype(str(font_path), size)
+        except Exception:
+            pass
+
+    font_filename = "Roboto-Bold.ttf" if bold else "Roboto-Regular.ttf"
+
+    # 2. Try bundled package font
+    bundled_path = None
+    try:
+        from importlib.resources import files
+        p = files("tuvi_mcp").joinpath("_fonts", font_filename)
+        p_str = str(p)
+        if os.path.exists(p_str):
+            bundled_path = p_str
+    except Exception:
+        pass
+
+    if not bundled_path or not os.path.exists(bundled_path):
+        bundled_path = os.path.join(os.path.dirname(__file__), "_fonts", font_filename)
+
+    try:
+        if bundled_path and os.path.exists(bundled_path):
+            return ImageFont.truetype(bundled_path, size)
+    except Exception:
+        pass
+
+    # 3. Try OS System Fonts
     paths = []
     if bold:
         paths = [
@@ -76,17 +112,22 @@ def get_font(size=12, bold=False):
         ]
 
     for p in paths:
-        if os.path.exists(p):
-            try:
+        try:
+            if os.path.exists(p):
                 return ImageFont.truetype(p, size)
-            except Exception:
-                pass
-    try:
-        return ImageFont.load_default()
-    except Exception:
-        return None
+        except Exception:
+            pass
 
-def draw_badge(draw, cx, cy, text, w, h):
+    # 4. Pillow default fallback (supports size in Pillow >= 10.1.0)
+    try:
+        return ImageFont.load_default(size=size)
+    except TypeError:
+        try:
+            return ImageFont.load_default()
+        except Exception:
+            return None
+
+def draw_badge(draw, cx, cy, text, w, h, font=None):
     """Draw a dark badge on the shared border of cungs for Tuần/Triệt."""
     x0 = cx - w // 2
     y0 = cy - h // 2
@@ -94,12 +135,13 @@ def draw_badge(draw, cx, cy, text, w, h):
     y1 = cy + h // 2
 
     draw.rounded_rectangle([x0, y0, x1, y1], radius=4, fill="#111827", outline="#F3F4F6", width=1)
-    font = get_font(size=11, bold=True)
+    if font is None:
+        font = get_font(size=11, bold=True)
     tw = draw.textlength(text, font=font)
     th = 11
     draw.text((cx - tw / 2, cy - th / 2 - 1), text, fill="#FFFFFF", font=font)
 
-def draw_tuan_triet(draw, dia_ban):
+def draw_tuan_triet(draw, dia_ban, font_bold=None):
     """Draw Tuần/Triệt border badges exactly on shared borders of cungs (Row height 400)."""
     pairs = [(1, 2), (3, 4), (5, 6), (7, 8), (9, 10), (11, 12)]
 
@@ -123,9 +165,9 @@ def draw_tuan_triet(draw, dia_ban):
 
         badge_w, badge_h = 55, 22
         if c1.get("tuan_trung") and c2.get("tuan_trung"):
-            draw_badge(draw, bx, by, "Tuần", badge_w, badge_h)
+            draw_badge(draw, bx, by, "Tuần", badge_w, badge_h, font=font_bold)
         if c1.get("triet_lo") and c2.get("triet_lo"):
-            draw_badge(draw, bx, by, "Triệt", badge_w, badge_h)
+            draw_badge(draw, bx, by, "Triệt", badge_w, badge_h, font=font_bold)
 
 def dich_cung(cung_start, offset):
     val = (cung_start + offset)
@@ -163,9 +205,19 @@ def draw_lines_behind_center(draw, m_cung, t_cung):
         # Opposite line
         draw.line([p_than, p_opposite], fill="#D1D5DB", width=2)
 
-def generate_laso_image(chart_data: dict, current_year: int = None) -> str:
-    """
-    Renders an A4 aspect ratio (1200x1697 px) Tu Vi horoscope image from chart data.
+def generate_laso_image(
+    chart_data: dict, 
+    current_year: int = None, 
+    font_path: str = None, 
+    font_bold_path: str = None
+) -> str:
+    """Renders an A4 aspect ratio (1200x1697 px) Tu Vi horoscope image from chart data.
+
+    :param chart_data: Dict containing 'thien_ban', 'dia_ban', and optional 'transit_stars'.
+    :param current_year: Transit target Lunar year for header label.
+    :param font_path: Optional file path to a custom regular TrueType (.ttf) font.
+    :param font_bold_path: Optional file path to a custom bold TrueType (.ttf) font.
+    :return: File path to generated PNG image.
     """
     thien_ban = chart_data.get("thien_ban", {})
     dia_ban = chart_data.get("dia_ban", [])
@@ -231,10 +283,13 @@ def generate_laso_image(chart_data: dict, current_year: int = None) -> str:
     draw.rectangle([300, 400, 900, 1200], outline="#9CA3AF", width=2)
 
     # 6. Render Cungs (Row height 400)
-    font_bold = get_font(size=12, bold=True)
-    font_regular = get_font(size=12, bold=False)
-    font_title = get_font(size=15, bold=True)
-    font_chinh_tinh = get_font(size=14, bold=True)
+    reg_font_path = font_path
+    bold_font_path = font_bold_path or font_path
+
+    font_bold = get_font(size=12, bold=True, font_path=bold_font_path)
+    font_regular = get_font(size=12, bold=False, font_path=reg_font_path)
+    font_title = get_font(size=15, bold=True, font_path=bold_font_path)
+    font_chinh_tinh = get_font(size=14, bold=True, font_path=bold_font_path)
 
     for cung in dia_ban:
         c_id = cung["cung_so"]
@@ -365,11 +420,11 @@ def generate_laso_image(chart_data: dict, current_year: int = None) -> str:
         draw.text((x1 - 10 - tw_ln, y0 + 378), ln_label, fill="#4B5563", font=font_regular)
 
     # 7. Draw Tuần and Triệt borders
-    draw_tuan_triet(draw, dia_ban)
+    draw_tuan_triet(draw, dia_ban, font_bold=font_bold)
 
     # 8. Render Center Region details (600x800 px)
-    font_logo = get_font(size=14, bold=True)
-    font_logo_sub = get_font(size=11, bold=False)
+    font_logo = get_font(size=14, bold=True, font_path=bold_font_path)
+    font_logo_sub = get_font(size=11, bold=False, font_path=reg_font_path)
 
     logo_str = "TẠO BỞI NMHAAA3218/TUVIMCP"
     logo_sub = "https://github.com/nmhaaa3218/TuViMCP"
@@ -380,13 +435,13 @@ def generate_laso_image(chart_data: dict, current_year: int = None) -> str:
     tw_ls = draw.textlength(logo_sub, font=font_logo_sub)
     draw.text((600 - tw_ls / 2, 450), logo_sub, fill="#4B5563", font=font_logo_sub)
 
-    font_main_title = get_font(size=36, bold=True)
+    font_main_title = get_font(size=36, bold=True, font_path=bold_font_path)
     main_title = "Lá Số Tử Vi"
     tw_mt = draw.textlength(main_title, font=font_main_title)
     draw.text((600 - tw_mt / 2, 500), main_title, fill="#9F1239", font=font_main_title)
 
-    font_kv_k = get_font(size=13, bold=True)
-    font_kv_v = get_font(size=13, bold=False)
+    font_kv_k = get_font(size=13, bold=True, font_path=bold_font_path)
+    font_kv_v = get_font(size=13, bold=False, font_path=reg_font_path)
 
     name_val = thien_ban.get("ten", "Khách")
     gioi_tinh = thien_ban.get("gioi_tinh", "Nam")
@@ -462,7 +517,7 @@ def generate_laso_image(chart_data: dict, current_year: int = None) -> str:
 
     # Draw stamp emblem logo
     draw.rectangle([780, 1080, 850, 1150], outline="#DC2626", width=2)
-    font_seal = get_font(size=12, bold=True)
+    font_seal = get_font(size=12, bold=True, font_path=bold_font_path)
     draw.text((795, 1092), "TỬ", fill="#DC2626", font=font_seal)
     draw.text((795, 1108), "VI", fill="#DC2626", font=font_seal)
     draw.text((795, 1124), "MCP", fill="#DC2626", font=font_seal)

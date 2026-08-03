@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tuvi-mcp-server"
-version = "0.4.0"
+version = "0.4.1"
 description = "A Model Context Protocol (MCP) server for Vietnamese Tu Vi horoscope calculation and management"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -59,6 +59,7 @@ include = ["tuvi_mcp*"]
 # the Python package so wheel installs carry them.
 [tool.setuptools.package-data]
 "tuvi_mcp._data" = ["*.json"]
+"tuvi_mcp._fonts" = ["*.ttf"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
