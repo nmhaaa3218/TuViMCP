@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2026-08-26
+
+### Fixed
+- **Vòng Tràng Sinh Swap (`Thai` & `Dưỡng`)**: Fixed inverted negative offset indexing in `_engine/App.py` where `saoThai` and `saoDuong` were swapped during counter-clockwise transit. Step 11 is now strictly `Thai` and step 12 is `Dưỡng` for both clockwise and counter-clockwise directions.
+- **Star Name Normalization (`Văn Tinh`)**: Stripped misleading `LN.` prefix from fixed birth star `Văn tinh` in `_engine/Sao.py` to prevent confusion with transit stars.
+- **Center Chart Metadata Rendering**: Formatted `Hành cục` display in `_rendering.py` to show element relationship `sinh_khac` (e.g. `Kim Tứ Cục (Cục khắc Mệnh)`) instead of raw internal integer IDs.
+
+### Added
+- **Astrological Verification Tests**: Added unit test suite `tests/test_vong_trang_sinh_and_thien_giai.py` verifying Vòng Tràng Sinh clockwise/counter-clockwise ordering, star naming, and Thiên Lương school compatibility.
+
+---
+
 ## [0.4.1] - 2026-08-03
 
 ### Added
