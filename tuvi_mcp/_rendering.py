@@ -467,8 +467,9 @@ def generate_laso_image(
 
     am_duong_nam = thien_ban.get("am_duong_nam_sinh", "")
     ban_menh = thien_ban.get("ban_menh", "")
-    hanh_cuc = thien_ban.get("hanh_cuc", "")
     ten_cuc = thien_ban.get("ten_cuc", "")
+    sinh_khac = thien_ban.get("sinh_khac", "")
+    cuc_str = f"{ten_cuc} ({sinh_khac})" if sinh_khac else str(ten_cuc)
 
     menh_chu = thien_ban.get("menh_chu", "")
     than_chu = thien_ban.get("than_chu", "")
@@ -496,7 +497,7 @@ def generate_laso_image(
     right_items = [
         ("Âm dương:", f"{am_duong_nam} {gioi_tinh}"),
         ("Bản mệnh:", ban_menh),
-        ("Hành cục:", f"{ten_cuc} ({hanh_cuc})"),
+        ("Hành cục:", cuc_str),
         ("Chủ mệnh:", menh_chu),
         ("Chủ thân:", than_chu),
         ("Lai nhân cung:", lai_nhan),

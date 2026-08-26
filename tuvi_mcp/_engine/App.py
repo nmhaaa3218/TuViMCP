@@ -321,10 +321,10 @@ def lapDiaBan(diaBan, nn, tt, nnnn, gioSinh, gioiTinh, duongLich, timeZone):
     viTriTuyet = dichCung(viTriTrangSinh, amDuongNamNu * 9)
     diaBan.nhapSao(viTriTuyet, saoTuyet)
 
-    viTriThai = dichCung(viTriTrangSinh, amDuongNamNu * (-1))
+    viTriThai = dichCung(viTriTrangSinh, amDuongNamNu * 10)
     diaBan.nhapSao(viTriThai, saoThai)
 
-    viTriDuong = dichCung(viTriTrangSinh, amDuongNamNu * (-2))
+    viTriDuong = dichCung(viTriTrangSinh, amDuongNamNu * 11)
     diaBan.nhapSao(viTriDuong, saoDuong)
 
     # An sao đôi
