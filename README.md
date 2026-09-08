@@ -198,7 +198,8 @@ Converts a date between the Solar (Dương lịch) and Lunar (Âm lịch) calend
   - `lunar_leap` (boolean): Only used if `from_solar` is `False`. `True` if the input lunar month is a leap month (tháng nhuận).
   - `timezone` (integer or string): Timezone offset. Accepts an integer hour (e.g. `7`, `-5`, `9`) or an `h:30` string (e.g. `"7:30"`, `"-5:30"`, `"9:30"`). Default: `7` for Vietnam/ICT.
 * **Return Value:**
-  - Converted date parameters: `day`, `month`, `year` of target calendar, plus a `leap` boolean (specifically indicating if the Lunar month is a leap month).
+  - If `from_solar` is `True`, returns a dictionary with `lunar_day`, `lunar_month`, `lunar_year`, `lunar_leap` (boolean), and `formatted` string date (e.g., `"14/5/1995"` or `"14/5/1995 (nhuận)"`).
+  - If `from_solar` is `False`, returns a dictionary with `solar_day`, `solar_month`, `solar_year`, and `formatted` string date (e.g., `"28/6/1995"`).
   - Returns `{"error": "error_message"}` if date arguments fail validation.
 
 #### 4. `get_auspicious_info`
@@ -291,20 +292,20 @@ When calling `get_van_han(...)` for a target year/month, it tracks yearly transi
   },
   "transit_stars": [
     {"name": "Lưu Thái Tuế", "cung_so": 7, "chi": "Ngọ"},
-    {"name": "Lưu Lộc Tồn", "cung_so": 9, "chi": "Thân"}
+    {"name": "Lưu Lộc Tồn", "cung_so": 6, "chi": "Tỵ"}
     // ... other transit stars
   ],
   "dai_han": {
     "cung_so": 10,
-    "cung_chu": "Tử tức",
-    "dai_han": 35,
+    "cung_chu": "Phu thê",
+    "dai_han": 25,
     "transit_stars": []
   },
   "tieu_han": {
-    "cung_so": 7,
-    "cung_chu": "Tật ách",
+    "cung_so": 9,
+    "cung_chu": "Tử tức",
     "tieu_han": "Ngọ",
-    "transit_stars": ["Lưu Thái Tuế"]
+    "transit_stars": ["Lưu Thiên Mã"]
   }
 }
 ```
@@ -370,8 +371,59 @@ Go to Settings -> Features -> MCP, click "+ Add New MCP Server":
 
 * **Tích hợp logic tính toán nội bộ:** Bao gồm sẵn phần lõi tính toán từ `ansaotuvi`, đồng thời bổ sung các chỉnh sửa riêng cho trường hợp Tuần/Triệt bao phủ hai cung.
 
+### Giao diện Thư viện Python (API)
+
+Ngoài việc chạy như một máy chủ MCP, `tuvi-mcp-server` cung cấp giao diện Python API chuẩn hóa, có gợi ý kiểu dữ liệu (typing) để sử dụng trực tiếp trong mã nguồn, notebook hoặc dịch vụ backend:
+
+```python
+from tuvi_mcp import Horoscope, BirthInfo, Gender, Calendar
+
+# Khởi tạo đối tượng lá số từ thông tin ngày giờ sinh (hỗ trợ nhập giờ/giới tính linh hoạt)
+h = Horoscope.from_birth(
+    name="Nguyễn Văn A",
+    year=1995, month=6, day=10,
+    hour="14:30",          # chấp nhận "Ngọ", 14, hoặc 7 (chỉ số chi)
+    gender="Nam",          # chấp nhận "male", 1, True, hoặc Gender.MALE
+    calendar="solar",      # chấp nhận Calendar.SOLAR
+)
+
+# Lập lá số gốc
+chart = h.chart()
+print(chart.thien_ban["can_nam"], chart.thien_ban["chi_nam"])
+print(len(chart.dia_ban), "cung")
+
+# Xem Vận Hạn cho năm/tháng/ngày Âm lịch mục tiêu
+van_han = h.transit(year=2026, month=5, day=15)
+print(van_han["target_period"]["current_year_can_chi"])
+print(van_han["nhat_han"])
+
+# Xem ngày giờ tốt / hoàng đạo
+auspicious = h.auspicious(day=27, month=7, year=2026)
+
+# Xuất ảnh lá số định dạng PNG (mặc định dùng font Roboto Unicode tích hợp sẵn)
+path = h.render_chart(chart, year=2026)
+
+# Tùy chọn đường dẫn font TTF riêng
+path = h.render_chart(chart, year=2026, font_path="/path/to/custom_font.ttf")
+```
+
+Các kết quả đều hỗ trợ truy xuất thuộc tính và phương thức `.to_dict()` để chuyển đổi sang JSON:
+
+```python
+from tuvi_mcp import AuspiciousResult, TransitResult
+
+json_data = chart.to_dict()  # dictionary tuần tự hóa JSON
+
+# Module cơ sở dữ liệu SQLite cục bộ (lưu trữ và quản lý hồ sơ lá số)
+from tuvi_mcp.database import init_db, save_horoscope, list_saved_horoscopes, get_saved_horoscope_by_name
+
+init_db()
+id_ = save_horoscope("Hồ sơ mẫu", 10, 6, 1995, 14, "Nam", True)
+profiles = list_saved_horoscopes()
+```
+
 ### Hạn chế hiện tại & Giả định
-- **Giả định múi giờ:** Mặc định tính toán theo múi giờ Việt Nam (GMT+7). Mọi thông tin giờ sinh ở múi giờ khác cần được quy đổi về GMT+7 trước khi truyền vào.
+- **Múi giờ:** Mặc định tính toán theo múi giờ Việt Nam (GMT+7). Đối với nơi sinh ở múi giờ khác, có thể truyền trực tiếp tham số `timezone` vào công cụ MCP (chấp nhận số nguyên như `8` hoặc chuỗi `h:30` như `"8:30"`, mặc định là 7). Công cụ thiên văn sử dụng `timezone` để quy đổi ranh giới ngày Âm/Dương lịch — chi giờ sinh luôn được xác định theo giờ địa phương thực tế.
 - **Giới hạn lịch pháp:** Các phép tính toán âm dương lịch ổn định và chính xác cao với các năm sinh thời hiện đại. Thuật toán chuyển đổi lịch âm dựa trên phương pháp của Hoàng Nam Địa (HND), có thể có sai lệch nhỏ ở một số năm nhuận quá khứ xa hoặc tương lai xa.
 - **Hệ phái an sao:** Thuật toán an sao theo quy chuẩn chung phổ biến tại Việt Nam. Dự án hiện chưa hỗ trợ cấu hình tùy biến trọng số sao hoặc các cách an sao khác nhau của các hệ phái khác (như Nam phái vs Bắc phái vs tự chọn).
 
@@ -450,6 +502,7 @@ Tạo lá số Tử Vi đầy đủ từ thông tin ngày giờ sinh, hỗ trợ
   * `is_solar` (boolean): `True` nếu dùng Dương lịch, `False` nếu dùng Âm lịch. Mặc định là `True`.
   * `current_year` (integer, tùy chọn): Năm cần xem vận hạn để tính sao lưu (mặc định là năm hiện tại).
   * `generate_image` (boolean, tùy chọn): Có xuất và trả về ảnh lá số chất lượng cao đi kèm hay không (mặc định: `True`).
+  * `timezone` (integer hoặc string, tùy chọn): Múi giờ nơi sinh. Chấp nhận số nguyên (vd: `7`, `-5`) hoặc chuỗi `h:30` (vd: `"7:30"`, `"-5:30"`). Mặc định: `7` (Việt Nam/ICT).
 * **Đầu ra:**
   * Nếu `generate_image` là `True`, trả về danh sách `[Image, chart_data]` (trong đó `Image` là block chứa dữ liệu ảnh của FastMCP).
   * Nếu `generate_image` là `False`, trả về trực tiếp đối tượng JSON `chart_data`.
@@ -578,20 +631,20 @@ Khi gọi `get_van_han(...)` cho một năm/tháng cụ thể, hệ thống tín
   },
   "transit_stars": [
     {"name": "Lưu Thái Tuế", "cung_so": 7, "chi": "Ngọ"},
-    {"name": "Lưu Lộc Tồn", "cung_so": 9, "chi": "Thân"}
+    {"name": "Lưu Lộc Tồn", "cung_so": 6, "chi": "Tỵ"}
     // ... các lưu tinh khác
   ],
   "dai_han": {
     "cung_so": 10,
-    "cung_chu": "Tử tức",
-    "dai_han": 35,
+    "cung_chu": "Phu thê",
+    "dai_han": 25,
     "transit_stars": []
   },
   "tieu_han": {
-    "cung_so": 7,
-    "cung_chu": "Tật ách",
+    "cung_so": 9,
+    "cung_chu": "Tử tức",
     "tieu_han": "Ngọ",
-    "transit_stars": ["Lưu Thái Tuế"]
+    "transit_stars": ["Lưu Thiên Mã"]
   }
 }
 ```

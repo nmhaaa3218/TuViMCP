@@ -785,7 +785,7 @@
         },
         {
           "id": 106,
-          "name": "LN. Văn tinh",
+          "name": "Văn tinh",
           "element": "H",
           "type": 6,
           "direction": "",
@@ -1057,10 +1057,10 @@
           "attribute": null
         },
         {
-          "id": 49,
-          "name": "Thai",
-          "element": "O",
-          "type": 14,
+          "id": 50,
+          "name": "Dưỡng",
+          "element": "M",
+          "type": 2,
           "direction": "",
           "yin_yang": "",
           "attribute": null
@@ -1136,10 +1136,10 @@
           "attribute": null
         },
         {
-          "id": 50,
-          "name": "Dưỡng",
-          "element": "M",
-          "type": 2,
+          "id": 49,
+          "name": "Thai",
+          "element": "O",
+          "type": 14,
           "direction": "",
           "yin_yang": "",
           "attribute": null

@@ -300,7 +300,7 @@ def convert_calendar(
       Tiểu Hạn, Nguyệt Hạn) operate strictly on the Lunar calendar, you **MUST** convert any Solar
       target periods (e.g. "October 2026") using this tool before calling `get_van_han`.
     - Do NOT use this tool if you only need base chart calculation, as chart generation tools
-      (`generate_horoscope` and `get_saved_horoscope`) already handle birth date conversions internally.
+      (`generate_horoscope`) already handle birth date conversions internally.
 
     ### Side Effects, Auth, and Rate Limits
     - **Side Effects**: None. This is a pure mathematical calculation.
@@ -322,10 +322,8 @@ def convert_calendar(
 
     ### Output Schema and Error Conditions
     - **Returns**: A dictionary containing:
-      - `day`: Converted day (int).
-      - `month`: Converted month (int).
-      - `year`: Converted year (int).
-      - `leap`: Boolean indicating if the Lunar month is a leap month.
+      - If `from_solar` is `True`: `lunar_day`, `lunar_month`, `lunar_year`, `lunar_leap` (bool), and `formatted` string date (e.g. "14/5/1995" or "14/5/1995 (nhuận)").
+      - If `from_solar` is `False`: `solar_day`, `solar_month`, `solar_year`, and `formatted` string date.
     - **Errors**: Returns `{"error": "error_message"}` if date arguments are out of bounds,
       fail calendar validation, or `timezone` is malformed.
     """

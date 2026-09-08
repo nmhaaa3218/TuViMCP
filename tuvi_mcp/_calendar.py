@@ -22,7 +22,7 @@ def convert_solar_to_lunar(day: int, month: int, year: int, timezone: float = 7.
             "lunar_month": res[1],
             "lunar_year": res[2],
             "lunar_leap": bool(res[3]),
-            "formatted": f"{res[0]}/{res[1]}/{res[2]}" + (" (nhận)" if res[3] else ""),
+            "formatted": f"{res[0]}/{res[1]}/{res[2]}" + (" (nhuận)" if res[3] else ""),
         }
     except Exception as e:
         return {"error": f"Failed to convert Solar to Lunar: {str(e)}"}
