@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.3] - 2026-09-26
+
+### Fixed
+- **Solar Date Conversion for Lunar Birth Inputs (`_engine/ThienBan.py`)**: Fixed missing conversion from Lunar to Solar date when chart generation is requested with Lunar calendar (`duongLich=False`). Now properly maps `self.ngayDuong, self.thangDuong, self.namDuong` via `L2S` before computing Julian Day and day Can Chi, ensuring that both Solar and Lunar dates are correctly displayed on Thiên Bàn and rendered chart images.
+- **Hoàng Đạo / Hắc Đạo Calculation near Solar Terms (`_lunar_calendar/Lunar.py`)**: Fixed day star calculation (Thập Nhị Hoàng Đạo / Hắc Đạo) prematurely shifting at 24 Tiết Khí boundaries. Now calculates the month branch strictly from the calendar Lunar month (`getMonthZhiByLunarMonth()`), aligning 100% with traditional Vietnamese Lịch Vạn Niên references.
+- **Lunar Leap Month Formatting (`_calendar.py`)**: Corrected lunar leap text formatting and updated calendar tool documentation and examples.
+
+### Added
+- **Golden Reference Test Suite (`tests/test_lich_van_nien_golden.py`)**: Added 55 cross-referenced test cases against authoritative Vietnamese calendar sources (covering key transition periods including 10/08/2026 Bạch Hổ Hắc Đạo, 05/02/2026 Thanh Long Hoàng Đạo, 17/02/2026 Mùng 1 Tết Bính Ngọ Tư Mệnh Hoàng Đạo, and the entire 31-day cycle of August 2026).
+- **Lunar Input Test Suite (`tests/test_thien_ban_lunar_input.py`)**: Added unit tests verifying chart consistency and metadata correctness when using Lunar birth inputs.
+
+---
+
 ## [0.4.2] - 2026-08-26
 
 ### Fixed
