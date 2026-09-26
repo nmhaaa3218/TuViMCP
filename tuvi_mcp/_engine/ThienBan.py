@@ -26,12 +26,25 @@ class lapThienBan(object):
         self.namNu = "Nam" if gioiTinh == 1 else "Nữ"
 
         chiGioSinh = diaChi[gioSinh]
+        self.ten = ten
+        self.timeZone = timeZone
+        self.today = time.strftime("%d/%m/%Y")
+
         if duongLich is False:
             from .Lich_HND import L2S
             s_date = L2S(nn, tt, nnnn, 0, timeZone)
-            jd = jdFromDate(s_date[0], s_date[1], s_date[2])
+            self.ngayAm, self.thangAm, self.namAm = nn, tt, nnnn
+            self.ngayDuong, self.thangDuong, self.namDuong = (
+                s_date[0], s_date[1], s_date[2]
+            )
+            jd = jdFromDate(self.ngayDuong, self.thangDuong, self.namDuong)
         else:
+            self.ngayDuong, self.thangDuong, self.namDuong = nn, tt, nnnn
+            self.ngayAm, self.thangAm, self.namAm, self.thangNhuan = \
+                ngayThangNam(self.ngayDuong, self.thangDuong, self.namDuong,
+                             True, self.timeZone)
             jd = jdFromDate(nn, tt, nnnn)
+
         canGioSinh = ((jd - 1) * 2 % 10 + gioSinh) % 10
         if canGioSinh == 0:
             canGioSinh = 10
@@ -39,18 +52,6 @@ class lapThienBan(object):
         self.canGioSinh = canGioSinh
         self.gioSinh = "{} {}".format(thienCan[canGioSinh]['tenCan'],
                                       chiGioSinh['tenChi'])
-
-        self.timeZone = timeZone
-        self.today = time.strftime("%d/%m/%Y")
-        self.ngayDuong, self.thangDuong, self.namDuong, self.ten = \
-            nn, tt, nnnn, ten
-        if duongLich is True:
-            self.ngayAm, self.thangAm, self.namAm, self.thangNhuan = \
-                ngayThangNam(self.ngayDuong, self.thangDuong, self.namDuong,
-                             True, self.timeZone)
-        else:
-            self.ngayAm, self.thangAm, self.namAm = self.ngayDuong, \
-                self.thangDuong, self.namDuong
 
         self.canThang, self.canNam, self.chiNam = \
             ngayThangNamCanChi(self.ngayAm, self.thangAm,
@@ -61,9 +62,10 @@ class lapThienBan(object):
         self.chiThangTen = diaChi[(self.thangAm + 1) % 12 + 1]['tenChi']
         self.chiNamTen = diaChi[self.chiNam]['tenChi']
 
+        # ngayDuong is always solar after the assignment above
         self.canNgay, self.chiNgay = canChiNgay(
             self.ngayDuong, self.thangDuong, self.namDuong,
-            duongLich, timeZone)
+            True, timeZone)
         self.canNgayTen = thienCan[self.canNgay]['tenCan']
         self.chiNgayTen = diaChi[self.chiNgay]['tenChi']
 

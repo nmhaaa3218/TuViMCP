@@ -780,11 +780,32 @@ class Lunar:
     def getDayZhiXingVn(self):
         return self.getZhiXingVn()
 
+    def getMonthZhiByLunarMonth(self):
+        """
+        Month Earthly Branch from calendar lunar month (VN lịch vạn niên).
+
+        Hoàng/Hắc Đạo day stars use this branch, not the solar-term month branch
+        from getMonthZhi() which shifts at each tiết-khí boundary.
+        """
+        lunar_month = abs(self.__month)
+        if lunar_month < 1 or lunar_month > 12:
+            return self.getMonthZhi()
+        month_zhi_index = (
+            LunarUtil.BASE_MONTH_ZHI_INDEX + lunar_month - 1
+        ) % 12
+        return LunarUtil.ZHI[month_zhi_index + 1]
+
     def getDayTianShen(self):
-        return LunarUtil.TIAN_SHEN[(self.__dayZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getMonthZhi()]) % 12 + 1]
+        month_zhi = self.getMonthZhiByLunarMonth()
+        return LunarUtil.TIAN_SHEN[
+            (self.__dayZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[month_zhi]) % 12 + 1
+        ]
 
     def getDayTianShenVn(self):
-        return LunarUtil.TIAN_SHEN_VI[(self.__dayZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getMonthZhi()]) % 12 + 1]
+        month_zhi = self.getMonthZhiByLunarMonth()
+        return LunarUtil.TIAN_SHEN_VI[
+            (self.__dayZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[month_zhi]) % 12 + 1
+        ]
 
     def getTimeTianShen(self):
         return LunarUtil.TIAN_SHEN[(self.__timeZhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.getDayZhiExact()]) % 12 + 1]
