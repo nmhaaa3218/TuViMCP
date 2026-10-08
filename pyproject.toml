@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tuvi-mcp-server"
-version = "0.4.3"
+version = "0.5.0"
 description = "A Model Context Protocol (MCP) server for Vietnamese Tu Vi horoscope calculation and management"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
+license = {text = "Apache-2.0"}
 authors = [
     {name = "Manh Ha Nguyen", email = "manh.ha.3218@gmail.com"}
 ]
@@ -16,7 +16,7 @@ keywords = ["mcp", "tuvi", "horoscope", "astrology", "vietnamese", "lunar-calend
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",

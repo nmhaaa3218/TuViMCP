@@ -63,7 +63,7 @@ __title__ = "ansaotuvi"
 __version__ = "0.4.0"
 __author__ = "Manh Ha Nguyen"
 __author_email__ = "manh.ha.3218@gmail.com"
-__license__ = "MIT License"
+__license__ = "Apache License 2.0"
 
 __all__ = [
     "S2L",

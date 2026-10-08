@@ -4,7 +4,7 @@
 """
 
 # Tu Vi Horoscope MCP Server Package
-__version__ = "0.4.3"
+__version__ = "0.5.0"
 
 from .horoscope import AuspiciousResult, BirthInfo, Calendar, Gender, Horoscope, HoroscopeResult, TransitResult
 

@@ -1,7 +1,7 @@
 # Tu Vi Horoscope MCP Server
 
 [![CI](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/nmhaaa3218/TuViMCP/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![PyPI version](https://img.shields.io/pypi/v/tuvi-mcp-server)](https://pypi.org/project/tuvi-mcp-server/)
 [![Documentation Status](https://readthedocs.org/projects/tuvimcp/badge/?version=latest)](https://tuvimcp.readthedocs.io/en/latest/)
 
@@ -677,4 +677,13 @@ Vào Settings -> Features -> MCP, sau đó chọn "+ Add New MCP Server":
 * **Name:** TuViMCP
 * **Type:** command
 * **Command:** `/path/to/TuViMCP/.venv/bin/tuvi-mcp`
+
+---
+
+## License
+
+This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) and [NOTICE](NOTICE) files for details.
+
+Derivative works and distributions must preserve author attribution as specified in [NOTICE](NOTICE).
+
 

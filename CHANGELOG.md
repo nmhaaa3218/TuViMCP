@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-10-08
+
+### Changed
+- **Relicensed to Apache License 2.0**: Relicensed the project under Apache License, Version 2.0. Added `NOTICE` file requiring attribution in derivative works and distributions under Section 4(d).
+- Updated package metadata and project classifiers in `pyproject.toml` and documentation badges.
+
+---
+
 ## [0.4.3] - 2026-09-26
 
 ### Fixed
